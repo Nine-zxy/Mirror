@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #0D1117;
+  color: #E6EDF3;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Stage backgrounds ────────────────────────────────── */
+.stage-wall {
+  background-color: #1c1008;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 47px,
+    rgba(0, 0, 0, 0.25) 47px,
+    rgba(0, 0, 0, 0.25) 48px
+  );
+}
+
+.stage-floor {
+  background-color: #17221a;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px, transparent 15px,
+      rgba(0,0,0,0.18) 15px, rgba(0,0,0,0.18) 16px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 15px,
+      rgba(0,0,0,0.18) 15px, rgba(0,0,0,0.18) 16px
+    );
+}
+
+/* ─── Glass panel ──────────────────────────────────────── */
+.glass-panel {
+  background: rgba(22, 27, 34, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+}
+
+/* ─── Thought bubble cloud shape ──────────────────────── */
+.thought-cloud {
+  border-radius: 16px;
+  position: relative;
+}
+.thought-cloud::before,
+.thought-cloud::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  bottom: -10px;
+}
+.thought-cloud-A::before {
+  width: 10px; height: 10px;
+  left: 28px; bottom: -12px;
+  background: inherit;
+  border: inherit;
+}
+.thought-cloud-A::after {
+  width: 6px; height: 6px;
+  left: 20px; bottom: -20px;
+  background: inherit;
+  border: inherit;
+}
+.thought-cloud-B::before {
+  width: 10px; height: 10px;
+  right: 28px; bottom: -12px;
+  background: inherit;
+  border: inherit;
+}
+.thought-cloud-B::after {
+  width: 6px; height: 6px;
+  right: 20px; bottom: -20px;
+  background: inherit;
+  border: inherit;
+}
+
+/* ─── Scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #30363D; border-radius: 2px; }
+
+/* ─── Pixel character glow ─────────────────────────────── */
+.char-glow-A { filter: drop-shadow(0 0 10px rgba(79, 142, 247, 0.6)); }
+.char-glow-B { filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.6)); }
