@@ -3,13 +3,13 @@
 //  16×28 grid, rendered at 3.5× (56×98 px)
 //
 //  Props:
-//    persona   — color data
-//    emotion   — neutral|confrontational|defensive|angry|hurt|withdrawn|warm|sitting
+//    persona   — color data (outfitColor, outfitDark, hairColor, …)
+//    emotion   — neutral | confrontational | defensive | angry | hurt | withdrawn | warm | sitting
 //    facing    — 'right' | 'left'
 //    lean      — 'forward' | 'back' | 'none'
-//    scale     — number (1.0 = normal)
+//    scale     — number  (1.0 = normal)
 //    glow      — boolean
-//    feature   — 'none' | 'glasses' | 'longHair' | 'beard'
+//    features  — string[]  e.g. ['glasses','longHair']  (multi-feature support)
 // ─────────────────────────────────────────────────────────────
 
 const SCALE = 3.5
@@ -97,41 +97,38 @@ function SittingBody({ oc, od }) {
   )
 }
 
-// ── Persona feature overlays ───────────────────────────────────
-function FeatureOverlay({ feature, hairColor }) {
-  if (!feature || feature === 'none') return null
-
-  if (feature === 'glasses') return (
+// ── Feature overlays (rendered in layer order) ────────────────
+function LongHairFeature({ hairColor }) {
+  return (
     <>
-      {/* Left lens frame */}
+      <Px x={3} y={4} w={2} h={6} fill={hairColor} opacity={0.95} />
+      <Px x={11} y={4} w={2} h={6} fill={hairColor} opacity={0.95} />
+      <Px x={3} y={10} w={1} h={5} fill={hairColor} opacity={0.75} />
+      <Px x={12} y={10} w={1} h={5} fill={hairColor} opacity={0.75} />
+      <Px x={3} y={15} w={1} h={3} fill={hairColor} opacity={0.45} />
+      <Px x={12} y={15} w={1} h={3} fill={hairColor} opacity={0.45} />
+    </>
+  )
+}
+
+function GlassesFeature() {
+  return (
+    <>
       <rect x={4} y={3} width={3} height={2.5}
         fill="rgba(40,40,60,0.15)" stroke="#3a3a5a" strokeWidth={0.5}
         shapeRendering="crispEdges" />
-      {/* Right lens frame */}
       <rect x={8} y={3} width={3} height={2.5}
         fill="rgba(40,40,60,0.15)" stroke="#3a3a5a" strokeWidth={0.5}
         shapeRendering="crispEdges" />
-      {/* Bridge */}
       <Px x={7} y={4} fill="#4a4a6a" opacity={0.9} />
-      {/* Side arms */}
       <Px x={3} y={3} fill="#3a3a5a" opacity={0.7} />
       <Px x={11} y={3} fill="#3a3a5a" opacity={0.7} />
     </>
   )
+}
 
-  if (feature === 'longHair') return (
-    <>
-      {/* Long strands down both sides, below the base hair */}
-      <Px x={3} y={4} w={2} h={5} fill={hairColor} opacity={0.95} />
-      <Px x={11} y={4} w={2} h={5} fill={hairColor} opacity={0.95} />
-      <Px x={3} y={9}  w={1} h={4} fill={hairColor} opacity={0.75} />
-      <Px x={11} y={9} w={1} h={4} fill={hairColor} opacity={0.75} />
-      <Px x={3} y={13} w={1} h={2} fill={hairColor} opacity={0.45} />
-      <Px x={11} y={13} w={1} h={2} fill={hairColor} opacity={0.45} />
-    </>
-  )
-
-  if (feature === 'beard') return (
+function BeardFeature() {
+  return (
     <>
       <Px x={5} y={8} w={5} h={1} fill="#5a3418" opacity={0.85} />
       <Px x={6} y={9} w={3} h={1} fill="#4a2810" opacity={0.70} />
@@ -139,8 +136,6 @@ function FeatureOverlay({ feature, hairColor }) {
       <Px x={9} y={8} fill="#3a2010" opacity={0.4} />
     </>
   )
-
-  return null
 }
 
 // ── Lean angle calculation ─────────────────────────────────────
@@ -160,11 +155,14 @@ export default function PixelChar({
   lean     = 'none',
   scale    = 1.0,
   glow     = true,
-  feature  = 'none',
+  features = [],          // ← now an array, supports multiple features
 }) {
-  const isSitting = emotion === 'sitting'
-  const oc = persona.outfitColor
-  const od = persona.outfitDark
+  const isSitting  = emotion === 'sitting'
+  const oc         = persona.outfitColor
+  const od         = persona.outfitDark
+  const hasLongHair = features.includes('longHair')
+  const hasGlasses  = features.includes('glasses')
+  const hasBeard    = features.includes('beard')
 
   const glowClass = emotion === 'warm'
     ? 'char-glow-warm'
@@ -182,7 +180,7 @@ export default function PixelChar({
         height:          `${H * SCALE * scale}px`,
         transform:       `rotate(${rotation}deg) scaleX(${flipX}) scale(${scale})`,
         transformOrigin: 'bottom center',
-        transition:      'transform 0.7s cubic-bezier(0.4,0,0.2,1), width 0.7s, height 0.7s',
+        transition:      'transform 0.7s cubic-bezier(0.4,0,0.2,1)',
       }}
     >
       <svg
@@ -191,32 +189,32 @@ export default function PixelChar({
         viewBox={`0 0 ${W} ${H}`}
         style={{ transform: `scaleX(${flipX})`, transformOrigin: 'center' }}
       >
-        {/* Base hair */}
+        {/* 1. Base hair */}
         <Px x={4} y={0} w={7} h={1} fill={persona.hairColor} />
         <Px x={3} y={1} w={9} h={2} fill={persona.hairColor} />
         <Px x={3} y={3} w={2} h={1} fill={persona.hairColor} />
         <Px x={10} y={3} w={2} h={1} fill={persona.hairColor} />
 
-        {/* Long hair extension (rendered below base hair but above head edges) */}
-        <FeatureOverlay feature={feature === 'longHair' ? 'longHair' : null} hairColor={persona.hairColor} />
+        {/* 2. Long hair strands (behind head & body) */}
+        {hasLongHair && <LongHairFeature hairColor={persona.hairColor} />}
 
-        {/* Head */}
+        {/* 3. Head */}
         <Px x={3} y={2} w={9} h={7} fill="#f0c8a8" />
 
-        {/* Glasses (rendered above head, below eyes) */}
-        <FeatureOverlay feature={feature === 'glasses' ? 'glasses' : null} hairColor={persona.hairColor} />
+        {/* 4. Glasses (over face, behind eyes) */}
+        {hasGlasses && <GlassesFeature />}
 
-        {/* Face details */}
+        {/* 5. Face details */}
         <Eyes emotion={emotion} />
         <Mouth emotion={emotion} />
 
-        {/* Beard (rendered below mouth) */}
-        <FeatureOverlay feature={feature === 'beard' ? 'beard' : null} hairColor={persona.hairColor} />
+        {/* 6. Beard (below mouth) */}
+        {hasBeard && <BeardFeature />}
 
-        {/* Neck */}
+        {/* 7. Neck */}
         <Px x={6} y={9} w={3} h={1} fill="#f0c8a8" />
 
-        {/* Body */}
+        {/* 8. Body */}
         {isSitting
           ? <SittingBody oc={oc} od={od} />
           : <>

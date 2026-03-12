@@ -1,20 +1,16 @@
 // ─────────────────────────────────────────────────────────────
-//  PersonaSetup — "幕后" (Backstage) configuration screen
+//  PersonaSetup — "幕后" (Backstage) configuration
 //
-//  Inspired by Goffman's Dramaturgy:
-//    Front stage  → Theater (simulation)
-//    Back stage   → PersonaSetup (preparation / identity construction)
-//
-//  Users configure minimal semantic identity:
-//    • Color palette (映射到角色服装 + 氛围)
-//    • 1 visual feature (高辨识度像素特征)
-//    • Scene atmosphere (影响 proxemics 算法的空间参数)
+//  Changes vs v1:
+//    • Features are now multi-select (features: string[])
+//    • Stage position indicator shows which side each persona
+//      will appear on in the simulation
 // ─────────────────────────────────────────────────────────────
 
 import { useState } from 'react'
 import PixelChar from './PixelChar'
 
-// ── Color palettes ────────────────────────────────────────────
+// ── Color palettes ─────────────────────────────────────────────
 const PALETTES = {
   A: [
     {
@@ -70,16 +66,14 @@ const PALETTES = {
   ],
 }
 
-// ── Visual features ───────────────────────────────────────────
+// ── Visual features (multi-select) ────────────────────────────
 const FEATURES = [
-  { id: 'none',     label: '默认', icon: '○' },
   { id: 'glasses',  label: '眼镜', icon: '目' },
   { id: 'longHair', label: '长发', icon: '‖' },
   { id: 'beard',    label: '胡须', icon: '﹏' },
 ]
 
 // ── Scene atmospheres ─────────────────────────────────────────
-// Semantic choice: affects proxemic parameters + visual density
 const SCENES = [
   {
     id: 'enclosed',
@@ -97,12 +91,13 @@ const SCENES = [
   },
 ]
 
-// ── Single persona panel ──────────────────────────────────────
+// ── Single persona config panel ───────────────────────────────
 function PersonaPanel({ personaId, config, onChange }) {
-  const palettes = PALETTES[personaId]
+  const palettes       = PALETTES[personaId]
   const currentPalette = palettes.find(p => p.id === config.paletteId) || palettes[0]
+  const features       = config.features || []
+  const isLeft         = personaId === 'A'
 
-  // Build a preview persona object
   const previewPersona = {
     ...config,
     id: personaId,
@@ -110,6 +105,15 @@ function PersonaPanel({ personaId, config, onChange }) {
     outfitDark:  currentPalette.outfitDark,
     hairColor:   currentPalette.hairColor,
     color:       currentPalette.color,
+  }
+
+  const toggleFeature = (fId) => {
+    onChange({
+      ...config,
+      features: features.includes(fId)
+        ? features.filter(f => f !== fId)
+        : [...features, fId],
+    })
   }
 
   return (
@@ -124,32 +128,42 @@ function PersonaPanel({ personaId, config, onChange }) {
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <div
-          className="w-2 h-2 rounded-full"
-          style={{
-            background: currentPalette.color,
-            boxShadow: `0 0 6px ${currentPalette.color}`,
-          }}
-        />
-        <span
-          className="font-mono text-[9px] tracking-[0.2em] uppercase"
-          style={{ color: 'rgba(255,255,255,0.35)' }}
-        >
+        <div className="w-2 h-2 rounded-full" style={{
+          background: currentPalette.color,
+          boxShadow: `0 0 6px ${currentPalette.color}`,
+        }} />
+        <span className="font-mono text-[9px] tracking-[0.2em] uppercase"
+          style={{ color: 'rgba(255,255,255,0.35)' }}>
           Partner {personaId}
         </span>
       </div>
 
-      {/* Character preview */}
-      <div className="flex justify-center items-end" style={{ height: '110px' }}>
-        <PixelChar
-          persona={previewPersona}
-          emotion="neutral"
-          facing={personaId === 'A' ? 'right' : 'left'}
-          lean="none"
-          scale={1.0}
-          glow={true}
-          feature={config.feature}
-        />
+      {/* Character preview + stage position */}
+      <div className="flex flex-col items-center gap-1">
+        <div className="flex justify-center items-end" style={{ height: '110px' }}>
+          <PixelChar
+            persona={previewPersona}
+            emotion="neutral"
+            facing={isLeft ? 'right' : 'left'}
+            lean="none"
+            scale={1.0}
+            glow={true}
+            features={features}
+          />
+        </div>
+        {/* Stage position indicator */}
+        <div className="flex items-center gap-1.5 mt-1">
+          {isLeft
+            ? <>
+                <span className="text-[10px]" style={{ color: currentPalette.color }}>◀</span>
+                <span className="font-mono text-[8px] text-white/30 tracking-wider">舞台左侧</span>
+              </>
+            : <>
+                <span className="font-mono text-[8px] text-white/30 tracking-wider">舞台右侧</span>
+                <span className="text-[10px]" style={{ color: currentPalette.color }}>▶</span>
+              </>
+          }
+        </div>
       </div>
 
       {/* Name */}
@@ -170,25 +184,20 @@ function PersonaPanel({ personaId, config, onChange }) {
         <label className="font-mono text-[9px] text-white/30 tracking-widest">色调</label>
         <div className="flex gap-2">
           {palettes.map(p => (
-            <button
-              key={p.id}
-              onClick={() => onChange({ ...config, paletteId: p.id, ...p })}
+            <button key={p.id}
+              onClick={() => onChange({ ...config, paletteId: p.id, ...p, features })}
               className="flex flex-col items-center gap-1 flex-1 rounded-lg py-2 transition-all"
               style={{
-                background: config.paletteId === p.id
-                  ? `${p.color}20` : 'rgba(255,255,255,0.03)',
+                background: config.paletteId === p.id ? `${p.color}20` : 'rgba(255,255,255,0.03)',
                 border: `1px solid ${config.paletteId === p.id ? p.color + '70' : 'rgba(255,255,255,0.08)'}`,
               }}
             >
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{
-                  background: p.outfitColor,
-                  boxShadow: config.paletteId === p.id
-                    ? `0 0 8px ${p.color}` : 'none',
-                }}
-              />
-              <span className="font-mono text-[8px]" style={{ color: config.paletteId === p.id ? p.color : '#666' }}>
+              <div className="w-4 h-4 rounded-full" style={{
+                background: p.outfitColor,
+                boxShadow: config.paletteId === p.id ? `0 0 8px ${p.color}` : 'none',
+              }} />
+              <span className="font-mono text-[8px]"
+                style={{ color: config.paletteId === p.id ? p.color : '#555' }}>
                 {p.label}
               </span>
             </button>
@@ -196,33 +205,43 @@ function PersonaPanel({ personaId, config, onChange }) {
         </div>
       </div>
 
-      {/* Feature selection */}
+      {/* Features — multi-select checkboxes */}
       <div className="flex flex-col gap-2">
-        <label className="font-mono text-[9px] text-white/30 tracking-widest">标志特征</label>
-        <div className="grid grid-cols-2 gap-1.5">
-          {FEATURES.map(f => (
-            <button
-              key={f.id}
-              onClick={() => onChange({ ...config, feature: f.id })}
-              className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left transition-all"
-              style={{
-                background: config.feature === f.id
-                  ? `${currentPalette.color}18` : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${config.feature === f.id
-                  ? currentPalette.color + '50' : 'rgba(255,255,255,0.07)'}`,
-              }}
-            >
-              <span className="text-[11px]" style={{ color: config.feature === f.id ? currentPalette.color : '#555' }}>
-                {f.icon}
-              </span>
-              <span
-                className="font-mono text-[9px]"
-                style={{ color: config.feature === f.id ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.35)' }}
+        <div className="flex items-center gap-2">
+          <label className="font-mono text-[9px] text-white/30 tracking-widest">标志特征</label>
+          <span className="font-mono text-[8px] text-white/18">可多选</span>
+        </div>
+        <div className="flex gap-1.5">
+          {FEATURES.map(f => {
+            const active = features.includes(f.id)
+            return (
+              <button key={f.id}
+                onClick={() => toggleFeature(f.id)}
+                className="flex flex-col items-center gap-1 flex-1 rounded-lg py-2 transition-all"
+                style={{
+                  background: active ? `${currentPalette.color}20` : 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${active ? currentPalette.color + '55' : 'rgba(255,255,255,0.07)'}`,
+                }}
               >
-                {f.label}
-              </span>
-            </button>
-          ))}
+                {/* Checkbox indicator */}
+                <div className="w-3 h-3 rounded flex items-center justify-center" style={{
+                  background: active ? currentPalette.color : 'rgba(255,255,255,0.08)',
+                  border: `1px solid ${active ? currentPalette.color : 'rgba(255,255,255,0.18)'}`,
+                }}>
+                  {active && (
+                    <svg width="7" height="6" viewBox="0 0 7 6" fill="none">
+                      <polyline points="1,3 3,5 6,1" stroke="white" strokeWidth="1.2"
+                        strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </div>
+                <span className="font-mono text-[8px]"
+                  style={{ color: active ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.3)' }}>
+                  {f.label}
+                </span>
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>
@@ -231,38 +250,30 @@ function PersonaPanel({ personaId, config, onChange }) {
 
 // ── Main export ───────────────────────────────────────────────
 export default function PersonaSetup({ initialPersonas, onConfirm }) {
-  const defaultA = {
-    ...initialPersonas.A,
-    paletteId: 'blue',
-    feature: 'none',
-  }
-  const defaultB = {
-    ...initialPersonas.B,
-    paletteId: 'red',
-    feature: 'none',
-  }
-
-  const [configA, setConfigA] = useState(defaultA)
-  const [configB, setConfigB] = useState(defaultB)
+  const [configA, setConfigA] = useState({
+    ...initialPersonas.A, paletteId: 'blue', features: [],
+  })
+  const [configB, setConfigB] = useState({
+    ...initialPersonas.B, paletteId: 'red', features: [],
+  })
   const [sceneType, setSceneType] = useState('enclosed')
 
   const handleConfirm = () => {
-    // Build final persona objects (merge config on top of initial)
     const paletteA = PALETTES.A.find(p => p.id === configA.paletteId) || PALETTES.A[0]
     const paletteB = PALETTES.B.find(p => p.id === configB.paletteId) || PALETTES.B[0]
-
-    const personaA = { ...initialPersonas.A, ...paletteA, name: configA.name, feature: configA.feature }
-    const personaB = { ...initialPersonas.B, ...paletteB, name: configB.name, feature: configB.feature }
-
-    onConfirm({ A: personaA, B: personaB }, sceneType)
+    onConfirm(
+      {
+        A: { ...initialPersonas.A, ...paletteA, name: configA.name, features: configA.features },
+        B: { ...initialPersonas.B, ...paletteB, name: configB.name, features: configB.features },
+      },
+      sceneType,
+    )
   }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black overflow-auto py-8 px-6">
-
-      {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 70% 50% at 50% 50%, rgba(40,30,20,0.6) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse 70% 50% at 50% 50%,rgba(40,30,20,0.6) 0%,transparent 70%)',
       }} />
 
       <div className="relative w-full max-w-2xl flex flex-col gap-6 anim-fadeIn">
@@ -278,7 +289,8 @@ export default function PersonaSetup({ initialPersonas, onConfirm }) {
           <p className="font-mono text-[10px] text-white/30 tracking-[0.2em]">
             配置角色 / CONFIGURE PERSONAS
           </p>
-          <p className="text-sm text-white/40 mt-1" style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+          <p className="text-sm text-white/38 mt-1"
+            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
             选择能代表你们的外观，这将影响模拟场景的呈现方式。
           </p>
         </div>
@@ -294,45 +306,35 @@ export default function PersonaSetup({ initialPersonas, onConfirm }) {
           <div className="flex items-center gap-3">
             <span className="font-mono text-[9px] text-white/30 tracking-widest">场景氛围</span>
             <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
-            <span className="font-mono text-[8px] text-white/20">影响人际距离算法</span>
+            <span className="font-mono text-[8px] text-white/18">影响人际距离算法</span>
           </div>
           <div className="flex gap-3">
             {SCENES.map(s => (
-              <button
-                key={s.id}
+              <button key={s.id}
                 onClick={() => setSceneType(s.id)}
                 className="flex-1 rounded-xl px-4 py-3.5 text-left transition-all"
                 style={{
-                  background: sceneType === s.id
-                    ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.025)',
-                  border: `1px solid ${sceneType === s.id
-                    ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.07)'}`,
+                  background: sceneType === s.id ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.025)',
+                  border: `1px solid ${sceneType === s.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.07)'}`,
                 }}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[14px]" style={{ color: sceneType === s.id ? '#fff' : '#555' }}>
-                    {s.icon}
-                  </span>
-                  <span
-                    className="font-mono text-[10px] tracking-wide"
-                    style={{ color: sceneType === s.id ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.35)' }}
-                  >
+                  <span className="text-[14px]"
+                    style={{ color: sceneType === s.id ? '#fff' : '#555' }}>{s.icon}</span>
+                  <span className="font-mono text-[10px] tracking-wide"
+                    style={{ color: sceneType === s.id ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.35)' }}>
                     {s.label}
                   </span>
-                  <span
-                    className="font-mono text-[8px]"
-                    style={{ color: sceneType === s.id ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.18)' }}
-                  >
+                  <span className="font-mono text-[8px]"
+                    style={{ color: sceneType === s.id ? 'rgba(255,255,255,0.38)' : 'rgba(255,255,255,0.16)' }}>
                     {s.sublabel}
                   </span>
                 </div>
-                <p
-                  className="text-[11px] leading-snug"
+                <p className="text-[11px] leading-snug"
                   style={{
-                    color: sceneType === s.id ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.2)',
+                    color: sceneType === s.id ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.18)',
                     fontFamily: '"PingFang SC","Inter",sans-serif',
-                  }}
-                >
+                  }}>
                   {s.desc}
                 </p>
               </button>
@@ -346,8 +348,7 @@ export default function PersonaSetup({ initialPersonas, onConfirm }) {
             onClick={handleConfirm}
             className="font-mono text-[12px] tracking-[0.2em] px-10 py-3.5 rounded-xl border transition-all duration-300"
             style={{
-              color: '#7ab0e8',
-              borderColor: 'rgba(122,176,232,0.4)',
+              color: '#7ab0e8', borderColor: 'rgba(122,176,232,0.4)',
               background: 'rgba(122,176,232,0.07)',
             }}
             onMouseEnter={e => {
