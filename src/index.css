@@ -2,101 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body, #root {
-  height: 100%;
-  overflow: hidden;
-}
+/* ── Reset ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; overflow: hidden; }
 
 body {
-  background: #0D1117;
-  color: #E6EDF3;
+  background: #000;
+  color: #e8e0d4;
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── Stage backgrounds ────────────────────────────────── */
-.stage-wall {
-  background-color: #1c1008;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent 0px,
-    transparent 47px,
-    rgba(0, 0, 0, 0.25) 47px,
-    rgba(0, 0, 0, 0.25) 48px
+/* ── Pixel rendering ──────────────────────────────────────── */
+.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
+
+/* ── Room scene ───────────────────────────────────────────── */
+.room-wall {
+  background: linear-gradient(
+    180deg,
+    #b89a72 0%,
+    #c8aa82 40%,
+    #c2a27a 100%
+  );
+}
+.room-ceiling {
+  background: linear-gradient(180deg, #1a1410 0%, #2a1e14 100%);
+}
+.room-floor {
+  background: #1a1210;
+  background-image:
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 39px,
+      rgba(0,0,0,0.25) 39px, rgba(0,0,0,0.25) 40px),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 19px,
+      rgba(0,0,0,0.15) 19px, rgba(0,0,0,0.15) 20px);
+}
+.room-ambient {
+  background: radial-gradient(
+    ellipse 60% 50% at 55% 40%,
+    rgba(255,200,120,0.12) 0%,
+    transparent 70%
   );
 }
 
-.stage-floor {
-  background-color: #17221a;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0px, transparent 15px,
-      rgba(0,0,0,0.18) 15px, rgba(0,0,0,0.18) 16px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0px, transparent 15px,
-      rgba(0,0,0,0.18) 15px, rgba(0,0,0,0.18) 16px
-    );
-}
-
-/* ─── Glass panel ──────────────────────────────────────── */
-.glass-panel {
-  background: rgba(22, 27, 34, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(48, 54, 61, 0.8);
-}
-
-/* ─── Thought bubble cloud shape ──────────────────────── */
-.thought-cloud {
-  border-radius: 16px;
+/* ── Thought bubble ───────────────────────────────────────── */
+.thought-bubble {
+  border-radius: 14px;
   position: relative;
+  line-height: 1.55;
+  white-space: pre-line;
 }
-.thought-cloud::before,
-.thought-cloud::after {
+/* Dot trail for A (left side) */
+.thought-bubble-A::before,
+.thought-bubble-A::after {
   content: '';
   position: absolute;
   border-radius: 50%;
-  bottom: -10px;
-}
-.thought-cloud-A::before {
-  width: 10px; height: 10px;
-  left: 28px; bottom: -12px;
+  bottom: -12px; left: 24px;
   background: inherit;
-  border: inherit;
+  border: 1px solid;
+  border-color: inherit;
 }
-.thought-cloud-A::after {
-  width: 6px; height: 6px;
-  left: 20px; bottom: -20px;
+.thought-bubble-A::before { width: 10px; height: 10px; bottom: -14px; left: 28px; }
+.thought-bubble-A::after  { width: 6px;  height: 6px;  bottom: -24px; left: 22px; }
+
+/* Dot trail for B (right side) */
+.thought-bubble-B::before,
+.thought-bubble-B::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
   background: inherit;
-  border: inherit;
+  border: 1px solid;
+  border-color: inherit;
 }
-.thought-cloud-B::before {
-  width: 10px; height: 10px;
-  right: 28px; bottom: -12px;
-  background: inherit;
-  border: inherit;
+.thought-bubble-B::before { width: 10px; height: 10px; bottom: -14px; right: 28px; }
+.thought-bubble-B::after  { width: 6px;  height: 6px;  bottom: -24px; right: 22px; }
+
+/* ── Emotion animations ───────────────────────────────────── */
+@keyframes anxious-float {
+  0%, 100% { transform: translateY(0px) rotate(-0.5deg); }
+  50%       { transform: translateY(-5px) rotate(0.5deg); }
 }
-.thought-cloud-B::after {
-  width: 6px; height: 6px;
-  right: 20px; bottom: -20px;
-  background: inherit;
-  border: inherit;
+@keyframes angry-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-4px) rotate(-0.5deg); }
+  40%       { transform: translateX(4px)  rotate(0.5deg); }
+  60%       { transform: translateX(-3px); }
+  80%       { transform: translateX(3px); }
+}
+@keyframes hurt-sink {
+  0%    { transform: translateY(0) scale(1);    opacity: 1; }
+  100%  { transform: translateY(3px) scale(0.97); opacity: 0.75; }
+}
+@keyframes warm-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.02); opacity: 0.9; }
+}
+@keyframes defensive-brace {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(2px); }
+}
+@keyframes reflective-fade {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1;   }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scanline {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+@keyframes subtitleIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes charAppear {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes branchReveal {
+  from { opacity: 0; filter: blur(4px); }
+  to   { opacity: 1; filter: blur(0px); }
 }
 
-/* ─── Scrollbar ────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
+.anim-fadeUp     { animation: fadeUp 0.45s ease forwards; }
+.anim-fadeIn     { animation: fadeIn 0.3s ease forwards; }
+.anim-branchReveal { animation: branchReveal 0.8s ease forwards; }
+
+/* ── Character glow ───────────────────────────────────────── */
+.char-glow-A { filter: drop-shadow(0 0 12px rgba(122,176,232,0.6)); }
+.char-glow-B { filter: drop-shadow(0 0 12px rgba(232,122,122,0.6)); }
+.char-glow-warm { filter: drop-shadow(0 0 14px rgba(120,220,140,0.55)); }
+
+/* ── Glass panel ──────────────────────────────────────────── */
+.glass {
+  background: rgba(12, 10, 8, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ── Dialogue subtitle ────────────────────────────────────── */
+.subtitle-bar {
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0)     0%,
+    rgba(0,0,0,0.78)  35%,
+    rgba(0,0,0,0.92)  100%
+  );
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #30363D; border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
 
-/* ─── Pixel character glow ─────────────────────────────── */
-.char-glow-A { filter: drop-shadow(0 0 10px rgba(79, 142, 247, 0.6)); }
-.char-glow-B { filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.6)); }
+/* ── Press Start 2P override for small labels ─────────────── */
+.font-pixel { font-family: 'Press Start 2P', monospace; }
+.font-mono  { font-family: 'JetBrains Mono', monospace; }
