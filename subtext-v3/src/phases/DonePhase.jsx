@@ -39,7 +39,7 @@ export default function DonePhase({ sessionData, personas, myRole, onReset }) {
       <div style={{ maxWidth: 480, textAlign: 'center' }} className="fade">
         <p style={{ margin: '0 0 20px', fontSize: 28, color: C.tx }}>◎</p>
         <h2 style={{ margin: '0 0 12px', fontSize: 34, fontWeight: 300, fontFamily: 'Cormorant Garamond, serif', lineHeight: 1.25, letterSpacing: '-.01em' }}>
-          你们看了同一场戏，<br />在不同的地方停下。
+          这次复盘结束了。
         </h2>
         <p style={{ margin: '0 0 32px', fontSize: 14, color: C.mu, lineHeight: 2 }}>
           找到了 <span style={{ color: C.div }}>{divergences.length}</span> 处分歧。<br />

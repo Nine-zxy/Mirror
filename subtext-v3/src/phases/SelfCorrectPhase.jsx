@@ -3,7 +3,7 @@ import { C } from '../theme'
 import { saveCorrections, markSelfCorrectDone } from '../utils/session'
 import TopBar from '../components/TopBar'
 
-// Each person corrects AI's inference of their OWN inner state.
+// Each person corrects the narrator's inference of their OWN inner state.
 // Role A corrects innerA. Role B corrects innerB.
 
 export default function SelfCorrectPhase({ script, personas, myRole, sessionCode, onDone }) {
@@ -49,7 +49,7 @@ export default function SelfCorrectPhase({ script, personas, myRole, sessionCode
             ))}
           </div>
           <p style={{ fontSize: 13, color: C.mu, fontFamily: 'DM Mono, monospace' }}>等待对方完成修正…</p>
-          <p style={{ marginTop: 8, fontSize: 11, color: C.mu + '66' }}>完成后将进入对比阶段</p>
+          <p style={{ marginTop: 8, fontSize: 11, color: C.mu }}>完成后将进入对比阶段</p>
         </div>
       </div>
     )
@@ -58,7 +58,7 @@ export default function SelfCorrectPhase({ script, personas, myRole, sessionCode
   return (
     <div style={{ minHeight: '100vh' }}>
       <TopBar
-        label={`修正你自己的内心`}
+        label="修正你自己的内心"
         labelColor={myColor}
         progress={`${Object.keys(corrections).filter(k => corrections[k]?.status).length} / ${correctable.length}`}
         done={allDone}
@@ -70,10 +70,10 @@ export default function SelfCorrectPhase({ script, personas, myRole, sessionCode
         <div style={{ marginBottom: 28 }}>
           <p style={{ margin: '0 0 4px', fontSize: 10, color: myColor, fontFamily: 'DM Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>换到你自己</p>
           <h2 style={{ margin: '0 0 8px', fontSize: 26, fontWeight: 300, fontFamily: 'Cormorant Garamond, serif', lineHeight: 1.3 }}>
-            AI 对你内心的推断，准确吗？
+            旁白对你内心的猜想，准确吗？
           </h2>
           <p style={{ margin: 0, fontSize: 13, color: C.mu, lineHeight: 1.8 }}>
-            如果不准确，写下你当时真正在想的——这会成为对比的基础。
+            如果不准确，写下你当时真正在想的——这会成为对比的依据。
           </p>
         </div>
 
@@ -81,13 +81,18 @@ export default function SelfCorrectPhase({ script, personas, myRole, sessionCode
           const corr    = corrections[line.id]
           const corrStatus = corr?.status
           const corrCol = { v: C.gr, edited: myColor }[corrStatus] || C.mu
+          const speakerName = line.speaker === 'A'
+            ? (personas?.A?.name || '她')
+            : (personas?.B?.name || '他')
 
           return (
             <div key={line.id} className="rise" style={{ marginBottom: 10, animationDelay: `${idx * 0.06}s`, background: C.card, border: `1.5px solid ${corrStatus ? corrCol + '44' : C.bd}`, borderRadius: 14, overflow: 'hidden', transition: 'border-color .25s' }}>
               {/* Context */}
               <div style={{ padding: '10px 16px', borderBottom: `1px solid ${C.bd}` }}>
                 <p style={{ margin: 0, fontSize: 12, color: C.mu, fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>
-                  {line.speaker === 'action' ? `[ ${line.text} ]` : `${line.speaker === 'A' ? personas?.A?.name || '她' : personas?.B?.name || '他'}：${line.text}`}
+                  {line.speaker === 'action'
+                    ? `[ ${line.text} ]`
+                    : `${speakerName} 说：${line.text}`}
                 </p>
               </div>
 
@@ -96,7 +101,7 @@ export default function SelfCorrectPhase({ script, personas, myRole, sessionCode
                 <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
                     <p style={{ margin: '0 0 3px', fontSize: 9, color: myColor, fontFamily: 'DM Mono, monospace', letterSpacing: '0.12em' }}>
-                      {corrStatus === 'edited' ? '你说实际上是' : 'AI 推断你的内心'}
+                      {corrStatus === 'edited' ? '你说实际上是' : '旁白猜你的内心'}
                     </p>
                     <p style={{ margin: 0, fontSize: 15, color: corrStatus === 'edited' ? myColor : myColor + '88', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.6, whiteSpace: 'pre-line' }}>
                       {corrStatus === 'edited' ? corr.text : line[innerKey]?.replace(/\\n/g, '\n')}
@@ -120,7 +125,7 @@ export default function SelfCorrectPhase({ script, personas, myRole, sessionCode
                       autoFocus
                       value={draft}
                       onChange={e => setDraft(e.target.value)}
-                      placeholder="我当时实际上在想……"
+                      placeholder="我当时实际上在想…"
                       style={{ width: '100%', padding: '10px 14px', background: C.stage, border: `1.5px solid ${myColor}55`, borderRadius: 9, color: C.tx, fontSize: 13, outline: 'none', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', resize: 'none', minHeight: 64, lineHeight: 1.7 }}
                       onFocus={e => e.target.style.borderColor = myColor + '99'}
                       onBlur={e => e.target.style.borderColor = myColor + '55'}

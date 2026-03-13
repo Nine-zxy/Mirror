@@ -96,9 +96,9 @@ export default function WatchPhase({ script, personas, myRole, sessionCode, onNe
             <p style={{ margin: '0 0 12px', fontSize: 18, color: C.mu, fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>
               你不在其中。你只是旁观。
             </p>
-            <p style={{ margin: '0 0 40px', fontSize: 11, color: C.mu + '66', lineHeight: 1.7 }}>
-              当内心活动出现时，可以用 emoji 标记你的第一反应——<br />
-              这些标记只有你能看到，对方看不到。
+            <p style={{ margin: '0 0 40px', fontSize: 11, color: C.mu, lineHeight: 1.7 }}>
+              内心活动出现时，可以用 emoji 标记第一反应——<br />
+              标记只有你自己能看到。
             </p>
             <button
               onClick={() => { setTick(0); setPlaying(true) }}
@@ -226,13 +226,13 @@ function ScriptBeat({ line, showInner, nameA, nameB, isLatest, currentTag, onTag
         <div className="drift" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 4 }}>
           <div style={{ textAlign: 'right', padding: '0 20px 0 0', borderRight: `1px solid ${C.aBd}` }}>
             <p style={{ margin: '0 0 4px', fontSize: 9, color: C.a + '88', fontFamily: 'DM Mono, monospace', letterSpacing: '0.12em' }}>{nameA}的内心</p>
-            <p style={{ margin: 0, fontSize: 14, color: line.innerA ? C.a + 'BB' : C.mu + '33', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.8 }}>
+            <p style={{ margin: 0, fontSize: 14, color: line.innerA ? C.a + 'BB' : C.mu2, fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.8 }}>
               {line.innerA ? line.innerA.replace(/\\n/g, '\n') : '——'}
             </p>
           </div>
           <div style={{ padding: '0 0 0 20px', borderLeft: `1px solid ${C.bBd}` }}>
             <p style={{ margin: '0 0 4px', fontSize: 9, color: C.b + '88', fontFamily: 'DM Mono, monospace', letterSpacing: '0.12em' }}>{nameB}的内心</p>
-            <p style={{ margin: 0, fontSize: 14, color: line.innerB ? C.b + 'BB' : C.mu + '33', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.8 }}>
+            <p style={{ margin: 0, fontSize: 14, color: line.innerB ? C.b + 'BB' : C.mu2, fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.8 }}>
               {line.innerB ? line.innerB.replace(/\\n/g, '\n') : '——'}
             </p>
           </div>
@@ -266,7 +266,7 @@ function ScriptBeat({ line, showInner, nameA, nameB, isLatest, currentTag, onTag
           {currentTag && (
             <button
               onClick={() => onTag(currentTag)}
-              style={{ padding: '5px 9px', borderRadius: 20, border: `1px solid ${C.dim}`, background: 'transparent', fontSize: 10, color: C.mu + '66', cursor: 'pointer', fontFamily: 'DM Mono, monospace' }}
+              style={{ padding: '5px 9px', borderRadius: 20, border: `1px solid ${C.dim}`, background: 'transparent', fontSize: 10, color: C.mu, cursor: 'pointer', fontFamily: 'DM Mono, monospace' }}
             >
               ✕
             </button>

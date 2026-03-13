@@ -61,10 +61,10 @@ export default function ComparePhase({ script, personas, myRole, sessionData, on
             双方都完成了标注
           </p>
           <h2 style={{ margin: '0 0 8px', fontSize: 26, fontWeight: 300, fontFamily: 'Cormorant Garamond, serif', lineHeight: 1.3 }}>
-            你们看同一场戏，在不同的地方产生了疑问。
+            同一段对话，各自理解不同的地方。
           </h2>
           <p style={{ margin: 0, fontSize: 13, color: C.mu, lineHeight: 1.8 }}>
-            ⚡ 标记的是分歧点——你或对方对 AI 的推断提出了质疑。点击展开。
+            ⚡ 标记处是你或对方对旁白的推测提出了质疑。点击展开。
           </p>
         </div>
 
@@ -125,7 +125,7 @@ export default function ComparePhase({ script, personas, myRole, sessionData, on
                     {myTruth && (
                       <div style={{ padding: '12px 14px', background: myBg, border: `1px solid ${myBd}`, borderRadius: 10 }}>
                         <p style={{ margin: '0 0 4px', fontSize: 9, color: myColor, fontFamily: 'DM Mono, monospace', letterSpacing: '0.1em' }}>
-                          {myName}（你）{myCorrections[line.id]?.status === 'edited' ? '说实际上在想' : '的内心（AI 推断，你认同）'}
+                          {myName}（你）{myCorrections[line.id]?.status === 'edited' ? '说实际上在想' : '的内心（旁白推断，你认同）'}
                         </p>
                         <p style={{ margin: 0, fontSize: 14, color: myColor + 'CC', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.7 }}>
                           {myTruth}
@@ -133,7 +133,7 @@ export default function ComparePhase({ script, personas, myRole, sessionData, on
                         {partnerSawMe && (
                           <div style={{ marginTop: 8, paddingTop: 8, borderTop: `1px solid ${myBd}` }}>
                             <span style={{ fontSize: 9, color: partnerColor, fontFamily: 'DM Mono, monospace' }}>
-                              {partnerName}说：{partnerSawMe.val === 'v' ? '✓ 认为 AI 推断准确' : partnerSawMe.val === 'x' ? '✗ 不认同 AI 推断' : '? 不确定'}
+                              {partnerName}说：{partnerSawMe.val === 'v' ? '✓ 认为旁白推断准确' : partnerSawMe.val === 'x' ? '✗ 不认同旁白推断' : '? 不确定'}
                             </span>
                             {partnerSawMe.note && (
                               <p style={{ margin: '4px 0 0', fontSize: 12, color: partnerColor + 'AA', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>
@@ -149,7 +149,7 @@ export default function ComparePhase({ script, personas, myRole, sessionData, on
                     {partnerTruth && (
                       <div style={{ padding: '12px 14px', background: partnerRole === 'A' ? C.aBg : C.bBg, border: `1px solid ${partnerRole === 'A' ? C.aBd : C.bBd}`, borderRadius: 10 }}>
                         <p style={{ margin: '0 0 4px', fontSize: 9, color: partnerColor, fontFamily: 'DM Mono, monospace', letterSpacing: '0.1em' }}>
-                          {partnerName}{partnerCorrections[line.id]?.status === 'edited' ? '说实际上在想' : '的内心（AI 推断）'}
+                          {partnerName}{partnerCorrections[line.id]?.status === 'edited' ? '说实际上在想' : '的内心（旁白推断）'}
                         </p>
                         <p style={{ margin: 0, fontSize: 14, color: partnerColor + 'CC', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.7 }}>
                           {partnerTruth}
@@ -157,7 +157,7 @@ export default function ComparePhase({ script, personas, myRole, sessionData, on
                         {iSawPartner && (
                           <div style={{ marginTop: 8, paddingTop: 8, borderTop: `1px solid ${partnerRole === 'A' ? C.aBd : C.bBd}` }}>
                             <span style={{ fontSize: 9, color: myColor, fontFamily: 'DM Mono, monospace' }}>
-                              {myName}说：{iSawPartner.val === 'v' ? '✓ 认为 AI 推断准确' : iSawPartner.val === 'x' ? '✗ 不认同 AI 推断' : '? 不确定'}
+                              {myName}说：{iSawPartner.val === 'v' ? '✓ 认为旁白推断准确' : iSawPartner.val === 'x' ? '✗ 不认同旁白推断' : '? 不确定'}
                             </span>
                             {iSawPartner.note && (
                               <p style={{ margin: '4px 0 0', fontSize: 12, color: myColor + 'AA', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>

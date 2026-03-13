@@ -3,8 +3,8 @@ import { C } from '../theme'
 import { saveAnnotations, markAnnotateDone } from '../utils/session'
 import TopBar from '../components/TopBar'
 
-// Role A annotates B's inner thoughts (innerB) — "does AI's portrayal of B match my knowledge of B?"
-// Role B annotates A's inner thoughts (innerA) — "does AI's portrayal of A match my knowledge of A?"
+// Role A annotates B's inner thoughts (innerB) — "does the narrator's portrayal of B match what I know of B?"
+// Role B annotates A's inner thoughts (innerA) — "does the narrator's portrayal of A match what I know of A?"
 
 export default function AnnotatePhase({ script, personas, myRole, sessionCode, onDone }) {
   const [annotations, setAnnotations] = useState({}) // { [beatId]: { val: 'v'|'x'|'q', note: '' } }
@@ -52,7 +52,7 @@ export default function AnnotatePhase({ script, personas, myRole, sessionCode, o
             ))}
           </div>
           <p style={{ fontSize: 13, color: C.mu, fontFamily: 'DM Mono, monospace' }}>等待对方完成标注…</p>
-          <p style={{ marginTop: 8, fontSize: 11, color: C.mu + '66' }}>完成后将自动进入下一阶段</p>
+          <p style={{ marginTop: 8, fontSize: 11, color: C.mu }}>完成后将自动进入下一阶段</p>
         </div>
       </div>
     )
@@ -73,10 +73,10 @@ export default function AnnotatePhase({ script, personas, myRole, sessionCode, o
         <div style={{ marginBottom: 28 }}>
           <p style={{ margin: '0 0 4px', fontSize: 10, color: targetColor, fontFamily: 'DM Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>你在标注的是</p>
           <h2 style={{ margin: '0 0 8px', fontSize: 26, fontWeight: 300, fontFamily: 'Cormorant Garamond, serif', lineHeight: 1.3 }}>
-            AI 对{targetName}内心的推断，符合你对{targetName === '他' ? '他' : '她'}的了解吗？
+            旁白对{targetName}内心的猜想，符合你对{targetName}的了解吗？
           </h2>
           <p style={{ margin: 0, fontSize: 13, color: C.mu, lineHeight: 1.8 }}>
-            不是评判{targetName}对不对，而是：这个 AI 描绘的{targetName}，像不像你认识的那个人。
+            不是评判{targetName}对不对，而是：旁白描绘的{targetName}，像不像你认识的那个人。
           </p>
         </div>
 
@@ -84,6 +84,9 @@ export default function AnnotatePhase({ script, personas, myRole, sessionCode, o
           const ann     = annotations[line.id]
           const annVal  = ann?.val
           const annCol  = { v: C.gr, x: C.re, q: C.yw }[annVal] || C.mu
+          const speakerName = line.speaker === 'A'
+            ? (personas?.A?.name || '她')
+            : (personas?.B?.name || '他')
 
           return (
             <div key={line.id} className="rise" style={{ marginBottom: 12, animationDelay: `${idx * 0.06}s`, background: C.card, border: `1.5px solid ${annVal ? annCol + '44' : C.bd}`, borderRadius: 14, overflow: 'hidden', transition: 'border-color .25s' }}>
@@ -91,15 +94,17 @@ export default function AnnotatePhase({ script, personas, myRole, sessionCode, o
               <div style={{ padding: '11px 18px', borderBottom: `1px solid ${C.bd}`, display: 'flex', gap: 10, alignItems: 'center' }}>
                 <div style={{ width: 3, height: 3, borderRadius: '50%', background: line.speaker === 'A' ? C.a : line.speaker === 'B' ? C.b : C.mu, flexShrink: 0 }} />
                 <p style={{ margin: 0, fontSize: 12, color: C.mu, fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.5 }}>
-                  {line.speaker === 'action' ? `[ ${line.text} ]` : `${line.speaker === 'A' ? personas?.A?.name || '她' : personas?.B?.name || '他'}：${line.text}`}
+                  {line.speaker === 'action'
+                    ? `[ ${line.text} ]`
+                    : `${speakerName} 说：${line.text}`}
                 </p>
               </div>
 
-              {/* AI's inferred inner */}
+              {/* Narrator's inferred inner */}
               <div style={{ padding: '14px 18px' }}>
                 <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
-                    <p style={{ margin: '0 0 4px', fontSize: 9, color: targetColor, fontFamily: 'DM Mono, monospace', letterSpacing: '0.12em' }}>AI 推断{targetName}的内心</p>
+                    <p style={{ margin: '0 0 4px', fontSize: 9, color: targetColor, fontFamily: 'DM Mono, monospace', letterSpacing: '0.12em' }}>旁白猜{targetName}的内心</p>
                     <p style={{ margin: 0, fontSize: 15, color: targetColor + 'BB', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
                       {line[innerKey]?.replace(/\\n/g, '\n')}
                     </p>
@@ -131,7 +136,7 @@ export default function AnnotatePhase({ script, personas, myRole, sessionCode, o
                       onFocus={e => e.target.style.borderColor = C.re + '99'}
                       onBlur={e => e.target.style.borderColor = C.re + '44'}
                     />
-                    <p style={{ margin: '5px 0 0', fontSize: 10, color: C.mu }}>这是整个 session 里最重要的数据。</p>
+                    <p style={{ margin: '5px 0 0', fontSize: 10, color: C.mu }}>这里的分歧是整个过程最核心的素材。</p>
                   </div>
                 )}
                 {annVal === 'q' && (

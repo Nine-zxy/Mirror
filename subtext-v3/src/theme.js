@@ -6,7 +6,8 @@ export const C = {
   bd:    "#181830",
   bd2:   "#22223A",
   tx:    "#E4E0D8",
-  mu:    "#42425E",
+  mu:    "#8888A8",   // was #42425E (contrast 2.1:1 → now ~5.9:1 against bg)
+  mu2:   "#5E5E80",   // deep muted — only for decorative dividers, never for body text
   dim:   "#28283C",
   // Person A — amber/warm
   a:     "#C8875E",

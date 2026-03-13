@@ -238,7 +238,7 @@ function HostView({ initialCode, onJoined }) {
             >
               {copied ? '✓ 已复制' : '复制链接'}
             </button>
-            <span style={{ fontSize: 10, color: C.mu + '55', fontFamily: 'DM Mono, monospace' }}>
+            <span style={{ fontSize: 10, color: C.mu, fontFamily: 'DM Mono, monospace' }}>
               或直接告诉对方代码&nbsp;
               <span style={{ color: C.a, letterSpacing: '0.2em' }}>{initialCode}</span>
             </span>
@@ -270,7 +270,7 @@ function HostView({ initialCode, onJoined }) {
           style={{
             width: '100%', padding: '15px 0', borderRadius: 12, border: 'none',
             background: bJoined ? C.a : C.dim,
-            color: bJoined ? '#fff' : C.mu + '88',
+            color: bJoined ? '#fff' : C.mu,
             fontSize: 15, fontWeight: 600,
             cursor: bJoined && !starting ? 'pointer' : 'default',
             transition: 'background .35s, color .35s',
@@ -279,7 +279,7 @@ function HostView({ initialCode, onJoined }) {
         >
           {starting ? '开始中…' : bJoined ? '▶ 一起开始放映' : '等待对方加入后可开始'}
         </button>
-        <p style={{ marginTop: 10, fontSize: 11, color: C.mu + '55', textAlign: 'center', lineHeight: 1.7 }}>
+        <p style={{ marginTop: 10, fontSize: 11, color: C.mu, textAlign: 'center', lineHeight: 1.7 }}>
           点击后双方同步进入放映
         </p>
       </div>
