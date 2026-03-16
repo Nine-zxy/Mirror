@@ -34,6 +34,7 @@ export const MARK_EMOJIS = ['⚡', '🔴', '💭', '⭐']
 export default function ConflictTimeline({
   beats, beatIndex, isPlaying, phase, onPlayPause, onSelectBeat,
   tags = [],    // [{ id, beatIndex, emoji }]
+  playReady = false, partnerPlayReady = false, // Together mode ready-to-play gate
 }) {
   const svgRef = useRef(null)
   const [svgW, setSvgW] = useState(800)
@@ -74,24 +75,42 @@ export default function ConflictTimeline({
       className="flex items-center gap-3 px-4 border-t border-white/5 bg-black flex-shrink-0"
       style={{ height: '68px' }}
     >
-      {/* Play/Pause */}
-      <button
-        onClick={onPlayPause}
-        disabled={disabled}
-        className="w-9 h-9 flex items-center justify-center rounded flex-shrink-0 transition-all"
-        style={{ color: disabled ? '#333' : '#7ab0e8', opacity: disabled ? 0.4 : 1 }}
-      >
-        {isPlaying ? (
-          <svg width="14" height="16" viewBox="0 0 11 13" fill="currentColor">
-            <rect x="0.5" y="1" width="3" height="11" rx="1" />
-            <rect x="6.5" y="1" width="3" height="11" rx="1" />
-          </svg>
-        ) : (
-          <svg width="14" height="16" viewBox="0 0 11 13" fill="currentColor">
-            <polygon points="1,1 10,6.5 1,12" />
-          </svg>
+      {/* Play/Pause — with ready-to-play gate indicator */}
+      <div className="flex flex-col items-center flex-shrink-0" style={{ minWidth: '36px' }}>
+        <button
+          onClick={onPlayPause}
+          disabled={disabled}
+          className="w-9 h-9 flex items-center justify-center rounded transition-all"
+          style={{
+            color: disabled ? '#333' : playReady ? '#50d080' : '#7ab0e8',
+            opacity: disabled ? 0.4 : 1,
+            background: playReady ? 'rgba(80,208,128,0.12)' : 'transparent',
+            border: playReady ? '1px solid rgba(80,208,128,0.3)' : '1px solid transparent',
+          }}
+          title={playReady ? '等待对方准备… 再次点击取消' : undefined}
+        >
+          {isPlaying ? (
+            <svg width="14" height="16" viewBox="0 0 11 13" fill="currentColor">
+              <rect x="0.5" y="1" width="3" height="11" rx="1" />
+              <rect x="6.5" y="1" width="3" height="11" rx="1" />
+            </svg>
+          ) : (
+            <svg width="14" height="16" viewBox="0 0 11 13" fill="currentColor">
+              <polygon points="1,1 10,6.5 1,12" />
+            </svg>
+          )}
+        </button>
+        {/* Ready-to-play status dots */}
+        {playReady && (
+          <div className="flex gap-1 mt-0.5">
+            <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#50d080' }} title="你已准备" />
+            <div className="w-1.5 h-1.5 rounded-full" style={{
+              background: partnerPlayReady ? '#50d080' : 'rgba(255,255,255,0.15)',
+              animation: partnerPlayReady ? 'none' : 'pulse 1.5s ease-in-out infinite',
+            }} title={partnerPlayReady ? '对方已准备' : '等待对方'} />
+          </div>
         )}
-      </button>
+      </div>
 
       {/* SVG timeline */}
       <div ref={svgRef} className="flex-1 relative" style={{ height: `${H}px` }}>

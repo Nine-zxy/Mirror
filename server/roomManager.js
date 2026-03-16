@@ -36,6 +36,8 @@ export class RoomManager {
       disputesA: {},
       disputesB: {},
       scenario: null,
+      playReadyA: false,
+      playReadyB: false,
       createdAt: Date.now(),
     }
 
@@ -134,6 +136,34 @@ export class RoomManager {
           this.send(roleBWs, { type: MSG.INPUT_BOTH_READY, mergedInput: null, generating: true })
         }
       }
+      return
+    }
+
+    // ── Ready-to-play gate ─────────────────────────────────
+    if (msg.type === MSG.SYNC_PLAY_READY) {
+      if (role === 'A') room.playReadyA = true
+      else              room.playReadyB = true
+
+      // Notify partner that this side is ready
+      this.broadcastToOther(room, ws, { type: MSG.SYNC_PLAY_PARTNER_READY, role })
+
+      // If both ready → broadcast GO to both, then reset flags
+      if (room.playReadyA && room.playReadyB) {
+        const beatIndex = msg.beatIndex ?? 0
+        for (const [, clientWs] of room.clients) {
+          this.send(clientWs, { type: MSG.SYNC_PLAY_GO, beatIndex })
+        }
+        room.playReadyA = false
+        room.playReadyB = false
+        console.log(`[Room] ${ctx.code}: both ready → play!`)
+      }
+      return
+    }
+
+    if (msg.type === MSG.SYNC_PLAY_CANCEL) {
+      if (role === 'A') room.playReadyA = false
+      else              room.playReadyB = false
+      this.broadcastToOther(room, ws, { type: MSG.SYNC_PLAY_CANCEL, role })
       return
     }
 

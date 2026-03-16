@@ -203,6 +203,8 @@ export default function App() {
   // Together mode state
   const [proximity, setProximity]               = useState(null)
   const [partnerDisputes, setPartnerDisputes]   = useState(null)
+  const [playReady, setPlayReady]               = useState(false)   // "I pressed play, waiting for partner"
+  const [partnerPlayReady, setPartnerPlayReady] = useState(false)   // partner pressed play
 
   const beats       = liveScenario.beats
   const currentBeat = beats[beatIndex]
@@ -244,7 +246,9 @@ export default function App() {
         setLiveScenario(msg.scenario)
         setPersonas(msg.scenario.personas)
         setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({})
-        setPhase('simulation'); setIsPlaying(true)
+        setPhase('simulation')
+        setIsPlaying(false)  // Don't auto-play — require both to press play
+        setPlayReady(false); setPartnerPlayReady(false)
         log('scenario_received', { source: msg.source })
         isRemote.current = false
       }
@@ -263,6 +267,26 @@ export default function App() {
       const newElements = SCENE_ELEMENTS_MAP[msg.sceneKey] || liveScenario.sceneElements
       setLiveScenario(prev => ({ ...prev, scene: msg.sceneKey, sceneElements: newElements }))
       isRemote.current = false
+    }))
+
+    // Ready-to-play gate
+    unsubs.push(sync.onMessage('sync:play_partner_ready', () => {
+      setPartnerPlayReady(true)
+    }))
+
+    unsubs.push(sync.onMessage('sync:play_go', (msg) => {
+      // Both ready → start playback simultaneously
+      isRemote.current = true
+      setPlayReady(false)
+      setPartnerPlayReady(false)
+      if (msg.beatIndex !== undefined) setBeatIndex(msg.beatIndex)
+      setIsPlaying(true)
+      log('playback_play', { beatIndex: msg.beatIndex ?? beatIndex, trigger: 'sync_go' })
+      isRemote.current = false
+    }))
+
+    unsubs.push(sync.onMessage('sync:play_cancel', () => {
+      setPartnerPlayReady(false)
     }))
 
     // Partner annotations reveal (at end phase)
@@ -316,13 +340,39 @@ export default function App() {
       syncSend('sync:beat', { beatIndex: 0, isPlaying: true })
       return
     }
+
+    // Together mode: use ready-to-play gate for starting playback
+    if (sync.mode === 'together' && !isPlaying) {
+      if (playReady) {
+        // Cancel ready state
+        setPlayReady(false)
+        setPartnerPlayReady(false)
+        sync.send('sync:play_cancel', {})
+        log('play_ready_cancel', { beatIndex })
+      } else {
+        // Signal readiness
+        setPlayReady(true)
+        sync.send('sync:play_ready', { beatIndex })
+        log('play_ready', { beatIndex })
+      }
+      return
+    }
+
+    // Together mode: pausing is immediate (relay to partner)
+    if (sync.mode === 'together' && isPlaying) {
+      setIsPlaying(false)
+      log('playback_pause', { beatIndex })
+      syncSend('sync:beat', { beatIndex, isPlaying: false })
+      return
+    }
+
+    // Solo mode: toggle directly
     setIsPlaying(p => {
       const next = !p
       log(next ? 'playback_play' : 'playback_pause', { beatIndex })
-      syncSend('sync:beat', { beatIndex, isPlaying: next })
       return next
     })
-  }, [phase, beatIndex, syncSend]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [phase, beatIndex, syncSend, sync, isPlaying, playReady]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSelectBeat = useCallback((idx) => {
     clearTimeout(timerRef.current)
@@ -366,13 +416,19 @@ export default function App() {
       logArchetype(arc.relationshipType, arc.communicationStyle || [], arc.communicationStyle || [])
     }
     setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({})
-    setPhase('simulation'); setIsPlaying(true)
-    logPhase('input', 'simulation'); logBeat(0, 'auto')
+    setPhase('simulation')
+    logPhase('input', 'simulation')
 
-    // In Together mode: broadcast scenario to partner
     if (sync.mode === 'together') {
+      // Together: don't auto-play, require both to press play
+      setIsPlaying(false)
+      setPlayReady(false); setPartnerPlayReady(false)
       sync.send('scenario:generated', { scenario })
       syncSend('sync:phase', { phase: 'simulation' })
+    } else {
+      // Solo: auto-play as before
+      setIsPlaying(true)
+      logBeat(0, 'auto')
     }
   }, [sync, syncSend])
 
@@ -574,6 +630,8 @@ export default function App() {
         tags={tags}
         onPlayPause={handlePlayPause}
         onSelectBeat={handleSelectBeat}
+        playReady={playReady}
+        partnerPlayReady={partnerPlayReady}
       />
     </div>
   )

@@ -97,7 +97,7 @@ export const COMM_STYLES = [
 // ── [SPECTACLE] Scene Presets ────────────────────────────────
 // Source: [LLM] selects from enum based on relationship type + chat content
 // Assets: PNG backgrounds in /public/backgrounds/
-// 18 scenes across 12 locations × time-of-day variants
+// 25 scenes across 12 locations × time-of-day variants
 export const SCENE_PRESETS = {
   // ── 卧室 Bedroom ──────────────────────────────────────────
   bedroom_night: {
@@ -127,6 +127,20 @@ export const SCENE_PRESETS = {
     },
   },
 
+  bedroom_morning: {
+    label: '卧室·早晨',
+    en: 'Bedroom, morning',
+    bg: '/backgrounds/bedroom_morning.png',
+    fallbackGradient: 'linear-gradient(180deg, #e8e0d0 0%, #ddd4c0 40%, #c8b898 100%)',
+    ambientColor: '#e8d8b0',
+    suggestedRelationships: ['romantic', 'family'],
+    charScale: 0.78,
+    roomColors: {
+      ceiling: '#f0e8d8', wall: '#e8dcc0', floor: '#c0a878',
+      trim: '#d8c8a0', light: '#fff0c0', outdoor: false,
+    },
+  },
+
   // ── 客厅 Living Room ──────────────────────────────────────
   livingroom_evening: {
     label: '客厅·傍晚',
@@ -152,6 +166,20 @@ export const SCENE_PRESETS = {
     roomColors: {
       ceiling: '#080a12', wall: '#10141e', floor: '#0e0c0a',
       trim: '#0c1018', light: '#5888c8', outdoor: false,
+    },
+  },
+
+  livingroom_day: {
+    label: '客厅·白天',
+    en: 'Living room, daytime',
+    bg: '/backgrounds/livingroom_day.png',
+    fallbackGradient: 'linear-gradient(180deg, #e8e0d0 0%, #d8d0c0 40%, #b8a888 100%)',
+    ambientColor: '#d0c0a0',
+    suggestedRelationships: ['family', 'friends', 'romantic'],
+    charScale: 0.75,
+    roomColors: {
+      ceiling: '#f0e8d8', wall: '#e0d8c0', floor: '#b0a080',
+      trim: '#c8b898', light: '#f8f0d0', outdoor: false,
     },
   },
 
@@ -280,6 +308,20 @@ export const SCENE_PRESETS = {
     },
   },
 
+  park_evening: {
+    label: '公园·黄昏',
+    en: 'Park, evening',
+    bg: '/backgrounds/park_evening.png',
+    fallbackGradient: 'linear-gradient(180deg, #3a1848 0%, #6a2850 35%, #c86820 70%, #804010 100%)',
+    ambientColor: '#a05830',
+    suggestedRelationships: ['friends', 'romantic'],
+    charScale: 0.68,
+    roomColors: {
+      ceiling: '#4a2050', wall: '#7a3850', floor: '#604018',
+      trim: '#503010', light: '#e8a030', outdoor: true,
+    },
+  },
+
   // ── 阳台 Balcony ──────────────────────────────────────────
   balcony_night: {
     label: '阳台·夜',
@@ -292,6 +334,20 @@ export const SCENE_PRESETS = {
     roomColors: {
       ceiling: '#060a18', wall: '#0e1828', floor: '#181410',
       trim: '#0c1420', light: '#e0c060', outdoor: true,
+    },
+  },
+
+  balcony_evening: {
+    label: '阳台·黄昏',
+    en: 'Balcony, evening',
+    bg: '/backgrounds/balcony_evening.png',
+    fallbackGradient: 'linear-gradient(180deg, #6a4080 0%, #a06068 40%, #d89058 100%)',
+    ambientColor: '#b07858',
+    suggestedRelationships: ['romantic', 'friends'],
+    charScale: 0.72,
+    roomColors: {
+      ceiling: '#7a5090', wall: '#b07070', floor: '#806040',
+      trim: '#906050', light: '#e8b060', outdoor: true,
     },
   },
 
@@ -310,6 +366,20 @@ export const SCENE_PRESETS = {
     },
   },
 
+  car_day: {
+    label: '车内·白天',
+    en: 'Car, daytime',
+    bg: '/backgrounds/car_day.png',
+    fallbackGradient: 'linear-gradient(180deg, #a0c8e0 0%, #b8c8b0 40%, #90a080 100%)',
+    ambientColor: '#a0b890',
+    suggestedRelationships: ['romantic', 'family'],
+    charScale: 0.60,    // confined space, characters smaller
+    roomColors: {
+      ceiling: '#b8c0b0', wall: '#a0a890', floor: '#888878',
+      trim: '#909080', light: '#e0e8c0', outdoor: false,
+    },
+  },
+
   // ── 书房 Study ────────────────────────────────────────────
   study_afternoon: {
     label: '书房·午后',
@@ -322,6 +392,20 @@ export const SCENE_PRESETS = {
     roomColors: {
       ceiling: '#2a2018', wall: '#3a2820', floor: '#1a1410',
       trim: '#281c10', light: '#e0c060', outdoor: false,
+    },
+  },
+
+  study_night: {
+    label: '书房·深夜',
+    en: 'Study, late night',
+    bg: '/backgrounds/study_night.png',
+    fallbackGradient: 'linear-gradient(180deg, #0e0c14 0%, #181420 40%, #0a0810 100%)',
+    ambientColor: '#1a1828',
+    suggestedRelationships: ['friends', 'family'],
+    charScale: 0.72,
+    roomColors: {
+      ceiling: '#100e16', wall: '#1c1828', floor: '#140e0c',
+      trim: '#181420', light: '#40a060', outdoor: false,
     },
   },
 
@@ -352,6 +436,20 @@ export const SCENE_PRESETS = {
     roomColors: {
       ceiling: '#1a0a0a', wall: '#2a1018', floor: '#180c0c',
       trim: '#201010', light: '#e0a040', outdoor: false,
+    },
+  },
+
+  restaurant_evening: {
+    label: '餐厅·傍晚',
+    en: 'Restaurant, evening',
+    bg: '/backgrounds/restaurant_evening.png',
+    fallbackGradient: 'linear-gradient(180deg, #2a1818 0%, #3a2020 40%, #1a1010 100%)',
+    ambientColor: '#4a2820',
+    suggestedRelationships: ['romantic', 'friends'],
+    charScale: 0.72,
+    roomColors: {
+      ceiling: '#2a1818', wall: '#3a2420', floor: '#201410',
+      trim: '#2a1a14', light: '#e8a840', outdoor: false,
     },
   },
 

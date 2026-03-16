@@ -27,6 +27,12 @@ export const MSG = {
   SYNC_PERSONA:             'sync:persona',
   SYNC_SCENE:               'sync:scene',
 
+  // Ready-to-play gate (both must press play before playback starts)
+  SYNC_PLAY_READY:          'sync:play_ready',    // client → server: "I pressed play"
+  SYNC_PLAY_CANCEL:         'sync:play_cancel',   // client → server: "I cancelled"
+  SYNC_PLAY_PARTNER_READY:  'sync:play_partner_ready', // server → client: partner is ready
+  SYNC_PLAY_GO:             'sync:play_go',        // server → both: start now!
+
   // Annotations (private until reveal)
   ANNOTATION_UPDATE:        'annotation:update',
   ANNOTATION_REVEAL:        'annotation:reveal',
