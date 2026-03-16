@@ -1063,9 +1063,12 @@ function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) 
 }
 
 // ── Character layer ───────────────────────────────────────────
-function CharacterLayer({ beat, personas, showThoughts, disputes, onDispute }) {
+function CharacterLayer({ beat, personas, showThoughts, disputes, onDispute, scene }) {
   const { spatial, thoughts, dialogue } = beat
   const speakerId = dialogue?.speaker || null   // which persona is speaking this beat
+  // Per-scene character scale from SCENE_PRESETS (e.g. car=0.60, park=0.68, bedroom=0.78)
+  const scenePreset = SCENE_PRESETS[scene] || SCENE_PRESETS.bedroom_night
+  const sceneCharScale = scenePreset.charScale || 1.0
 
   return (
     <div className="absolute inset-0">
@@ -1113,7 +1116,7 @@ function CharacterLayer({ beat, personas, showThoughts, disputes, onDispute }) {
                 persona={persona}
                 spPose={sp.pose || 'neutral'}
                 facing={sp.facing || 'right'}
-                scale={sp.scale || 1.0}
+                scale={(sp.scale || 1.0) * sceneCharScale}
                 glow={true}
               />
             </div>
@@ -1184,6 +1187,7 @@ export default function Theater({
             showThoughts={showThoughts}
             disputes={disputes}
             onDispute={onDispute}
+            scene={scene}
           />
 
           {/* ── Cinematic letterbox bands ── */}

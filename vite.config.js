@@ -18,18 +18,24 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      proxy: geminiKey
-        ? {
-            '/api/gemini': {
-              target:       'https://generativelanguage.googleapis.com',
-              changeOrigin: true,
-              rewrite:      (path) => {
-                const rewritten = path.replace(/^\/api\/gemini/, '')
-                return rewritten + (rewritten.includes('?') ? '&' : '?') + `key=${geminiKey}`
+      proxy: {
+        ...(geminiKey
+          ? {
+              '/api/gemini': {
+                target:       'https://generativelanguage.googleapis.com',
+                changeOrigin: true,
+                rewrite:      (path) => {
+                  const rewritten = path.replace(/^\/api\/gemini/, '')
+                  return rewritten + (rewritten.includes('?') ? '&' : '?') + `key=${geminiKey}`
+                },
               },
-            },
-          }
-        : {},
+            }
+          : {}),
+        '/ws': {
+          target: 'ws://localhost:3001',
+          ws:     true,
+        },
+      },
     },
   }
 })

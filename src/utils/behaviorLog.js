@@ -64,6 +64,8 @@ export function buildLog() {
   return {
     sessionId:    state.sessionId,
     scenario:     state.meta.scenarioId ?? 'unknown',
+    mode:         state.meta.mode ?? 'solo',
+    role:         state.meta.role ?? null,
     startedAt:    new Date(state.startedAt).toISOString(),
     exportedAt:   new Date().toISOString(),
     durationMs:   Date.now() - state.startedAt,
@@ -131,7 +133,8 @@ export function downloadLog() {
   const url  = URL.createObjectURL(blob)
   const a    = document.createElement('a')
   a.href     = url
-  a.download = `aside-${state.sessionId}.json`
+  const roleSuffix = state.meta.role ? `-${state.meta.role}` : ''
+  a.download = `aside-${state.sessionId}${roleSuffix}.json`
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
@@ -184,3 +187,13 @@ export const logCalibration = (confirmedA, confirmedB) => {
 export const logAppearanceSet = (config) =>
   log('appearance_set', { hairA: config?.A?.hairStyle, hairB: config?.B?.hairStyle,
     outfitA: config?.A?.outfitStyle, outfitB: config?.B?.outfitStyle })
+
+// ── v3 sync events ─────────────────────────────────────────────
+export const logRoomCreate       = (code, proximity)  => log('room_create',       { code, proximity })
+export const logRoomJoin         = (code, role)        => log('room_join',         { code, role })
+export const logPartnerConnected = ()                  => log('partner_connected')
+export const logPartnerDisconnected = ()               => log('partner_disconnected')
+export const logInputSubmitted   = (role)              => log('input_submitted_self', { role })
+export const logInputPartnerReady = ()                 => log('input_partner_ready')
+export const logInputsMerged     = ()                  => log('inputs_merged')
+export const logScenarioReceived = (source)            => log('scenario_received', { source })

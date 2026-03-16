@@ -27,11 +27,27 @@ import SyncStatusBadge   from './components/SyncStatusBadge'
 //  Lobby phase only in Together mode
 // ─────────────────────────────────────────────────────────────
 
-// Default scene elements per scene key
+// Default scene elements per scene key (CSS fallback furniture/props)
 const SCENE_ELEMENTS_MAP = {
   bedroom_night:      ['window', 'curtains', 'bed', 'lamp', 'phone_screen', 'rug', 'bookshelf', 'wallart'],
+  bedroom_evening:    ['window', 'curtains', 'bed', 'lamp', 'rug', 'bookshelf', 'wallart'],
   livingroom_evening: ['window', 'curtains', 'sofa', 'table', 'lamp', 'rug', 'plant', 'wallart'],
+  livingroom_night:   ['window', 'curtains', 'sofa', 'table', 'tv', 'rug'],
   kitchen_morning:    ['window', 'table', 'cup', 'plant', 'shelf'],
+  kitchen_evening:    ['window', 'table', 'cup', 'plant', 'shelf'],
+  office_day:         ['window', 'desk', 'coffee', 'bookshelf', 'plant'],
+  office_night:       ['window', 'desk', 'coffee', 'bookshelf', 'plant'],
+  office_latenight:   ['window', 'desk', 'coffee', 'bookshelf'],
+  cafe_day:           ['window', 'table', 'coffee', 'plant', 'wallart'],
+  cafe_evening:       ['window', 'table', 'coffee', 'plant', 'wallart'],
+  park_day:           ['tree', 'bench', 'plant'],
+  park_night:         ['tree', 'bench', 'moon', 'plant'],
+  balcony_night:      ['plant'],
+  car_night:          [],
+  study_afternoon:    ['window', 'desk', 'lamp', 'bookshelf'],
+  subway_evening:     [],
+  restaurant_night:   ['table', 'lamp'],
+  // Legacy aliases
   outdoor_park:       ['tree', 'bench', 'moon', 'plant'],
   cafe:               ['window', 'table', 'coffee', 'plant', 'wallart'],
   office:             ['window', 'desk', 'coffee', 'bookshelf', 'plant'],
