@@ -1,76 +1,129 @@
 import { useEffect, useRef, useState } from 'react'
 
 // ─────────────────────────────────────────────────────────────
-//  ThoughtBubble
+//  ThoughtBubble — Assumption Editing Interface (DP3 + DP4)
 //
-//  New: dispute interaction
-//    • Hover → shows "✎" edit icon
-//    • Click → opens inline dispute panel
-//    • Source badge shows modification origin
-//    • Disputed text replaces AI original inline
+//  Core interaction: externalizes AI-inferred inner states as
+//  visible, type-encoded, disputable/editable UI elements.
+//
+//  Three interaction modes:
+//    1. Observe — default; typewriter reveal, read-only
+//    2. Quick React — click to choose 👍像/👎不像/✎改
+//    3. Edit — rewrite the assumption text + re-tag emotion
+//
+//  Visual states:
+//    • Original (AI inference) — emotion-colored, italic, dashed
+//    • Confirmed (user says 像) — subtle green check
+//    • Disputed (user says 不像) — red strikethrough + user text
+//    • Edited (user rewrites) — green border + 已修正 badge
 // ─────────────────────────────────────────────────────────────
 
 const BUBBLE_TYPES = {
   cloud: {
-    borderRadius: '18px', borderStyle: 'solid', borderWidth: '1.5px',
-    filter: 'blur(0.3px)', anim: 'floatUp 3.5s ease-in-out infinite',
-    extraShadow: '0 4px 24px rgba(0,0,0,0.3)',
+    borderRadius: '20px', borderStyle: 'dashed', borderWidth: '1.5px',
+    filter: 'blur(0.2px)', anim: 'floatUp 3.5s ease-in-out infinite',
+    extraShadow: '0 4px 20px rgba(0,0,0,0.22)',
+    italic: true,
   },
   aggressive: {
     borderRadius: '4px', borderStyle: 'solid', borderWidth: '2px',
     filter: 'none', anim: 'shake 0.3s ease-in-out infinite',
     extraShadow: '0 0 16px rgba(220,60,60,0.4)',
+    italic: false,
   },
   hesitation: {
-    borderRadius: '14px', borderStyle: 'dashed', borderWidth: '1.5px',
+    borderRadius: '16px', borderStyle: 'dashed', borderWidth: '1.5px',
     filter: 'none', anim: 'pulseSoft 2s ease-in-out infinite',
     extraShadow: 'none',
+    italic: true,
   },
   warm: {
-    borderRadius: '16px', borderStyle: 'solid', borderWidth: '1.5px',
+    borderRadius: '18px', borderStyle: 'dashed', borderWidth: '1.5px',
     filter: 'none', anim: 'warmGlow 2s ease-in-out infinite',
     extraShadow: '0 0 20px rgba(80,200,120,0.25)',
+    italic: true,
   },
   default: {
-    borderRadius: '14px', borderStyle: 'solid', borderWidth: '1.5px',
+    borderRadius: '16px', borderStyle: 'dashed', borderWidth: '1.5px',
     filter: 'none', anim: 'pulseSoft 2.5s ease-in-out infinite',
     extraShadow: 'none',
+    italic: true,
   },
 }
 
 const EMOTION_STYLE = {
-  anxious:    { bg: 'rgba(70,110,200,0.14)',  border: '#5872c8', text: '#a8c0f0', icon: '〜' },
-  defensive:  { bg: 'rgba(200,140,50,0.14)',  border: '#c8922a', text: '#f0c878', icon: '◈' },
-  angry:      { bg: 'rgba(210,55,55,0.18)',   border: '#d03030', text: '#f09090', icon: '■' },
-  hurt:       { bg: 'rgba(90,80,170,0.15)',   border: '#6050b0', text: '#b0a8e0', icon: '▽' },
-  withdrawn:  { bg: 'rgba(70,80,100,0.13)',   border: '#5a6080', text: '#8898b0', icon: '◁' },
-  warm:       { bg: 'rgba(70,190,110,0.13)',  border: '#48c870', text: '#88e8a0', icon: '◉' },
-  reflective: { bg: 'rgba(130,110,200,0.14)', border: '#9880c8', text: '#c8b8f0', icon: '✦' },
-  surprised:  { bg: 'rgba(200,160,55,0.14)',  border: '#c8a030', text: '#f0d890', icon: '◎' },
-  neutral:    { bg: 'rgba(90,90,90,0.12)',    border: '#666',    text: '#aaa',    icon: '○' },
+  anxious:    { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', icon: '〜', label: '焦虑' },
+  defensive:  { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', icon: '◈', label: '防备' },
+  angry:      { bg: 'rgba(210,55,55,0.14)',   border: '#e04040', text: '#f8a0a0', icon: '■', label: '愤怒' },
+  hurt:       { bg: 'rgba(90,80,170,0.10)',   border: '#7060c0', text: '#c0b8f0', icon: '▽', label: '受伤' },
+  withdrawn:  { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', icon: '◁', label: '退缩' },
+  warm:       { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', icon: '◉', label: '温暖' },
+  reflective: { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', icon: '✦', label: '反思' },
+  surprised:  { bg: 'rgba(200,160,55,0.10)',  border: '#d8b040', text: '#f8e8a0', icon: '◎', label: '惊讶' },
+  neutral:    { bg: 'rgba(90,90,90,0.09)',    border: '#7a7a7a', text: '#c0c0c0', icon: '○', label: '平静' },
 }
 
-// ── Source badge ──────────────────────────────────────────────
-function SourceBadge({ source }) {
-  const colors = { AI: '#666', user: '#90e8a8' }
-  const labels = { AI: 'AI原始', user: '已标注' }
+// Emotion options for re-tagging (subset most relevant to conflict)
+const EMOTION_RETAG_OPTIONS = ['anxious', 'defensive', 'angry', 'hurt', 'withdrawn', 'warm', 'reflective', 'neutral']
+
+// ── Status badge ────────────────────────────────────────────
+function StatusBadge({ status }) {
+  const configs = {
+    original:  { color: '#666',    label: '推断', bg: '#66661a' },
+    confirmed: { color: '#60c880', label: '像TA', bg: 'rgba(96,200,128,0.15)' },
+    disputed:  { color: '#e87a7a', label: '不像',  bg: 'rgba(232,122,122,0.15)' },
+    edited:    { color: '#90e8a8', label: '已修正', bg: 'rgba(144,232,168,0.12)' },
+  }
+  const c = configs[status] || configs.original
   return (
     <span
       className="font-mono text-[7px] px-1.5 py-0.5 rounded"
       style={{
-        color:      colors[source] || '#666',
-        background: `${colors[source] || '#666'}18`,
-        border:     `1px solid ${colors[source] || '#666'}40`,
+        color: c.color,
+        background: c.bg,
+        border: `1px solid ${c.color}40`,
       }}
     >
-      {labels[source] || source}
+      {c.label}
     </span>
   )
 }
 
-// ── Dispute panel (inline edit) ───────────────────────────────
-function DisputePanel({ original, current, onSave, onClose }) {
+// ── Quick reaction bar ──────────────────────────────────────
+function QuickReactBar({ onConfirm, onDispute, onEdit, onClose }) {
+  return (
+    <div
+      className="mt-2 flex items-center gap-1 anim-fadeIn"
+      onClick={e => e.stopPropagation()}
+    >
+      <span className="font-mono text-[7px] text-white/25 mr-1">像TA吗？</span>
+      <button onClick={onConfirm}
+        className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+        style={{ background: 'rgba(96,200,128,0.12)', color: '#60c880', border: '1px solid rgba(96,200,128,0.25)' }}>
+        👍 像
+      </button>
+      <button onClick={onDispute}
+        className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+        style={{ background: 'rgba(232,122,122,0.12)', color: '#e87a7a', border: '1px solid rgba(232,122,122,0.25)' }}>
+        👎 不像
+      </button>
+      <button onClick={onEdit}
+        className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+        style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
+        ✎ 改
+      </button>
+      <button onClick={onClose}
+        className="ml-auto font-mono text-[8px] text-white/20 hover:text-white/40 px-1">
+        ✕
+      </button>
+    </div>
+  )
+}
+
+// ── Full edit panel (assumption rewrite + emotion re-tag) ───
+function EditPanel({ original, current, originalEmotion, currentEmotion, onSave, onClose }) {
   const [text, setText] = useState(current || original)
+  const [emotion, setEmotion] = useState(currentEmotion || originalEmotion || 'neutral')
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -80,34 +133,62 @@ function DisputePanel({ original, current, onSave, onClose }) {
   return (
     <div
       className="mt-2 rounded-lg overflow-hidden anim-fadeIn"
-      style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(0,0,0,0.55)' }}
+      style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(0,0,0,0.6)' }}
       onClick={e => e.stopPropagation()}
     >
-      <div className="px-2.5 py-1.5 border-b border-white/8">
-        <p className="font-mono text-[7px] text-white/30 tracking-wider">AI原始 → 修改</p>
-        <p className="text-[10px] text-white/25 line-through mt-0.5"
+      {/* Original text (struck through) */}
+      <div className="px-2.5 py-1.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <p className="font-mono text-[7px] text-white/25 tracking-wider">你认为TA当时在想什么？</p>
+        <p className="text-[10px] text-white/20 line-through mt-0.5"
           style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
           {original}
         </p>
       </div>
-      <div className="px-2.5 py-2 flex flex-col gap-1.5">
+
+      <div className="px-2.5 py-2 flex flex-col gap-2">
+        {/* Text rewrite */}
         <textarea
           ref={inputRef}
           value={text}
           onChange={e => setText(e.target.value)}
+          placeholder="写出你认为TA真正的想法..."
           rows={2}
-          className="w-full bg-white/6 rounded px-2 py-1 text-[11px] text-white/80 placeholder-white/20 resize-none focus:outline-none border border-white/10 focus:border-white/25"
+          className="w-full bg-white/6 rounded px-2 py-1.5 text-[11px] text-white/80 placeholder-white/18 resize-none focus:outline-none border border-white/10 focus:border-white/25"
           style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
         />
+
+        {/* Emotion re-tag */}
+        <div>
+          <p className="font-mono text-[7px] text-white/22 tracking-wider mb-1">情绪标签</p>
+          <div className="flex flex-wrap gap-1">
+            {EMOTION_RETAG_OPTIONS.map(emo => {
+              const es = EMOTION_STYLE[emo] || EMOTION_STYLE.neutral
+              const active = emotion === emo
+              return (
+                <button key={emo} onClick={() => setEmotion(emo)}
+                  className="font-mono text-[8px] px-1.5 py-0.5 rounded transition-all"
+                  style={{
+                    color: active ? es.text : 'rgba(255,255,255,0.25)',
+                    background: active ? es.bg : 'rgba(255,255,255,0.03)',
+                    border: `1px solid ${active ? es.border + '60' : 'rgba(255,255,255,0.06)'}`,
+                  }}>
+                  {es.icon} {es.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Actions */}
         <div className="flex justify-end gap-1.5">
           <button onClick={onClose}
             className="font-mono text-[8px] px-2 py-1 rounded text-white/30 hover:text-white/50 transition-colors">
             取消
           </button>
-          <button onClick={() => onSave(text)}
+          <button onClick={() => onSave(text, emotion)}
             className="font-mono text-[8px] px-2.5 py-1 rounded transition-all"
             style={{ background: 'rgba(144,232,168,0.12)', color: '#90e8a8', border: '1px solid rgba(144,232,168,0.3)' }}>
-            确认
+            确认修正
           </button>
         </div>
       </div>
@@ -118,19 +199,18 @@ function DisputePanel({ original, current, onSave, onClose }) {
 // ── Main export ───────────────────────────────────────────────
 export default function ThoughtBubble({
   thought, personaId, visible,
-  beatId,           // used as dispute key
-  dispute,          // { source, text, original } | null
-  onDispute,        // (personaId, beatId, update|null) => void
+  beatId,
+  dispute,     // { source, status, text, original, emotion }
+  onDispute,
 }) {
   const [displayText, setDisplayText] = useState('')
   const [mounted, setMounted]         = useState(false)
-  const [hovered, setHovered]         = useState(false)
-  const [editing, setEditing]         = useState(false)
+  const [mode, setMode]               = useState('observe')  // 'observe' | 'react' | 'edit'
 
   useEffect(() => {
     setMounted(false)
     setDisplayText('')
-    setEditing(false)
+    setMode('observe')
     if (!thought?.text) return
     const t = setTimeout(() => {
       setMounted(true)
@@ -147,83 +227,174 @@ export default function ThoughtBubble({
 
   if (!thought || !visible || !mounted) return null
 
-  const es   = EMOTION_STYLE[thought.emotion] || EMOTION_STYLE.neutral
+  const status = dispute?.status || 'original'
+  const es   = EMOTION_STYLE[dispute?.emotion || thought.emotion] || EMOTION_STYLE.neutral
   const bt   = BUBBLE_TYPES[thought.bubbleType] || BUBBLE_TYPES.default
   const isA  = personaId === 'A'
 
-  // Active text: disputed text overrides AI
-  const shownText  = dispute?.text || displayText
-  const isDisputed = !!dispute
+  // Determine displayed text
+  const shownText = (status === 'edited' || status === 'disputed') ? (dispute?.text || displayText) : displayText
+  const hasInteraction = status !== 'original'
 
-  const handleSave = (newText) => {
+  // Border color based on status
+  const borderColor = {
+    original:  es.border,
+    confirmed: 'rgba(96,200,128,0.45)',
+    disputed:  'rgba(232,122,122,0.45)',
+    edited:    'rgba(144,232,168,0.50)',
+  }[status] || es.border
+
+  // Handlers
+  const handleConfirm = () => {
     onDispute?.(personaId, beatId, {
-      source:   'user',
-      text:     newText,
-      original: thought.text,
+      source: 'user', status: 'confirmed',
+      text: thought.text, original: thought.text,
+      emotion: thought.emotion,
     })
-    setEditing(false)
+    setMode('observe')
+  }
+
+  const handleDisputeQuick = () => {
+    // Mark as "不像" without rewriting — user can later click edit to add their version
+    onDispute?.(personaId, beatId, {
+      source: 'user', status: 'disputed',
+      text: thought.text, original: thought.text,
+      emotion: thought.emotion,
+    })
+    setMode('observe')
+  }
+
+  const handleEditSave = (newText, newEmotion) => {
+    onDispute?.(personaId, beatId, {
+      source: 'user',
+      status: newText !== thought.text ? 'edited' : 'confirmed',
+      text: newText,
+      original: thought.text,
+      emotion: newEmotion || thought.emotion,
+    })
+    setMode('observe')
+  }
+
+  const handleClear = () => {
+    onDispute?.(personaId, beatId, null)
+    setMode('observe')
   }
 
   return (
     <div
-      className={`thought-bubble thought-bubble-${personaId} absolute`}
+      className={`thought-bubble thought-bubble-${personaId} absolute anim-bloom`}
       style={{
         bottom:    '100%',
         left:      isA ? '50%' : 'auto',
         right:     isA ? 'auto' : '50%',
         transform: isA ? 'translateX(-50%)' : 'translateX(50%)',
         marginBottom: '30px',
-        minWidth:  '130px',
-        maxWidth:  '210px',
+        minWidth:  '160px',
+        maxWidth:  '290px',
         padding:   '9px 13px',
         background: es.bg,
-        border: `${bt.borderWidth} ${bt.borderStyle} ${isDisputed ? 'rgba(144,232,168,0.45)' : es.border}`,
+        border: `${bt.borderWidth} ${status === 'disputed' ? 'solid' : bt.borderStyle} ${borderColor}`,
         borderRadius: bt.borderRadius,
         color:     es.text,
-        fontSize:  '11.5px',
-        lineHeight: '1.6',
+        fontSize:  '11px',
+        fontStyle: bt.italic && mode === 'observe' ? 'italic' : 'normal',
+        lineHeight: '1.7',
         whiteSpace: 'pre-line',
         zIndex:    20,
-        animation: editing ? 'none' : bt.anim,
+        animation: mode !== 'observe' ? 'none' : bt.anim,
         filter:    bt.filter,
-        boxShadow: `${bt.extraShadow}, inset 0 0 10px ${es.bg}`,
-        backdropFilter: thought.bubbleType === 'cloud' ? 'blur(2px)' : 'none',
-        cursor:    'pointer',
-        transition: 'border-color 0.3s',
+        boxShadow: `${bt.extraShadow}, inset 0 0 14px ${es.bg}${status === 'edited' ? ', 0 0 12px rgba(144,232,168,0.15)' : ''}`,
+        backdropFilter: thought.bubbleType === 'cloud' ? 'blur(3px)' : 'none',
+        cursor:    mode === 'observe' ? 'pointer' : 'default',
+        transition: 'border-color 0.3s, box-shadow 0.3s',
       }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => !editing && setEditing(true)}
+      onClick={() => mode === 'observe' && setMode('react')}
     >
-      {/* Top row: icon + source badge + edit hint */}
-      <div className="flex items-center justify-between mb-0.5">
-        <span className="text-[9px] opacity-50" style={{ fontFamily: 'system-ui' }}>
-          {es.icon}
-        </span>
+      {/* Top row: label + icon + status + actions */}
+      <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-1">
-          {isDisputed && <SourceBadge source={dispute.source} />}
-          {(hovered || editing) && !editing && (
-            <span className="font-mono text-[7px] text-white/30 animate-fadeIn">✎</span>
+          <span className="font-mono text-[7px] tracking-wider"
+            style={{ color: `${es.text}99`, opacity: 0.7 }}>
+            内心
+          </span>
+          <span className="text-[9px]" style={{ fontFamily: 'system-ui', opacity: 0.45 }}>
+            {es.icon}
+          </span>
+          {/* Emotion label when re-tagged */}
+          {dispute?.emotion && dispute.emotion !== thought.emotion && (
+            <span className="font-mono text-[7px] px-1 rounded"
+              style={{ color: es.text, background: `${es.bg}`, border: `1px solid ${es.border}40`, opacity: 0.7 }}>
+              {es.label}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-1.5">
+          {hasInteraction && <StatusBadge status={status} />}
+          {mode === 'observe' && (
+            <button
+              onClick={(e) => { e.stopPropagation(); setMode('react') }}
+              className="font-mono text-[8px] px-1.5 py-0.5 rounded transition-all hover:bg-white/10"
+              style={{
+                color: hasInteraction ? borderColor : 'rgba(255,255,255,0.30)',
+                border: `1px solid ${hasInteraction ? borderColor + '60' : 'rgba(255,255,255,0.08)'}`,
+              }}
+            >
+              {hasInteraction ? '✎ 改' : '像TA吗？'}
+            </button>
           )}
         </div>
       </div>
 
-      {/* Text */}
-      <span>
+      {/* Original text (shown struck if disputed/edited) */}
+      {(status === 'disputed' || status === 'edited') && dispute?.text !== thought.text && (
+        <div className="mb-1">
+          <span className="text-[9px] text-white/18 line-through"
+            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            {thought.text}
+          </span>
+        </div>
+      )}
+
+      {/* Main text */}
+      <span style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
         {shownText}
-        {!isDisputed && displayText.length < (thought.text?.length || 0) && (
+        {!hasInteraction && displayText.length < (thought.text?.length || 0) && (
           <span className="animate-blink opacity-60">_</span>
         )}
       </span>
 
-      {/* Inline dispute / edit panel */}
-      {editing && (
-        <DisputePanel
-          original={thought.text}
-          current={dispute?.text}
-          onSave={handleSave}
-          onClose={() => setEditing(false)}
+      {/* Quick react bar (像TA吗？) */}
+      {mode === 'react' && (
+        <QuickReactBar
+          onConfirm={handleConfirm}
+          onDispute={handleDisputeQuick}
+          onEdit={() => setMode('edit')}
+          onClose={() => setMode('observe')}
         />
+      )}
+
+      {/* Full edit panel */}
+      {mode === 'edit' && (
+        <EditPanel
+          original={thought.text}
+          current={dispute?.text !== thought.text ? dispute?.text : null}
+          originalEmotion={thought.emotion}
+          currentEmotion={dispute?.emotion}
+          onSave={handleEditSave}
+          onClose={() => setMode('react')}
+        />
+      )}
+
+      {/* Clear button (small, bottom-right, only when interacted) */}
+      {hasInteraction && mode === 'observe' && (
+        <button
+          onClick={(e) => { e.stopPropagation(); handleClear() }}
+          className="absolute font-mono text-[6px] text-white/12 hover:text-white/30 transition-colors"
+          style={{ bottom: '4px', right: '8px' }}
+          title="撤销标注"
+        >
+          撤销
+        </button>
       )}
     </div>
   )

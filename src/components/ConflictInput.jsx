@@ -1,32 +1,32 @@
 // ─────────────────────────────────────────────────────────────
-//  ConflictInput — "冲突来源" phase
+//  ConflictInput — conflict input + archetype selection
 //
-//  Accepts conflict material in multiple ways:
-//    • 文件拖入 / 点击上传  (.html .htm .txt from WeChat export)
-//    • 粘贴文本             (WeChat copy, any format)
-//    • 自由描述             (plain text description)
+//  Phase flow handled here:
+//    1. User enters chat log + concerns + context
+//    2. User selects relationship type + communication styles (archetype)
+//    3. Optional: appearance micro-customization
+//    4. Submit → callGeminiCalibration() → show CalibrationOverlay
+//    5. Calibration confirmed → generateScenario() → onScenarioReady
 //
-//  Auto-detects and parses:
-//    wechat-html-native  微信PC合并转发HTML
-//    wechat-html-tool    第三方工具导出HTML
-//    wechat-txt          微信TXT导出（[名字][时间]格式）
-//    wechat-copy         微信选中复制格式（名字 时间\n内容）
-//    simple-colon        名字: 内容 格式
-//    freetext            自由描述直接传递
-//
-//  On submit: parseChatLog → generateScenario → RSL scenario
+//  Input formats supported:
+//    wechat-html-native / wechat-html-tool / wechat-txt / wechat-copy
+//    simple-colon / freetext
 // ─────────────────────────────────────────────────────────────
 
-import { useState, useCallback, useRef } from 'react'
-import { generateScenario, API_KEY_AVAILABLE } from '../utils/generateScenario'
-import { parseChatLog, FORMAT_LABELS }         from '../utils/parseChatLog'
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { generateScenario, callGeminiCalibration, API_KEY_AVAILABLE } from '../utils/generateScenario'
+import { parseChatLog, FORMAT_LABELS } from '../utils/parseChatLog'
+import { RELATIONSHIP_TYPES, COMM_STYLES, APPEARANCE_OPTIONS, DEFAULT_APPEARANCE } from '../data/dramaElements'
+import CalibrationOverlay from './CalibrationOverlay'
+import { useSyncContext } from '../sync/SyncContext'
 
-// ── Processing steps ──────────────────────────────────────────
+// ── Processing steps ─────────────────────────────────────────
 const STEPS = [
-  { label: '解析聊天格式',  sub: 'Parsing chat format' },
-  { label: '提取对话节点',  sub: 'Extracting dialogue beats' },
-  { label: '建模内心世界',  sub: 'Modelling inner states' },
-  { label: '生成模拟场景',  sub: 'Generating simulation' },
+  { label: '解析对话',    sub: 'Parsing dialogue' },
+  { label: '校准行为',    sub: 'Calibrating behavior patterns' },
+  { label: '提取脉络',    sub: 'Extracting narrative arc' },
+  { label: '重构内心',    sub: 'Reconstructing inner states' },
+  { label: '生成场景',    sub: 'Building scene' },
 ]
 
 // ── Format badge colours ──────────────────────────────────────
@@ -40,7 +40,7 @@ const FORMAT_COLORS = {
   'empty':              '#555',
 }
 
-// ── How-to guide (collapsible) ────────────────────────────────
+// ── How-to guide ─────────────────────────────────────────────
 const HOW_TO = [
   {
     title: '微信PC端（推荐）',
@@ -60,26 +60,12 @@ const HOW_TO = [
     ],
   },
   {
-    title: '微信Mac端',
-    steps: [
-      '在对话中右键 → 导出聊天记录',
-      '保存为 HTML 后拖入左侧区域',
-    ],
-  },
-  {
     title: '手机端',
     steps: [
       '长按任意消息 → 点击「更多」',
       '勾选需要的多条消息',
       '点击「复制」',
       '粘贴到右侧文本框',
-    ],
-  },
-  {
-    title: '第三方工具',
-    steps: [
-      'WechatExporter (Mac/Win) 或 Memotrace (留痕) 导出HTML',
-      '将导出的 HTML 文件拖入左侧区域',
     ],
   },
 ]
@@ -132,7 +118,7 @@ function ProcessingOverlay({ step, source }) {
           border:     `1px solid ${source === 'ai' ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.1)'}`,
           color:      source === 'ai' ? '#7ab0e8' : 'rgba(255,255,255,0.35)',
         }}>
-          {source === 'ai' ? '✦ Claude AI 分析' : '模板重建'}
+          {source === 'ai' ? '✦ 场景重构完成' : '模板重建'}
         </div>
       )}
     </div>
@@ -151,9 +137,7 @@ function HowToGuide() {
         className="w-full flex items-center justify-between px-4 py-2.5 transition-all"
         style={{ color: 'rgba(255,255,255,0.4)' }}
       >
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-[9px] tracking-widest">如何导出微信聊天记录？</span>
-        </div>
+        <span className="font-mono text-[9px] tracking-widest">如何导出微信聊天记录？</span>
         <span className="font-mono text-[10px]" style={{
           transform: open ? 'rotate(180deg)' : 'none',
           transition: 'transform 0.25s',
@@ -170,12 +154,8 @@ function HowToGuide() {
               <ol className="flex flex-col gap-1">
                 {section.steps.map((step, i) => (
                   <li key={i} className="flex gap-2">
-                    <span className="font-mono text-[8px] text-white/28 flex-shrink-0 mt-0.5">
-                      {i + 1}.
-                    </span>
-                    <span className="font-mono text-[9px] text-white/45 leading-snug">
-                      {step}
-                    </span>
+                    <span className="font-mono text-[8px] text-white/28 flex-shrink-0 mt-0.5">{i + 1}.</span>
+                    <span className="font-mono text-[9px] text-white/45 leading-snug">{step}</span>
                   </li>
                 ))}
               </ol>
@@ -187,14 +167,13 @@ function HowToGuide() {
   )
 }
 
-// ── File drop zone ────────────────────────────────────────────
 function FileDropZone({ onFile, isDragging, setIsDragging }) {
   const inputRef = useRef(null)
 
   const handleFiles = (files) => {
     const file = files[0]
     if (!file) return
-    const ext  = file.name.split('.').pop().toLowerCase()
+    const ext = file.name.split('.').pop().toLowerCase()
     if (!['html', 'htm', 'txt'].includes(ext)) {
       alert('请上传 .html / .htm / .txt 格式的文件')
       return
@@ -208,22 +187,19 @@ function FileDropZone({ onFile, isDragging, setIsDragging }) {
     e.preventDefault()
     setIsDragging(false)
     handleFiles(e.dataTransfer.files)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const onDragOver = (e) => { e.preventDefault(); setIsDragging(true) }
-  const onDragLeave = () => setIsDragging(false)
+  }, []) // eslint-disable-line
 
   return (
     <div
       onClick={() => inputRef.current?.click()}
       onDrop={onDrop}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      className="flex flex-col items-center justify-center gap-3 rounded-xl cursor-pointer transition-all"
+      onDragOver={e => { e.preventDefault(); setIsDragging(true) }}
+      onDragLeave={() => setIsDragging(false)}
+      className="flex flex-col items-center justify-center gap-3 rounded-xl cursor-pointer"
       style={{
-        height:     '130px',
+        height: '130px',
         background: isDragging ? 'rgba(122,176,232,0.1)' : 'rgba(255,255,255,0.025)',
-        border:     `1.5px dashed ${isDragging ? 'rgba(122,176,232,0.6)' : 'rgba(255,255,255,0.12)'}`,
+        border: `1.5px dashed ${isDragging ? 'rgba(122,176,232,0.6)' : 'rgba(255,255,255,0.12)'}`,
         transition: 'all 0.2s',
       }}
     >
@@ -231,22 +207,260 @@ function FileDropZone({ onFile, isDragging, setIsDragging }) {
         {isDragging ? '📂' : '📁'}
       </div>
       <div className="flex flex-col items-center gap-1">
-        <span className="font-mono text-[10px]" style={{
-          color: isDragging ? '#7ab0e8' : 'rgba(255,255,255,0.4)',
-        }}>
+        <span className="font-mono text-[10px]" style={{ color: isDragging ? '#7ab0e8' : 'rgba(255,255,255,0.4)' }}>
           拖入聊天记录文件
         </span>
         <span className="font-mono text-[8px] text-white/22">
           支持 .html · .htm · .txt（微信导出格式）
         </span>
       </div>
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".html,.htm,.txt"
-        className="hidden"
-        onChange={e => handleFiles(e.target.files)}
-      />
+      <input ref={inputRef} type="file" accept=".html,.htm,.txt" className="hidden"
+        onChange={e => handleFiles(e.target.files)} />
+    </div>
+  )
+}
+
+// ── Relationship type card ───────────────────────────────────
+function RelTypeCard({ type, selected, onSelect }) {
+  return (
+    <button
+      onClick={() => onSelect(type.id)}
+      className="flex-1 flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl transition-all"
+      style={{
+        background: selected ? 'rgba(122,176,232,0.12)' : 'rgba(255,255,255,0.03)',
+        border: `1.5px solid ${selected ? 'rgba(122,176,232,0.5)' : 'rgba(255,255,255,0.07)'}`,
+        transform: selected ? 'scale(1.03)' : 'scale(1)',
+        cursor: 'pointer',
+      }}
+    >
+      <span style={{ fontSize: '18px' }}>{type.icon}</span>
+      <span className="font-mono text-[9px]" style={{
+        color: selected ? '#7ab0e8' : 'rgba(255,255,255,0.45)',
+      }}>
+        {type.label}
+      </span>
+    </button>
+  )
+}
+
+// ── Communication style checkbox ─────────────────────────────
+function StyleCheckbox({ style, selected, onToggle, accentColor }) {
+  return (
+    <button
+      onClick={() => onToggle(style.id)}
+      className="w-full flex items-start gap-2.5 px-3 py-2.5 rounded-lg text-left transition-all"
+      style={{
+        background: selected ? `${accentColor}12` : 'rgba(255,255,255,0.025)',
+        border: `1px solid ${selected ? accentColor + '50' : 'rgba(255,255,255,0.07)'}`,
+        cursor: 'pointer',
+      }}
+    >
+      {/* Checkbox indicator */}
+      <div className="flex-shrink-0 w-3.5 h-3.5 rounded mt-0.5 flex items-center justify-center"
+        style={{
+          background: selected ? accentColor : 'transparent',
+          border: `1.5px solid ${selected ? accentColor : 'rgba(255,255,255,0.2)'}`,
+          transition: 'all 0.15s',
+        }}
+      >
+        {selected && (
+          <svg width="8" height="6" viewBox="0 0 8 6">
+            <path d="M1 3l2 2 4-4" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+          </svg>
+        )}
+      </div>
+      <div className="min-w-0">
+        <div className="text-[11px] font-medium" style={{ color: selected ? '#e8e8e8' : 'rgba(255,255,255,0.55)' }}>
+          {style.label}
+        </div>
+        <div className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          {style.desc}
+        </div>
+      </div>
+    </button>
+  )
+}
+
+// ── Archetype section ─────────────────────────────────────────
+// singleColumn: in Together mode, each person only picks their OWN style
+function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setStyleA, styleB, setStyleB, nameA, nameB, singleColumn = false }) {
+  const A_COLOR = '#7ab0e8'
+  const B_COLOR = '#e87a7a'
+
+  const toggleStyle = (setter, current, id) => {
+    setter(prev => prev.includes(id)
+      ? prev.filter(s => s !== id)
+      : [...prev, id]
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-4" style={{
+      background: 'rgba(255,255,255,0.02)',
+      border: '1px solid rgba(255,255,255,0.07)',
+      borderRadius: '12px',
+      padding: '16px',
+    }}>
+      {/* Section header */}
+      <div className="flex items-center gap-2">
+        <span className="font-mono text-[9px] tracking-[0.15em] text-white/30">关系设定 *</span>
+        <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
+        <span className="font-mono text-[8px]" style={{ color: 'rgba(255,255,255,0.18)' }}>ARCHETYPE</span>
+      </div>
+
+      {/* Relationship type */}
+      <div>
+        <p className="font-mono text-[8px] text-white/25 mb-2">你们是：</p>
+        <div className="flex gap-2">
+          {RELATIONSHIP_TYPES.map(type => (
+            <RelTypeCard
+              key={type.id}
+              type={type}
+              selected={relationshipType === type.id}
+              onSelect={setRelationshipType}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Communication styles */}
+      <div>
+        <p className="font-mono text-[8px] text-white/25 mb-2">
+          {singleColumn ? '你的沟通风格（选 1-2 个）：' : '沟通风格投票（各选 1-2 个）：'}
+        </p>
+
+        {singleColumn ? (
+          /* Together mode: single column for own style */
+          <div>
+            <div className="font-mono text-[8px] mb-2" style={{ color: A_COLOR }}>
+              我更像
+            </div>
+            <div className="flex flex-col gap-1.5">
+              {COMM_STYLES.map(s => (
+                <StyleCheckbox
+                  key={s.id}
+                  style={s}
+                  selected={styleA.includes(s.id)}
+                  onToggle={(id) => toggleStyle(setStyleA, styleA, id)}
+                  accentColor={A_COLOR}
+                />
+              ))}
+            </div>
+            <p className="font-mono text-[8px] text-white/18 mt-2">
+              * 对方正在另一台设备上选择 TA 自己的风格。
+            </p>
+          </div>
+        ) : (
+          /* Solo mode: dual columns */
+          <div className="flex gap-3">
+            {/* A column */}
+            <div className="flex-1">
+              <div className="font-mono text-[8px] mb-2" style={{ color: A_COLOR }}>
+                {nameA || 'TA（A）'} 更像
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {COMM_STYLES.map(s => (
+                  <StyleCheckbox
+                    key={s.id}
+                    style={s}
+                    selected={styleA.includes(s.id)}
+                    onToggle={(id) => toggleStyle(setStyleA, styleA, id)}
+                    accentColor={A_COLOR}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* Divider */}
+            <div className="w-px self-stretch" style={{ background: 'rgba(255,255,255,0.05)' }} />
+            {/* B column */}
+            <div className="flex-1">
+              <div className="font-mono text-[8px] mb-2" style={{ color: B_COLOR }}>
+                {nameB || 'TA（B）'} 更像
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {COMM_STYLES.map(s => (
+                  <StyleCheckbox
+                    key={s.id}
+                    style={s}
+                    selected={styleB.includes(s.id)}
+                    onToggle={(id) => toggleStyle(setStyleB, styleB, id)}
+                    accentColor={B_COLOR}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!singleColumn && (
+          <p className="font-mono text-[8px] text-white/18 mt-2">
+            * 这不是性格测试，而是场景重构的角色锚点，也是你对对方的第一次「标注」。
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── Together-mode waiting overlay ─────────────────────────────
+function WaitingOverlay({ partnerReady, generating, role }) {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 anim-fadeIn z-50"
+      style={{ background: 'rgba(0,0,0,0.92)' }}>
+      <div className="flex flex-col items-center gap-3">
+        {/* Status dots */}
+        <div className="flex gap-4 items-center">
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="w-3 h-3 rounded-full" style={{
+              background: '#58c878',
+              boxShadow: '0 0 8px rgba(88,200,120,0.5)',
+            }} />
+            <span className="font-mono text-[8px] text-white/40">你</span>
+          </div>
+          <div className="w-8 h-px" style={{
+            background: partnerReady
+              ? 'linear-gradient(90deg, rgba(88,200,120,0.5), rgba(88,200,120,0.5))'
+              : 'linear-gradient(90deg, rgba(88,200,120,0.5), rgba(255,255,255,0.1))',
+          }} />
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="w-3 h-3 rounded-full" style={{
+              background: partnerReady ? '#58c878' : 'rgba(255,255,255,0.15)',
+              boxShadow: partnerReady ? '0 0 8px rgba(88,200,120,0.5)' : 'none',
+              animation: partnerReady ? 'none' : 'pulse 2s ease-in-out infinite',
+            }} />
+            <span className="font-mono text-[8px] text-white/40">对方</span>
+          </div>
+        </div>
+
+        {/* Status text */}
+        <div className="font-mono text-[11px] text-white/60 mt-2">
+          {generating
+            ? (role === 'A' ? '正在合并生成场景…' : '对方正在生成场景…')
+            : partnerReady
+              ? '双方就绪，即将开始…'
+              : '等待对方完成输入…'}
+        </div>
+        <div className="font-mono text-[8px] text-white/25">
+          {generating
+            ? 'GENERATING SCENARIO'
+            : partnerReady
+              ? 'BOTH READY'
+              : 'WAITING FOR PARTNER'}
+        </div>
+
+        {/* Loading animation */}
+        {(!partnerReady || generating) && (
+          <div className="flex gap-2 mt-2">
+            {[0, 1, 2].map(i => (
+              <div key={i} style={{
+                width: '6px', height: '6px', borderRadius: '50%',
+                background: generating ? '#7ab0e8' : 'rgba(255,255,255,0.3)',
+                animation: `blink 1.1s ${i * 0.28}s ease-in-out infinite`,
+              }} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -254,18 +468,80 @@ function FileDropZone({ onFile, isDragging, setIsDragging }) {
 // ─────────────────────────────────────────────────────────────
 //  Main export
 // ─────────────────────────────────────────────────────────────
-export default function ConflictInput({ onScenarioReady }) {
-  const [rawText,    setRawText]    = useState('')        // original user input
-  const [parsedText, setParsedText] = useState('')        // after parseChatLog
-  const [detectedFmt, setDetectedFmt] = useState(null)   // format label
-  const [fileName,   setFileName]   = useState(null)      // if from file
-  const [isDragging, setIsDragging] = useState(false)
-  const [processing, setProcessing] = useState(false)
-  const [step,       setStep]       = useState(0)
-  const [source,     setSource]     = useState(null)
-  const [error,      setError]      = useState(null)
+export default function ConflictInput({ onScenarioReady, syncMode }) {
+  const sync = useSyncContext()
+  const isTogether = syncMode === 'together'
+  const [rawText,     setRawText]     = useState('')
+  const [parsedText,  setParsedText]  = useState('')
+  const [detectedFmt, setDetectedFmt] = useState(null)
+  const [fileName,    setFileName]    = useState(null)
+  const [isDragging,  setIsDragging]  = useState(false)
+  const [processing,  setProcessing]  = useState(false)
+  const [step,        setStep]        = useState(0)
+  const [source,      setSource]      = useState(null)
+  const [error,       setError]       = useState(null)
 
-  // ── Parse whenever rawText changes ───────────────────────
+  // Core concerns + context
+  const [concernA,   setConcernA]   = useState('')
+  const [concernB,   setConcernB]   = useState('')
+  const [context,    setContext]     = useState('')
+
+  // Archetype selections
+  const [relationshipType, setRelationshipType] = useState(null)
+  const [styleA,   setStyleA]   = useState([])
+  const [styleB,   setStyleB]   = useState([])
+
+  // Together mode state
+  const [submitted,      setSubmitted]      = useState(false)   // own input submitted
+  const [partnerReady,   setPartnerReady]   = useState(false)   // partner has submitted
+  const [generating,     setGenerating]     = useState(false)   // merged → generating scenario
+
+  // Calibration overlay state
+  const [showCalibration,  setShowCalibration]  = useState(false)
+  const [calibrationData,  setCalibrationData]  = useState(null)
+  const [pendingInput,     setPendingInput]      = useState(null)   // stored while calibrating
+
+  // ── Together mode: listen for partner input + merged input ──
+  useEffect(() => {
+    if (!isTogether) return
+    const unsubs = []
+
+    unsubs.push(sync.onMessage('input:partner_ready', () => {
+      setPartnerReady(true)
+    }))
+
+    unsubs.push(sync.onMessage('input:both_ready', async (msg) => {
+      if (sync.role === 'A' && msg.mergedInput) {
+        // Role A: generate scenario from merged input
+        setGenerating(true)
+        try {
+          // Run calibration with merged input
+          const mergedArchetype = msg.mergedInput.archetype
+          const chatLog = msg.mergedInput.chatLog
+          const inferences = await callGeminiCalibration(chatLog, mergedArchetype)
+
+          // Auto-confirm calibration in Together mode for now
+          // (calibration overlay would need more complex sync)
+          const { scenario, source: src } = await generateScenario({
+            ...msg.mergedInput,
+            calibration: inferences,
+          })
+          onScenarioReady(scenario, chatLog)
+        } catch (err) {
+          console.error('[Aside] Together-mode generation error:', err)
+          setGenerating(false)
+          setError('场景生成失败，请重试。')
+        }
+      } else {
+        // Role B: just wait for scenario:ready (handled in App.jsx)
+        setGenerating(true)
+      }
+    }))
+
+    return () => unsubs.forEach(fn => fn())
+  }, [isTogether, sync, onScenarioReady]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Parse whenever rawText changes ──────────────────────
   const handleTextChange = (val) => {
     setRawText(val)
     setError(null)
@@ -279,15 +555,15 @@ export default function ConflictInput({ onScenarioReady }) {
     }
   }
 
-  // ── File loaded ───────────────────────────────────────────
   const handleFile = (content, name) => {
     setFileName(name)
     handleTextChange(content)
   }
 
-  // ── Animate processing steps ──────────────────────────────
-  const animateSteps = () => {
-    let s = 0
+  // ── Animate processing steps ─────────────────────────────
+  const animateStepsFrom = (start) => {
+    let s = start
+    setStep(s)
     const iv = setInterval(() => {
       s += 1
       setStep(s)
@@ -296,35 +572,127 @@ export default function ConflictInput({ onScenarioReady }) {
     return () => clearInterval(iv)
   }
 
-  // ── Submit ────────────────────────────────────────────────
-  const canSubmit = (parsedText || rawText).trim().length > 20
+  // ── Extract partner names from parsed text ───────────────
+  const extractNames = (text) => {
+    const lines = text.split('\n').filter(l => l.includes('：'))
+    const names = []
+    for (const line of lines) {
+      const name = line.split('：')[0].trim()
+      if (name && name.length < 10 && !names.includes(name)) names.push(name)
+      if (names.length >= 2) break
+    }
+    return { nameA: names[0] || 'A', nameB: names[1] || 'B' }
+  }
+
+  // ── Submit: step 1 — calibration ────────────────────────
+  // Together mode: only need own concern + own styles
+  const canSubmit = isTogether
+    ? (parsedText || rawText).trim().length > 20
+      && concernA.trim().length > 0
+      && relationshipType !== null
+      && styleA.length > 0
+    : (parsedText || rawText).trim().length > 20
+      && concernA.trim().length > 0
+      && concernB.trim().length > 0
+      && relationshipType !== null
+      && styleA.length > 0
+      && styleB.length > 0
 
   const handleSubmit = async () => {
-    if (!canSubmit || processing) return
+    if (!canSubmit || processing || submitted) return
+
+    const chatLog = parsedText.trim() || rawText.trim()
+
+    // ── Together mode: submit own input to server ──────────
+    if (isTogether) {
+      const input = {
+        chatLog,
+        concern: concernA.trim(),         // own concern only
+        context: context.trim(),
+        archetype: {
+          relationshipType,
+          styles: styleA,                  // own style only
+        },
+      }
+      sync.send('input:submit', { input })
+      setSubmitted(true)
+      return
+    }
+
+    // ── Solo mode: existing flow (calibration → generate) ──
     setProcessing(true)
     setError(null)
     setStep(0)
 
-    const clearAnim = animateSteps()
-    const textForAI = parsedText.trim() || rawText.trim()
+    const archetype = { relationshipType, styleA, styleB }
+
+    const input = {
+      chatLog,
+      concernA: concernA.trim(),
+      concernB: concernB.trim(),
+      context:  context.trim(),
+      archetype,
+    }
 
     try {
-      const { scenario, source: src } = await generateScenario(textForAI)
+      // Step 0: parse (shown briefly)
+      setStep(0)
+
+      // Step 1: calibration — quick LLM call for behavior inferences
+      setStep(1)
+      const inferences = await callGeminiCalibration(chatLog, archetype)
+
+      // Store pending input and show calibration overlay
+      setProcessing(false)
+      setPendingInput(input)
+      setCalibrationData(inferences)
+      setShowCalibration(true)
+
+    } catch (err) {
+      setProcessing(false)
+      setStep(0)
+      setError('校准失败，请检查输入后重试。')
+      console.error('[Aside] calibration error:', err)
+    }
+  }
+
+  // ── Submit: step 2 — after calibration confirmed ─────────
+  const handleCalibrationConfirm = async (confirmedCalibration) => {
+    setShowCalibration(false)
+    setProcessing(true)
+    setStep(2)
+
+    const clearAnim = animateStepsFrom(2)
+
+    try {
+      const { scenario, source: src } = await generateScenario({
+        ...pendingInput,
+        calibration: confirmedCalibration,
+      })
       clearAnim()
       setSource(src)
       setStep(STEPS.length)
       await new Promise(r => setTimeout(r, 600))
-      onScenarioReady(scenario, textForAI)
+      onScenarioReady(scenario, pendingInput.chatLog)
     } catch (err) {
       clearAnim()
       setProcessing(false)
       setStep(0)
-      setError('分析失败，请检查输入后重试。')
-      console.error('[Mirror] generateScenario error:', err)
+      setError('场景重构失败，请检查输入后重试。')
+      console.error('[Aside] generateScenario error:', err)
     }
   }
 
-  // ── Format badge ──────────────────────────────────────────
+  const handleCalibrationBack = () => {
+    setShowCalibration(false)
+    setCalibrationData(null)
+    setPendingInput(null)
+  }
+
+  // ── Extract names for archetype labels ───────────────────
+  const chatForNames = parsedText.trim() || rawText.trim()
+  const { nameA, nameB } = extractNames(chatForNames)
+
   const fmtColor = detectedFmt ? (FORMAT_COLORS[detectedFmt.format] ?? '#888') : null
 
   return (
@@ -339,31 +707,18 @@ export default function ConflictInput({ onScenarioReady }) {
         backgroundSize: '44px 44px',
       }} />
 
-      {/* ── Left panel: file drop + guide ── */}
+      {/* ── Left panel ── */}
       <div className="relative flex flex-col gap-4 p-8 border-r border-white/5 flex-shrink-0"
         style={{ width: '280px' }}>
 
-        {/* Logo */}
         <div className="flex flex-col gap-0.5 mb-2">
-          <span className="font-pixel text-[8px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>
-            MIRROR
-          </span>
-          <div className="w-8 h-px" style={{
-            background: 'linear-gradient(90deg, rgba(122,176,232,0.5), transparent)',
-          }} />
-          <p className="font-mono text-[8px] text-white/22 tracking-[0.15em] mt-1">
-            INPUT CONFLICT
-          </p>
+          <span className="font-pixel text-[8px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>ASIDE</span>
+          <div className="w-8 h-px" style={{ background: 'linear-gradient(90deg, rgba(122,176,232,0.5), transparent)' }} />
+          <p className="font-mono text-[8px] text-white/22 tracking-[0.15em] mt-1">INPUT CONFLICT</p>
         </div>
 
-        {/* File drop zone */}
-        <FileDropZone
-          onFile={handleFile}
-          isDragging={isDragging}
-          setIsDragging={setIsDragging}
-        />
+        <FileDropZone onFile={handleFile} isDragging={isDragging} setIsDragging={setIsDragging} />
 
-        {/* Loaded file badge */}
         {fileName && (
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg anim-fadeIn" style={{
             background: 'rgba(88,200,120,0.08)',
@@ -386,7 +741,6 @@ export default function ConflictInput({ onScenarioReady }) {
           </div>
         )}
 
-        {/* API status */}
         <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg" style={{
           background: API_KEY_AVAILABLE ? 'rgba(122,176,232,0.07)' : 'rgba(255,255,255,0.03)',
           border:     `1px solid ${API_KEY_AVAILABLE ? 'rgba(122,176,232,0.2)' : 'rgba(255,255,255,0.07)'}`,
@@ -395,37 +749,41 @@ export default function ConflictInput({ onScenarioReady }) {
             background: API_KEY_AVAILABLE ? '#7ab0e8' : '#444',
             boxShadow:  API_KEY_AVAILABLE ? '0 0 5px #7ab0e8' : 'none',
           }} />
-          <span className="font-mono text-[8px]" style={{
-            color: API_KEY_AVAILABLE ? '#7ab0e8' : 'rgba(255,255,255,0.22)',
-          }}>
-            {API_KEY_AVAILABLE ? 'Claude AI 已连接' : '模板模式 · 配置 .env.local'}
+          <span className="font-mono text-[8px]" style={{ color: API_KEY_AVAILABLE ? '#7ab0e8' : 'rgba(255,255,255,0.22)' }}>
+            {API_KEY_AVAILABLE ? '引擎就绪' : '离线模式 · 配置 .env.local'}
           </span>
         </div>
 
-        {/* Spacer */}
         <div className="flex-1" />
-
-        {/* How-to guide */}
         <HowToGuide />
       </div>
 
-      {/* ── Right panel: text input ── */}
-      <div className="relative flex flex-col flex-1 p-8 gap-4 anim-fadeIn">
+      {/* ── Right panel ── */}
+      <div className="relative flex flex-col flex-1 p-8 gap-4 anim-fadeIn overflow-y-auto">
 
-        {/* Header */}
         <div className="flex flex-col gap-1">
-          <p className="font-mono text-[10px] text-white/30 tracking-[0.2em]">
-            冲突描述 / CONFLICT INPUT
-          </p>
-          <p className="text-sm" style={{
-            color: 'rgba(255,255,255,0.38)',
-            fontFamily: '"PingFang SC","Inter",sans-serif',
-          }}>
-            粘贴聊天记录，或用自己的话描述冲突经过
+          <div className="flex items-center gap-3">
+            <p className="font-mono text-[10px] text-white/30 tracking-[0.2em]">
+              冲突描述 / CONFLICT INPUT
+            </p>
+            {isTogether && (
+              <span className="font-mono text-[8px] px-2 py-0.5 rounded-full" style={{
+                background: 'rgba(88,200,120,0.1)',
+                border: '1px solid rgba(88,200,120,0.25)',
+                color: '#58c878',
+              }}>
+                👥 TOGETHER · {sync.role === 'A' ? '你是 A' : '你是 B'}
+              </span>
+            )}
+          </div>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.38)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            {isTogether
+              ? '粘贴聊天记录，描述你的关切和沟通风格'
+              : '粘贴聊天记录，或用自己的话描述冲突经过'}
           </p>
         </div>
 
-        {/* Format detection badge */}
+        {/* Format badge */}
         {detectedFmt && detectedFmt.format !== 'freetext' && (
           <div className="flex items-center gap-2 anim-fadeIn">
             <div className="w-1.5 h-1.5 rounded-full" style={{ background: fmtColor }} />
@@ -441,23 +799,12 @@ export default function ConflictInput({ onScenarioReady }) {
         )}
 
         {/* Textarea */}
-        <div className="relative flex-1 min-h-0">
+        <div className="relative" style={{ minHeight: '200px' }}>
           <textarea
             value={rawText}
             onChange={e => handleTextChange(e.target.value)}
-            placeholder={`粘贴微信聊天记录，或自由描述冲突……
-
-支持格式：
-• 微信PC「合并转发」→ HTML文件（拖入左侧）
-• 微信「手机复制」格式（长按→更多→复制）
-• 名字：消息内容 格式
-• 自由描述（想到什么写什么）
-
-示例：
-小美：你为什么不回我消息？
-小凯：我当时在忙啊
-小美：忙？发一条消息要多少时间？`}
-            className="w-full h-full rounded-xl px-4 py-3.5 text-sm resize-none focus:outline-none"
+            placeholder={`粘贴微信聊天记录，或自由描述冲突……\n\n支持格式：\n• 微信PC「合并转发」→ HTML文件（拖入左侧）\n• 微信「手机复制」格式（长按→更多→复制）\n• 名字：消息内容 格式\n• 自由描述（想到什么写什么）\n\n示例：\n小美：你为什么不回我消息？\n小凯：我当时在忙啊\n小美：忙？发一条消息要多少时间？`}
+            className="w-full rounded-xl px-4 py-3.5 text-sm resize-none focus:outline-none"
             style={{
               background:  'rgba(255,255,255,0.04)',
               border:      `1px solid ${rawText.length > 20 ? 'rgba(122,176,232,0.22)' : 'rgba(255,255,255,0.08)'}`,
@@ -467,10 +814,9 @@ export default function ConflictInput({ onScenarioReady }) {
               lineHeight:  '1.65',
               caretColor:  '#7ab0e8',
               transition:  'border-color 0.2s',
-              minHeight:   '260px',
+              minHeight:   '200px',
             }}
           />
-          {/* Char count bottom-right */}
           <div className="absolute bottom-3 right-4 font-mono text-[8px]" style={{
             color: rawText.length > 20 ? 'rgba(122,176,232,0.45)' : 'rgba(255,255,255,0.15)',
           }}>
@@ -478,14 +824,14 @@ export default function ConflictInput({ onScenarioReady }) {
           </div>
         </div>
 
-        {/* Parsed preview (if different from raw) */}
+        {/* Parsed preview */}
         {parsedText && parsedText !== rawText && parsedText.trim().length > 0 && (
           <details className="rounded-xl overflow-hidden" style={{
             background: 'rgba(255,255,255,0.02)',
             border:     '1px solid rgba(255,255,255,0.06)',
           }}>
             <summary className="font-mono text-[9px] text-white/30 px-4 py-2 cursor-pointer select-none">
-              已解析内容预览（将发送给 AI 分析）
+              ▶ 已解析内容预览（将用于场景重构）
             </summary>
             <pre className="px-4 pb-3 font-mono text-[10px] text-white/40 whitespace-pre-wrap leading-relaxed overflow-auto"
               style={{ maxHeight: '120px' }}>
@@ -493,6 +839,104 @@ export default function ConflictInput({ onScenarioReady }) {
             </pre>
           </details>
         )}
+
+        {/* Core concerns */}
+        <div className="flex flex-col gap-2">
+          <p className="font-mono text-[9px] text-white/30 tracking-[0.15em]">
+            {isTogether ? '你的核心关切 *' : '双方核心关切 *'}
+          </p>
+
+          {isTogether ? (
+            /* Together mode: single concern input */
+            <div>
+              <label className="font-mono text-[8px] mb-1 block" style={{ color: '#7ab0e8' }}>
+                在这场冲突中，你最在意的是
+              </label>
+              <input
+                value={concernA}
+                onChange={e => setConcernA(e.target.value)}
+                maxLength={50}
+                placeholder="例：希望被重视和及时回应"
+                className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
+                style={{
+                  background: 'rgba(122,176,232,0.06)',
+                  border: `1px solid ${concernA ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                  fontFamily: '"PingFang SC","Inter",sans-serif',
+                  transition: 'border-color 0.2s',
+                }}
+              />
+              <p className="font-mono text-[8px] text-white/18 mt-1">
+                对方正在另一台设备上描述 TA 的关切。
+              </p>
+            </div>
+          ) : (
+            /* Solo mode: dual concern inputs */
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="font-mono text-[8px] mb-1 block" style={{ color: '#7ab0e8' }}>A 的关切</label>
+                <input
+                  value={concernA}
+                  onChange={e => setConcernA(e.target.value)}
+                  maxLength={50}
+                  placeholder="例：希望被重视和及时回应"
+                  className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
+                  style={{
+                    background: 'rgba(122,176,232,0.06)',
+                    border: `1px solid ${concernA ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                    fontFamily: '"PingFang SC","Inter",sans-serif',
+                    transition: 'border-color 0.2s',
+                  }}
+                />
+              </div>
+              <div className="flex-1">
+                <label className="font-mono text-[8px] mb-1 block" style={{ color: '#e87a7a' }}>B 的关切</label>
+                <input
+                  value={concernB}
+                  onChange={e => setConcernB(e.target.value)}
+                  maxLength={50}
+                  placeholder="例：需要个人空间和被理解"
+                  className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
+                  style={{
+                    background: 'rgba(232,122,122,0.06)',
+                    border: `1px solid ${concernB ? 'rgba(232,122,122,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                    fontFamily: '"PingFang SC","Inter",sans-serif',
+                    transition: 'border-color 0.2s',
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Optional context */}
+        <div className="flex flex-col gap-1">
+          <p className="font-mono text-[8px] text-white/25 tracking-[0.15em]">前置情境（可选）</p>
+          <input
+            value={context}
+            onChange={e => setContext(e.target.value)}
+            maxLength={100}
+            placeholder="例：异地恋半年，最近沟通越来越少"
+            className="w-full rounded-lg px-3 py-2 text-[12px] text-white/70 placeholder-white/18 focus:outline-none"
+            style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.07)',
+              fontFamily: '"PingFang SC","Inter",sans-serif',
+            }}
+          />
+        </div>
+
+        {/* ── Archetype section ── */}
+        <ArchetypeSection
+          relationshipType={relationshipType}
+          setRelationshipType={setRelationshipType}
+          styleA={styleA}
+          setStyleA={setStyleA}
+          styleB={styleB}
+          setStyleB={setStyleB}
+          nameA={nameA !== 'A' ? nameA : ''}
+          nameB={nameB !== 'B' ? nameB : ''}
+          singleColumn={isTogether}
+        />
 
         {/* Error */}
         {error && (
@@ -506,38 +950,60 @@ export default function ConflictInput({ onScenarioReady }) {
         )}
 
         {/* Submit */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pb-4">
           <span className="font-mono text-[8px] text-white/18">
-            至少 20 字 · 内容仅在本地处理
+            {isTogether
+              ? '至少 20 字 + 你的关切 + 关系设定'
+              : '至少 20 字 + 双方关切 + 关系设定 · 内容仅在本地处理'}
           </span>
           <button
             onClick={handleSubmit}
-            disabled={!canSubmit || processing}
+            disabled={!canSubmit || processing || submitted}
             className="font-mono text-[12px] tracking-[0.15em] px-8 py-3 rounded-xl border transition-all duration-300"
             style={{
-              color:       canSubmit ? '#7ab0e8' : 'rgba(255,255,255,0.2)',
-              borderColor: canSubmit ? 'rgba(122,176,232,0.4)' : 'rgba(255,255,255,0.07)',
-              background:  canSubmit ? 'rgba(122,176,232,0.07)' : 'transparent',
-              cursor:      canSubmit ? 'pointer' : 'not-allowed',
+              color:       (canSubmit && !submitted) ? '#7ab0e8' : 'rgba(255,255,255,0.2)',
+              borderColor: (canSubmit && !submitted) ? 'rgba(122,176,232,0.4)' : 'rgba(255,255,255,0.07)',
+              background:  (canSubmit && !submitted) ? 'rgba(122,176,232,0.07)' : 'transparent',
+              cursor:      (canSubmit && !submitted) ? 'pointer' : 'not-allowed',
             }}
             onMouseEnter={e => {
-              if (!canSubmit) return
+              if (!canSubmit || submitted) return
               e.currentTarget.style.background  = 'rgba(122,176,232,0.15)'
               e.currentTarget.style.borderColor = 'rgba(122,176,232,0.7)'
             }}
             onMouseLeave={e => {
-              if (!canSubmit) return
+              if (!canSubmit || submitted) return
               e.currentTarget.style.background  = 'rgba(122,176,232,0.07)'
               e.currentTarget.style.borderColor = 'rgba(122,176,232,0.4)'
             }}
           >
-            {processing ? '分析中…' : '开始分析 / ANALYSE'}
+            {processing ? '重构中…' : submitted ? '已提交 ✓' : isTogether ? '提交我的输入 / SUBMIT' : '开始重构 / RECONSTRUCT'}
           </button>
         </div>
       </div>
 
-      {/* Processing overlay */}
-      {processing && <ProcessingOverlay step={step} source={source} />}
+      {/* Processing overlay (solo mode) */}
+      {processing && !isTogether && <ProcessingOverlay step={step} source={source} />}
+
+      {/* Waiting overlay (together mode) */}
+      {isTogether && submitted && <WaitingOverlay partnerReady={partnerReady} generating={generating} role={sync.role} />}
+
+      {/* Calibration overlay */}
+      {showCalibration && calibrationData && pendingInput && (
+        <CalibrationOverlay
+          personaA={{
+            name:  extractNames(pendingInput.chatLog).nameA,
+            color: '#7ab0e8',
+          }}
+          personaB={{
+            name:  extractNames(pendingInput.chatLog).nameB,
+            color: '#e87a7a',
+          }}
+          inferences={calibrationData}
+          onConfirm={handleCalibrationConfirm}
+          onBack={handleCalibrationBack}
+        />
+      )}
     </div>
   )
 }

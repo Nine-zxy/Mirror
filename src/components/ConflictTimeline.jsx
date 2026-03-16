@@ -78,16 +78,16 @@ export default function ConflictTimeline({
       <button
         onClick={onPlayPause}
         disabled={disabled}
-        className="w-7 h-7 flex items-center justify-center rounded flex-shrink-0 transition-all"
+        className="w-9 h-9 flex items-center justify-center rounded flex-shrink-0 transition-all"
         style={{ color: disabled ? '#333' : '#7ab0e8', opacity: disabled ? 0.4 : 1 }}
       >
         {isPlaying ? (
-          <svg width="11" height="13" viewBox="0 0 11 13" fill="currentColor">
+          <svg width="14" height="16" viewBox="0 0 11 13" fill="currentColor">
             <rect x="0.5" y="1" width="3" height="11" rx="1" />
             <rect x="6.5" y="1" width="3" height="11" rx="1" />
           </svg>
         ) : (
-          <svg width="11" height="13" viewBox="0 0 11 13" fill="currentColor">
+          <svg width="14" height="16" viewBox="0 0 11 13" fill="currentColor">
             <polygon points="1,1 10,6.5 1,12" />
           </svg>
         )}

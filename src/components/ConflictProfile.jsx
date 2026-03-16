@@ -238,7 +238,7 @@ function AnalysingLoader() {
       </div>
       <div className="flex flex-col items-center gap-1">
         <p className="font-mono text-[10px] text-white/40 tracking-widest">
-          AI 正在构建互动轨迹…
+          正在构建互动轨迹…
         </p>
         <p className="font-mono text-[8px] text-white/20 tracking-widest">
           RECONSTRUCTING INTERACTION DYNAMICS
@@ -292,7 +292,7 @@ export default function ConflictProfile({ personas, onConfirm }) {
             color: 'rgba(255,255,255,0.38)',
             fontFamily: '"PingFang SC","Inter",sans-serif',
           }}>
-            描述<em>这次冲突</em>中你们各自的互动方式 — AI 将据此重建对话轨迹。
+            描述<em>这次冲突</em>中你们各自的互动方式 — 系统将据此重建对话轨迹。
           </p>
         </div>
 

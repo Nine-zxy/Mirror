@@ -18,12 +18,14 @@
 //    beat_advance         Beat advanced (trigger: auto | keyboard | click)
 //    beat_seek            User jumped to specific beat
 //    thought_toggle       Subtext shown/hidden
-//    script_toggle        Script panel opened/closed
 //    tag_mark             Emoji tag added
 //    thought_dispute      Thought bubble text edited
-//    profile_set          Conflict profile configured
 //    reflection_write     Reflection text updated (length only, not content)
 //    reflection_reveal    User revealed partner thoughts
+//    archetype_set        Relationship type + communication styles selected
+//    calibration_shown    Behavioral inferences shown for confirmation
+//    calibration_confirm  User confirmed/adjusted inferences
+//    appearance_set       Final appearance config recorded
 //    session_export       Log exported by user
 // ─────────────────────────────────────────────────────────────
 
@@ -36,7 +38,7 @@ const state = {
 
 // ── Init ──────────────────────────────────────────────────────
 export function initSession(meta = {}) {
-  state.sessionId = `mir_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
+  state.sessionId = `asd_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
   state.startedAt = Date.now()
   state.meta      = meta
   state.events    = []
@@ -77,11 +79,18 @@ function buildSummary() {
   const byType = {}
   ev.forEach(e => { byType[e.type] = (byType[e.type] ?? 0) + 1 })
 
-  const disputes   = ev.filter(e => e.type === 'thought_dispute')
-  const tags       = ev.filter(e => e.type === 'tag_mark')
-  const seeks      = ev.filter(e => e.type === 'beat_seek')
-  const phases     = ev.filter(e => e.type === 'phase_change')
-  const profileSet = ev.find(e  => e.type === 'profile_set')
+  const disputes    = ev.filter(e => e.type === 'thought_dispute')
+  const tags        = ev.filter(e => e.type === 'tag_mark')
+  const seeks       = ev.filter(e => e.type === 'beat_seek')
+  const phases      = ev.filter(e => e.type === 'phase_change')
+  const archetypeEv = ev.find(e  => e.type === 'archetype_set')
+  const calibConfEv = ev.find(e  => e.type === 'calibration_confirm')
+
+  // v2 assumption editing stats
+  const confirms    = ev.filter(e => e.type === 'assumption_confirm')
+  const aDisputes   = ev.filter(e => e.type === 'assumption_dispute')
+  const edits       = ev.filter(e => e.type === 'assumption_edit')
+  const clears      = ev.filter(e => e.type === 'assumption_clear')
 
   return {
     eventCountByType: byType,
@@ -89,11 +98,24 @@ function buildSummary() {
     totalDisputes:    disputes.length,
     manualSeeks:      seeks.length,
     phaseFlow:        phases.map(p => p.to).join(' → '),
-    profileUsed:      profileSet ? profileSet.profile : null,
+    archetypeUsed:    archetypeEv ? {
+      relationshipType: archetypeEv.relationshipType,
+      stylesA: archetypeEv.stylesA,
+      stylesB: archetypeEv.stylesB,
+    } : null,
+    calibrationAdjusted: calibConfEv?.adjustedCount ?? 0,
     disputedBeats:    disputes.map(d => `${d.personaId}-beat${d.beatId}`),
     tagsByEmoji:      tags.reduce((acc, t) => {
       acc[t.emoji] = (acc[t.emoji] ?? 0) + 1; return acc
     }, {}),
+    // v2 assumption editing breakdown
+    assumptionEditing: {
+      confirmed: confirms.length,
+      disputed:  aDisputes.length,
+      edited:    edits.length,
+      cleared:   clears.length,
+      emotionChanges: edits.filter(e => e.emotionChanged).length,
+    },
   }
 }
 
@@ -109,7 +131,7 @@ export function downloadLog() {
   const url  = URL.createObjectURL(blob)
   const a    = document.createElement('a')
   a.href     = url
-  a.download = `mirror-${state.sessionId}.json`
+  a.download = `aside-${state.sessionId}.json`
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
@@ -125,6 +147,40 @@ export const logSeek      = (i)          => log('beat_seek', { beatIndex: i })
 export const logTag       = (emoji, bi)  => log('tag_mark', { emoji, beatIndex: bi })
 export const logDispute   = (pId, bId, original, edited) =>
   log('thought_dispute', { personaId: pId, beatId: bId, originalLength: original?.length ?? 0, editedLength: edited?.length ?? 0 })
-export const logProfile   = (profile)   => log('profile_set', { profile })
+
+// ── v2 assumption editing events (confirm / dispute / edit) ─────
+export const logAssumptionConfirm = (pId, bId) =>
+  log('assumption_confirm', { personaId: pId, beatId: bId })
+
+export const logAssumptionDispute = (pId, bId) =>
+  log('assumption_dispute', { personaId: pId, beatId: bId })
+
+export const logAssumptionEdit = (pId, bId, { originalLen, editedLen, emotionChanged, newEmotion }) =>
+  log('assumption_edit', { personaId: pId, beatId: bId, originalLen, editedLen, emotionChanged, newEmotion })
+
+export const logAssumptionClear = (pId, bId) =>
+  log('assumption_clear', { personaId: pId, beatId: bId })
 export const logToggle    = (what, val) => log(`${what}_toggle`, { visible: val })
 export const logReflect   = (len)        => log('reflection_write', { textLength: len })
+
+// ── v2 archetype + calibration events ────────────────────────
+export const logArchetype  = (relType, stylesA, stylesB) =>
+  log('archetype_set', { relationshipType: relType, stylesA, stylesB })
+
+export const logCalibrationShown = (inferCountA, inferCountB) =>
+  log('calibration_shown', { inferCountA, inferCountB })
+
+export const logCalibration = (confirmedA, confirmedB) => {
+  const adjustedCount = [
+    ...(confirmedA || []),
+    ...(confirmedB || []),
+  ].filter(item => item.adjusted).length
+  log('calibration_confirm', {
+    totalInferences: (confirmedA?.length ?? 0) + (confirmedB?.length ?? 0),
+    adjustedCount,
+  })
+}
+
+export const logAppearanceSet = (config) =>
+  log('appearance_set', { hairA: config?.A?.hairStyle, hairB: config?.B?.hairStyle,
+    outfitA: config?.A?.outfitStyle, outfitB: config?.B?.outfitStyle })

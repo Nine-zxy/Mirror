@@ -70,7 +70,7 @@ export default function ReflectionOverlay({
             >
               {step === 'write'
                 ? (beat?.reflectionPrompt || '此刻模拟暂停。在写下反思之前，你看到了什么？')
-                : 'AI 推断此刻的双方内心——这是对话背后真正发生的事。'}
+                : '系统推断此刻的双方内心——这是对话背后真正发生的事。'}
             </p>
           </div>
 
@@ -126,7 +126,7 @@ export default function ReflectionOverlay({
               {hasThoughts && (
                 <div>
                   <p className="font-mono text-[8px] text-white/25 tracking-widest mb-2">
-                    此刻双方的内心 · AI 推断
+                    此刻双方的内心 · 系统推断
                   </p>
                   <div className="flex gap-3">
                     {thoughtA && <ThoughtCard thought={thoughtA} persona={personas.A} />}

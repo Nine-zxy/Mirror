@@ -14,7 +14,8 @@ export const scenario = {
   id: 'unread_message',
   title: '那条未读的消息',
   subtitle: 'The Unread Message',
-  scene: 'apartment_evening',
+  scene: 'bedroom_night',
+  sceneElements: ['window', 'curtains', 'bed', 'lamp', 'phone_screen', 'rug', 'bookshelf', 'wallart'],
 
   personas: {
     A: {
@@ -29,6 +30,10 @@ export const scenario = {
       hairColor: '#8B4513',
       outfitColor: '#4a80c8',
       outfitDark: '#2a5098',
+      // Modular appearance (PixelChar v3)
+      hairStyle: 'medium',
+      outfitStyle: 'casual',
+      accessory: 'none',
     },
     B: {
       id: 'B',
@@ -42,6 +47,10 @@ export const scenario = {
       hairColor: '#3a2820',
       outfitColor: '#b84a4a',
       outfitDark: '#7a2a2a',
+      // Modular appearance (PixelChar v3)
+      hairStyle: 'short',
+      outfitStyle: 'casual',
+      accessory: 'none',
     },
   },
 
@@ -54,7 +63,7 @@ export const scenario = {
       narrator: '傍晚。小美推门回家，小凯坐在沙发上刷手机，没有抬头。',
       proxemic: { state: 'neutral', divider: false },
       spatial: {
-        A: { x: 16, facing: 'right', pose: 'neutral',  lean: 'none', scale: 1.00, visible: true },
+        A: { x: 24, facing: 'right', pose: 'neutral',  lean: 'none', scale: 1.00, visible: true },
         B: { x: 74, facing: 'left',  pose: 'sitting',  lean: 'none', scale: 1.00, visible: true },
       },
       thoughts: { A: null, B: null },
@@ -68,8 +77,8 @@ export const scenario = {
       intensity: 0.40,
       proxemic: { state: 'approaching', divider: false },
       spatial: {
-        A: { x: 30, facing: 'right', pose: 'confrontational', lean: 'forward', scale: 1.05, visible: true },
-        B: { x: 72, facing: 'left',  pose: 'sitting',         lean: 'none',   scale: 1.00, visible: true },
+        A: { x: 32, facing: 'right', pose: 'confrontational', lean: 'forward', scale: 1.05, visible: true },
+        B: { x: 70, facing: 'left',  pose: 'sitting',         lean: 'none',   scale: 1.00, visible: true },
       },
       thoughts: {
         A: { text: '他为什么不回我…\n是不在乎我吗？', emotion: 'anxious', bubbleType: 'hesitation' },

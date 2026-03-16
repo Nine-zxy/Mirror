@@ -19,6 +19,12 @@ const EMOTION_ICONS = {
   reflective: '✦', surprised: '◎', neutral: '○',
 }
 
+const DISPUTE_BADGE = {
+  confirmed: { label: '像TA', color: '#60c880', bg: 'rgba(96,200,128,0.12)', border: 'rgba(96,200,128,0.3)' },
+  disputed:  { label: '不像',  color: '#e87a7a', bg: 'rgba(232,122,122,0.12)', border: 'rgba(232,122,122,0.3)' },
+  edited:    { label: '已修正', color: '#90e8a8', bg: 'rgba(144,232,168,0.12)', border: 'rgba(144,232,168,0.3)' },
+}
+
 function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
   const beatTags     = tags.filter(t => t.beatIndex === index)
   const thoughtA     = beat.thoughts?.A
@@ -82,23 +88,38 @@ function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
         const dispute  = disputes[`${id}-${beat.id}`]
         if (!thought && !dispute) return null
         const color    = personas[id]?.color || '#888'
-        const icon     = EMOTION_ICONS[thought?.emotion] || '○'
+        const emotion  = dispute?.emotion || thought?.emotion
+        const icon     = EMOTION_ICONS[emotion] || '○'
         const text     = dispute?.text || thought?.text || ''
+        const badge    = dispute ? DISPUTE_BADGE[dispute.status] : null
+        const isEdited = dispute?.status === 'edited' && dispute.text !== dispute.original
+        const isDisputed = dispute?.status === 'disputed'
         return (
           <div key={id} className="flex items-start gap-1 mt-0.5">
             <span className="font-mono text-[7px] flex-shrink-0 mt-0.5 opacity-60"
               style={{ color }}>
               {icon}
             </span>
-            <p className="text-[9px] leading-snug" style={{ color: `${color}99`,
-              fontFamily: '"PingFang SC","Inter",sans-serif' }}>
-              {text}
-            </p>
-            {dispute && (
+            <div className="flex-1 min-w-0">
+              {/* Show original struck-through if edited/disputed */}
+              {(isEdited || isDisputed) && (
+                <p className="text-[8px] leading-snug line-through mb-0.5"
+                  style={{ color: 'rgba(255,255,255,0.2)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+                  {dispute.original}
+                </p>
+              )}
+              <p className="text-[9px] leading-snug" style={{
+                color: badge ? badge.color + 'cc' : `${color}99`,
+                fontFamily: '"PingFang SC","Inter",sans-serif',
+              }}>
+                {isEdited ? text : (isDisputed ? '' : text)}
+              </p>
+            </div>
+            {badge && (
               <span className="font-mono text-[6px] px-1 py-0.5 rounded flex-shrink-0"
-                style={{ background: 'rgba(144,232,168,0.1)', color: '#90e8a8',
-                  border: '1px solid rgba(144,232,168,0.25)', marginLeft: '2px' }}>
-                已标注
+                style={{ background: badge.bg, color: badge.color,
+                  border: `1px solid ${badge.border}`, marginLeft: '2px' }}>
+                {badge.label}
               </span>
             )}
           </div>
