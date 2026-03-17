@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import PixelChar      from './PixelChar'
 import ThoughtBubble  from './ThoughtBubble'
 import Subtitle       from './Subtitle'
@@ -994,16 +994,17 @@ function FloatingMark({ onMark, phase }) {
   )
 }
 
-// ── Character Sprite (PNG sprite with PixelChar SVG fallback) ─
+// ── Character Sprite (PNG sprite with crossfade + PixelChar SVG fallback) ─
 // Load order:
-//   1. /sprites/{spriteType}/{emotionKey}.png  (new Stardew-style sprites)
+//   1. /sprites/{spriteType}/{emotionKey}.png  (Stardew-style sprites)
 //   2. /assets/sprites/{persona.id}/{emotionKey}.png  (legacy per-persona)
 //   3. PixelChar SVG (always available fallback)
 function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) {
   const [loadStage, setLoadStage] = useState(0)  // 0=primary, 1=legacy, 2=svg
+  const [prevPose, setPrevPose] = useState(null)
+  const [transitioning, setTransitioning] = useState(false)
 
   const emotionKey = EMOTION_TO_SPRITE[spPose] || 'neutral'
-  // spriteType: 'male'/'female'/custom — set in persona data, defaults based on id
   const spriteType = persona.spriteType || (persona.id === 'A' ? 'female' : 'male')
 
   const sources = [
@@ -1011,18 +1012,28 @@ function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) 
     `/assets/sprites/${persona.id}/${emotionKey}.png`,
   ]
 
-  // Reset load stage when emotion changes
-  useEffect(() => { setLoadStage(0) }, [emotionKey, spriteType])
+  // Reset load stage when emotion changes; trigger crossfade
+  const prevEmotionRef = useRef(emotionKey)
+  useEffect(() => {
+    if (prevEmotionRef.current !== emotionKey) {
+      setPrevPose(prevEmotionRef.current)
+      setTransitioning(true)
+      prevEmotionRef.current = emotionKey
+      setLoadStage(0)
+      const timer = setTimeout(() => { setTransitioning(false); setPrevPose(null) }, 350)
+      return () => clearTimeout(timer)
+    }
+  }, [emotionKey, spriteType])
 
   const charScale = scale * 0.86
 
-  const imgStyle = {
+  const baseStyle = {
     height: `${190 * charScale}px`,
     imageRendering: 'pixelated',
     transform: facing === 'left' ? 'scaleX(-1)' : 'none',
-    filter: glow ? `drop-shadow(0 0 14px ${persona.glowColor})` : 'none',
+    filter: glow ? `drop-shadow(0 0 12px ${persona.glowColor})` : 'none',
     display: 'block',
-    transition: 'height 0.3s ease, filter 0.3s ease',
+    transition: 'opacity 0.35s ease, height 0.3s ease, filter 0.3s ease',
   }
 
   // All PNG sources exhausted → SVG fallback
@@ -1040,14 +1051,27 @@ function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) 
     )
   }
 
+  const prevSrc = prevPose ? `/sprites/${spriteType}/${prevPose}.png` : null
+
   return (
-    <img
-      key={`${sources[loadStage]}-${emotionKey}`}
-      src={sources[loadStage]}
-      style={imgStyle}
-      alt=""
-      onError={() => setLoadStage(prev => prev + 1)}
-    />
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      {/* Previous pose fading out */}
+      {transitioning && prevSrc && (
+        <img
+          src={prevSrc}
+          style={{ ...baseStyle, position: 'absolute', top: 0, left: 0, opacity: 0, pointerEvents: 'none' }}
+          alt=""
+        />
+      )}
+      {/* Current pose */}
+      <img
+        key={`${sources[loadStage]}-${emotionKey}`}
+        src={sources[loadStage]}
+        style={{ ...baseStyle, opacity: 1 }}
+        alt=""
+        onError={() => setLoadStage(prev => prev + 1)}
+      />
+    </div>
   )
 }
 

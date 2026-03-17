@@ -35,6 +35,7 @@ export default function ConflictTimeline({
   beats, beatIndex, isPlaying, phase, onPlayPause, onSelectBeat,
   tags = [],    // [{ id, beatIndex, emoji }]
   playReady = false, partnerPlayReady = false, // Together mode ready-to-play gate
+  onFinishAnnotation = null, // Version B: callback when user finishes solo_viewing annotation
 }) {
   const svgRef = useRef(null)
   const [svgW, setSvgW] = useState(800)
@@ -213,6 +214,21 @@ export default function ConflictTimeline({
           </span>
         )}
       </div>
+
+      {/* Version B: Finish Annotation button — appears in solo_viewing when at last beat and not playing */}
+      {onFinishAnnotation && phase === 'solo_viewing' && beatIndex >= beats.length - 1 && !isPlaying && (
+        <button
+          onClick={onFinishAnnotation}
+          className="font-mono text-[10px] px-4 py-1.5 rounded-lg border transition-all hover:scale-105 flex-shrink-0 anim-fadeIn"
+          style={{
+            color: '#90e8a8',
+            borderColor: 'rgba(144,232,168,0.35)',
+            background: 'rgba(144,232,168,0.07)',
+          }}
+        >
+          完成标注 →
+        </button>
+      )}
     </div>
   )
 }
