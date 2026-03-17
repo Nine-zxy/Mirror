@@ -18,13 +18,25 @@ import EmotionBar        from './components/EmotionBar'
 import ConflictTimeline  from './components/ConflictTimeline'
 import ReflectionOverlay from './components/ReflectionOverlay'
 import DivergenceSummary from './components/DivergenceSummary'
+import SelfConfirmScreen from './components/SelfConfirmScreen'
+import DivergenceCards   from './components/DivergenceCards'
 import ScriptPanel       from './components/ScriptPanel'
 import SyncStatusBadge   from './components/SyncStatusBadge'
 
 // ─────────────────────────────────────────────────────────────
-//  App — Root state machine
-//  Phase flow: intro → [lobby] → input → simulation → reflection → end
+//  App — Root state machine  (Version B)
+//
+//  Phase flow:
+//    intro → [lobby] → input → solo_viewing → self_confirm
+//      → [together_viewing] → divergence
+//
+//  solo_viewing:     Watch playback, see only partner's thoughts, can edit them
+//  self_confirm:     Confirm/edit AI's inference about YOUR OWN thoughts
+//  together_viewing: (Together mode only) Watch together with edited versions
+//  divergence:       Three-layer comparison cards
+//
 //  Lobby phase only in Together mode
+//  together_viewing only in Together mode
 // ─────────────────────────────────────────────────────────────
 
 // Default scene elements per scene key (CSS fallback furniture/props)
@@ -204,6 +216,7 @@ export default function App() {
 
   const [tags, setTags]                 = useState([])
   const [disputes, setDisputes]         = useState({})
+  const [selfConfirms, setSelfConfirms] = useState({})
 
   // Together mode state
   const [proximity, setProximity]               = useState(null)
@@ -250,8 +263,8 @@ export default function App() {
         isRemote.current = true
         setLiveScenario(msg.scenario)
         setPersonas(msg.scenario.personas)
-        setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({})
-        setPhase('simulation')
+        setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
+        setPhase('solo_viewing')
         setIsPlaying(false)  // Don't auto-play — require both to press play
         setPlayReady(false); setPartnerPlayReady(false)
         log('scenario_received', { source: msg.source })
@@ -314,11 +327,16 @@ export default function App() {
     const next = beatIndex + 1
     if (next >= beats.length) {
       setIsPlaying(false)
-      setTimeout(() => {
-        setPhase('reflection')
-        logPhase('simulation', 'reflection')
-        syncSend('sync:phase', { phase: 'reflection' })
-      }, 1200)
+      // In solo_viewing: just stop playback. User clicks "完成标注" to proceed.
+      // In together_viewing: auto-transition to divergence after brief pause.
+      if (phase === 'together_viewing') {
+        setTimeout(() => {
+          setPhase('divergence')
+          logPhase('together_viewing', 'divergence')
+          syncSend('sync:phase', { phase: 'divergence' })
+        }, 1200)
+      }
+      // solo_viewing: no auto-transition — wait for user to click "完成标注"
       return
     }
     const nb = beats[next]
@@ -326,22 +344,23 @@ export default function App() {
     logBeat(next, 'auto')
     syncSend('sync:beat', { beatIndex: next, isPlaying: !nb.isPausePoint })
     if (nb.isPausePoint) setIsPlaying(false)
-  }, [beatIndex, beats, syncSend])
+  }, [beatIndex, beats, phase, syncSend])
 
+  const isPlaybackPhase = phase === 'solo_viewing' || phase === 'together_viewing'
   useEffect(() => {
-    if (!isPlaying || phase !== 'simulation') return
+    if (!isPlaying || !isPlaybackPhase) return
     timerRef.current = setTimeout(advance, currentBeat?.duration ?? 4000)
     return () => clearTimeout(timerRef.current)
-  }, [isPlaying, beatIndex, phase, currentBeat, advance])
+  }, [isPlaying, beatIndex, isPlaybackPhase, currentBeat, advance])
 
-  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby'])
+  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby', 'self_confirm', 'divergence'])
 
   const handlePlayPause = useCallback(() => {
     if (BLOCKING_PHASES.has(phase)) return
     if (phase === 'end') {
-      setBeatIndex(0); setPhase('simulation'); setIsPlaying(true)
-      logPhase('end', 'simulation')
-      syncSend('sync:phase', { phase: 'simulation' })
+      setBeatIndex(0); setPhase('solo_viewing'); setIsPlaying(true)
+      logPhase('end', 'solo_viewing')
+      syncSend('sync:phase', { phase: 'solo_viewing' })
       syncSend('sync:beat', { beatIndex: 0, isPlaying: true })
       return
     }
@@ -381,9 +400,14 @@ export default function App() {
 
   const handleSelectBeat = useCallback((idx) => {
     clearTimeout(timerRef.current)
-    setBeatIndex(idx); setIsPlaying(false); setPhase('simulation'); logSeek(idx)
+    setBeatIndex(idx); setIsPlaying(false)
+    // Stay in current phase if it's a playback phase, else go to solo_viewing
+    if (phase !== 'solo_viewing' && phase !== 'together_viewing') {
+      setPhase('solo_viewing')
+    }
+    logSeek(idx)
     syncSend('sync:beat', { beatIndex: idx, isPlaying: false })
-  }, [syncSend])
+  }, [phase, syncSend])
 
   // ── Intro → mode selection ────────────────────────────────
   const handleBegin = useCallback((mode, prox) => {
@@ -420,18 +444,18 @@ export default function App() {
       const arc = scenario.personas.A.archetype
       logArchetype(arc.relationshipType, arc.communicationStyle || [], arc.communicationStyle || [])
     }
-    setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({})
-    setPhase('simulation')
-    logPhase('input', 'simulation')
+    setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
+    setPhase('solo_viewing')
+    logPhase('input', 'solo_viewing')
 
     if (sync.mode === 'together') {
       // Together: don't auto-play, require both to press play
       setIsPlaying(false)
       setPlayReady(false); setPartnerPlayReady(false)
       sync.send('scenario:generated', { scenario })
-      syncSend('sync:phase', { phase: 'simulation' })
+      syncSend('sync:phase', { phase: 'solo_viewing' })
     } else {
-      // Solo: auto-play as before
+      // Solo: auto-play
       setIsPlaying(true)
       logBeat(0, 'auto')
     }
@@ -440,11 +464,47 @@ export default function App() {
   const handleReflectionDone = useCallback(() => {
     setPhase('end'); logPhase('reflection', 'end')
     syncSend('sync:phase', { phase: 'end' })
-    // Request partner's annotations
     if (sync.mode === 'together') {
       sync.requestPartnerAnnotations()
     }
   }, [sync, syncSend])
+
+  // ── Version B: Phase transition handlers ────────────────────
+
+  // solo_viewing → self_confirm (user clicks "完成标注")
+  const handleFinishAnnotation = useCallback(() => {
+    setIsPlaying(false)
+    setPhase('self_confirm')
+    logPhase('solo_viewing', 'self_confirm')
+    syncSend('sync:phase', { phase: 'self_confirm' })
+    log('annotation_finished', { disputeCount: Object.keys(disputes).length })
+  }, [disputes, syncSend])
+
+  // SelfConfirmScreen: confirm/edit a single beat
+  const handleSelfConfirm = useCallback((role, beatId, data) => {
+    const key = `${role}-${beatId}`
+    setSelfConfirms(prev => ({ ...prev, [key]: data }))
+    log('self_confirm', { key, status: data.status, emotionChanged: data.emotion !== data.originalEmotion })
+  }, [])
+
+  // self_confirm → together_viewing (together) or divergence (solo)
+  const handleSelfConfirmDone = useCallback(() => {
+    if (sync.mode === 'together') {
+      // Send self-confirms to server for partner reveal later
+      sync.send('annotation:self_confirms', { selfConfirms })
+      // Go to together_viewing — replay with edited versions
+      setBeatIndex(0)
+      setPhase('together_viewing')
+      setIsPlaying(false)
+      setPlayReady(false); setPartnerPlayReady(false)
+      logPhase('self_confirm', 'together_viewing')
+      syncSend('sync:phase', { phase: 'together_viewing' })
+    } else {
+      // Solo mode: skip together_viewing, go straight to divergence
+      setPhase('divergence')
+      logPhase('self_confirm', 'divergence')
+    }
+  }, [sync, syncSend, selfConfirms])
 
   const handleMark = useCallback((emoji) => {
     setTags(prev => [...prev, { id: Date.now(), beatIndex, emoji }])
@@ -542,6 +602,39 @@ export default function App() {
   if (phase === 'input')
     return <ConflictInput onScenarioReady={handleScenarioReady} syncMode={sync.mode} />
 
+  if (phase === 'self_confirm')
+    return (
+      <SelfConfirmScreen
+        beats={beats}
+        personas={personas}
+        myRole={myRole}
+        selfConfirms={selfConfirms}
+        onSelfConfirm={handleSelfConfirm}
+        onDone={handleSelfConfirmDone}
+      />
+    )
+
+  if (phase === 'divergence')
+    return (
+      <DivergenceCards
+        beats={beats}
+        personas={personas}
+        disputes={disputes}
+        selfConfirms={selfConfirms}
+        myRole={myRole}
+        onReplay={() => {
+          setBeatIndex(0); setPhase('solo_viewing'); setIsPlaying(true)
+          setDisputes({}); setSelfConfirms({})
+          logPhase('divergence', 'solo_viewing')
+          syncSend('sync:phase', { phase: 'solo_viewing' })
+          syncSend('sync:beat', { beatIndex: 0, isPlaying: true })
+        }}
+        onReconfigure={() => { setPhase('input'); setDisputes({}); setSelfConfirms({}) }}
+        onExport={downloadLog}
+      />
+    )
+
+  // ── Playback phases: solo_viewing, together_viewing (and legacy simulation/reflection/end) ──
   return (
     <div className="flex flex-col h-screen bg-black overflow-hidden select-none">
 
@@ -555,6 +648,8 @@ export default function App() {
         </div>
         <span className="font-mono text-[10px] text-white/20 tracking-widest truncate mx-4">
           {liveScenario.title}
+          {phase === 'solo_viewing' && <span className="ml-2 text-[8px] text-white/12">· SOLO VIEWING</span>}
+          {phase === 'together_viewing' && <span className="ml-2 text-[8px] text-white/12">· TOGETHER</span>}
         </span>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <button onClick={handleBubbleCycle}
@@ -611,9 +706,9 @@ export default function App() {
               tags={tags}
               annotation={annotation}
               onReplay={() => {
-                setBeatIndex(0); setPhase('simulation'); setIsPlaying(true)
-                logPhase('end', 'simulation')
-                syncSend('sync:phase', { phase: 'simulation' })
+                setBeatIndex(0); setPhase('solo_viewing'); setIsPlaying(true)
+                logPhase('end', 'solo_viewing')
+                syncSend('sync:phase', { phase: 'solo_viewing' })
                 syncSend('sync:beat', { beatIndex: 0, isPlaying: true })
               }}
               onReconfigure={() => setPhase('input')}
@@ -655,6 +750,7 @@ export default function App() {
         onSelectBeat={handleSelectBeat}
         playReady={playReady}
         partnerPlayReady={partnerPlayReady}
+        onFinishAnnotation={phase === 'solo_viewing' ? handleFinishAnnotation : null}
       />
     </div>
   )

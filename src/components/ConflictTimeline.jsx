@@ -69,7 +69,7 @@ export default function ConflictTimeline({
     tagsByBeat[t.beatIndex].push(t)
   })
 
-  const disabled = phase === 'reflection' || phase === 'intro'
+  const disabled = phase === 'reflection' || phase === 'intro' || phase === 'self_confirm' || phase === 'divergence'
 
   return (
     <div
