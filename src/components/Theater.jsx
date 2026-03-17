@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import PixelChar      from './PixelChar'
 import ThoughtBubble  from './ThoughtBubble'
 import Subtitle       from './Subtitle'
@@ -994,26 +994,26 @@ function FloatingMark({ onMark, phase }) {
   )
 }
 
-// ── Character Sprite (PNG with PixelChar fallback) ───────────
+// ── Character Sprite (PNG sprite with PixelChar SVG fallback) ─
+// Load order:
+//   1. /sprites/{spriteType}/{emotionKey}.png  (new Stardew-style sprites)
+//   2. /assets/sprites/{persona.id}/{emotionKey}.png  (legacy per-persona)
+//   3. PixelChar SVG (always available fallback)
 function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) {
-  const [imgError, setImgError] = useState(false)
+  const [loadStage, setLoadStage] = useState(0)  // 0=primary, 1=legacy, 2=svg
 
-  // Map pose to sprite emotion filename
   const emotionKey = EMOTION_TO_SPRITE[spPose] || 'neutral'
-  const hairStyle   = persona.hairStyle   || 'short'
-  const outfitStyle = persona.outfitStyle || 'casual'
+  // spriteType: 'male'/'female'/custom — set in persona data, defaults based on id
+  const spriteType = persona.spriteType || (persona.id === 'A' ? 'female' : 'male')
 
-  // Try appearance-specific sprite first, then generic per persona
-  const spriteSrc = `/assets/sprites/${persona.id}/${hairStyle}_${outfitStyle}_${emotionKey}.png`
-  const fallbackSrc = `/assets/sprites/${persona.id}/${emotionKey}.png`
+  const sources = [
+    `/sprites/${spriteType}/${emotionKey}.png`,
+    `/assets/sprites/${persona.id}/${emotionKey}.png`,
+  ]
 
-  const usePng = !imgError
+  // Reset load stage when emotion changes
+  useEffect(() => { setLoadStage(0) }, [emotionKey, spriteType])
 
-  const colorFilter = PERSONA_FILTERS[persona.id] || ''
-  const glowFilter  = glow ? `drop-shadow(0 0 14px ${persona.glowColor})` : ''
-  const combinedFilter = [colorFilter, glowFilter].filter(Boolean).join(' ')
-
-  // Character scale: 0.86 × stage scale for a more cinematic fill
   const charScale = scale * 0.86
 
   const imgStyle = {
@@ -1021,12 +1021,12 @@ function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) 
     imageRendering: 'pixelated',
     transform: facing === 'left' ? 'scaleX(-1)' : 'none',
     filter: glow ? `drop-shadow(0 0 14px ${persona.glowColor})` : 'none',
-    animation: 'charBreathe 3s ease-in-out infinite',
     display: 'block',
-    transition: 'height 0.3s ease',
+    transition: 'height 0.3s ease, filter 0.3s ease',
   }
 
-  if (!usePng) {
+  // All PNG sources exhausted → SVG fallback
+  if (loadStage >= sources.length) {
     return (
       <PixelChar
         persona={persona}
@@ -1041,29 +1041,18 @@ function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) 
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      {/* Try appearance-specific sprite */}
-      <img
-        src={spriteSrc}
-        style={imgStyle}
-        alt=""
-        onError={() => {
-          // Try fallback generic sprite
-          const img = new Image()
-          img.src = fallbackSrc
-          img.onload = () => {} // fallbackSrc will load ok
-          img.onerror = () => setImgError(true)
-          // If spriteSrc failed, try fallbackSrc via re-render
-          setImgError(true)
-        }}
-      />
-      {/* After error, fall to PixelChar above */}
-    </div>
+    <img
+      key={`${sources[loadStage]}-${emotionKey}`}
+      src={sources[loadStage]}
+      style={imgStyle}
+      alt=""
+      onError={() => setLoadStage(prev => prev + 1)}
+    />
   )
 }
 
 // ── Character layer ───────────────────────────────────────────
-function CharacterLayer({ beat, personas, showThoughts, disputes, onDispute, scene }) {
+function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute, scene }) {
   const { spatial, thoughts, dialogue } = beat
   const speakerId = dialogue?.speaker || null   // which persona is speaking this beat
   // Per-scene character scale from SCENE_PRESETS (e.g. car=0.60, park=0.68, bedroom=0.78)
@@ -1099,7 +1088,7 @@ function CharacterLayer({ beat, personas, showThoughts, disputes, onDispute, sce
               <ThoughtBubble
                 thought={thought}
                 personaId={id}
-                visible={showThoughts}
+                visible={thoughtVisibility?.[id] ?? true}
                 beatId={beat.id}
                 dispute={dispute}
                 onDispute={onDispute}
@@ -1141,7 +1130,7 @@ function CharacterLayer({ beat, personas, showThoughts, disputes, onDispute, sce
 //  Main Theater export
 // ─────────────────────────────────────────────────────────────
 export default function Theater({
-  beat, personas, showThoughts, phase,
+  beat, personas, thoughtVisibility, phase,
   scene: sceneProp,          // from liveScenario.scene
   sceneElements: elsProp,    // from liveScenario.sceneElements
   disputes = {}, onDispute, onMark,
@@ -1184,7 +1173,7 @@ export default function Theater({
           <CharacterLayer
             beat={beat}
             personas={personas}
-            showThoughts={showThoughts}
+            thoughtVisibility={thoughtVisibility}
             disputes={disputes}
             onDispute={onDispute}
             scene={scene}

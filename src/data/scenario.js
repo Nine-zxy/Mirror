@@ -30,6 +30,8 @@ export const scenario = {
       hairColor: '#8B4513',
       outfitColor: '#4a80c8',
       outfitDark: '#2a5098',
+      // Sprite type for PNG sprite loading (maps to /sprites/{spriteType}/)
+      spriteType: 'female',
       // Modular appearance (PixelChar v3)
       hairStyle: 'medium',
       outfitStyle: 'casual',
@@ -47,6 +49,8 @@ export const scenario = {
       hairColor: '#3a2820',
       outfitColor: '#b84a4a',
       outfitDark: '#7a2a2a',
+      // Sprite type for PNG sprite loading (maps to /sprites/{spriteType}/)
+      spriteType: 'male',
       // Modular appearance (PixelChar v3)
       hairStyle: 'short',
       outfitStyle: 'casual',

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { scenario as BASE_SCENARIO }                from './data/scenario'
 import { APPEARANCE_OPTIONS, SCENE_PRESETS }        from './data/dramaElements'
 import {
@@ -189,7 +189,12 @@ export default function App() {
   const [phase, setPhase]               = useState('intro')
   const [beatIndex, setBeatIndex]       = useState(0)
   const [isPlaying, setIsPlaying]       = useState(false)
-  const [showThoughts, setShowThoughts] = useState(true)
+  // Bubble visibility: 'none' | 'partner' | 'both'
+  // In together mode default='partner' (only see other person's thoughts)
+  // In solo mode default='both' (see everything)
+  const [bubbleVisibility, setBubbleVisibility] = useState(() =>
+    sync.mode === 'together' ? 'partner' : 'both'
+  )
   const [showScript, setShowScript]     = useState(false)
   const [showPersonaEditor, setShowPersonaEditor] = useState(false)
   const [annotation, setAnnotation]     = useState('')
@@ -489,20 +494,37 @@ export default function App() {
     syncSend('sync:scene', { sceneKey })
   }, [liveScenario.sceneElements, syncSend])
 
-  const handleThoughtsToggle = useCallback(() => {
-    setShowThoughts(p => { logToggle('thought', !p); return !p })
+  // Cycle: partner → both → none → partner …
+  const BUBBLE_CYCLE = ['partner', 'both', 'none']
+  const handleBubbleCycle = useCallback(() => {
+    setBubbleVisibility(prev => {
+      const idx = BUBBLE_CYCLE.indexOf(prev)
+      const next = BUBBLE_CYCLE[(idx + 1) % BUBBLE_CYCLE.length]
+      logToggle('bubble_visibility', next)
+      return next
+    })
   }, [])
+
+  // Compute per-character thought visibility for Theater
+  const myRole = sync.role || 'A'  // solo mode defaults to A
+  const thoughtVisibility = useMemo(() => {
+    if (bubbleVisibility === 'none')    return { A: false, B: false }
+    if (bubbleVisibility === 'both')    return { A: true,  B: true }
+    // 'partner': only show the OTHER person's thoughts
+    if (myRole === 'A') return { A: false, B: true }
+    else                return { A: true,  B: false }
+  }, [bubbleVisibility, myRole])
 
   useEffect(() => {
     const k = (e) => {
       if (e.code === 'Space')      { e.preventDefault(); handlePlayPause() }
       if (e.code === 'ArrowRight') { advance(); logBeat(beatIndex + 1, 'keyboard') }
-      if (e.code === 'KeyT')       handleThoughtsToggle()
+      if (e.code === 'KeyT')       handleBubbleCycle()
       if (e.code === 'KeyS')       setShowScript(p => !p)
     }
     window.addEventListener('keydown', k)
     return () => window.removeEventListener('keydown', k)
-  }, [handlePlayPause, advance, beatIndex, handleThoughtsToggle])
+  }, [handlePlayPause, advance, beatIndex, handleBubbleCycle])
 
   const hBtn = (active, color = '#7ab0e8') => ({
     color:       active ? color : '#3a3a3a',
@@ -535,10 +557,11 @@ export default function App() {
           {liveScenario.title}
         </span>
         <div className="flex items-center gap-1.5 flex-shrink-0">
-          <button onClick={handleThoughtsToggle}
-            className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
-            style={hBtn(showThoughts)}>
-            💭 内心
+          <button onClick={handleBubbleCycle}
+            className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all relative"
+            style={hBtn(bubbleVisibility !== 'none')}
+            title={`气泡: ${bubbleVisibility === 'none' ? '关闭' : bubbleVisibility === 'partner' ? '仅对方' : '全部'} (T)`}>
+            💭 {bubbleVisibility === 'none' ? '关闭' : bubbleVisibility === 'partner' ? '对方' : '全部'}
           </button>
           <button onClick={() => setShowScript(p => !p)}
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
@@ -560,7 +583,7 @@ export default function App() {
           <Theater
             beat={currentBeat}
             personas={personas}
-            showThoughts={showThoughts}
+            thoughtVisibility={thoughtVisibility}
             scene={liveScenario.scene || 'bedroom_night'}
             sceneElements={liveScenario.sceneElements}
             phase={phase}
