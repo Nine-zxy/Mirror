@@ -202,11 +202,10 @@ export default function App() {
   const [beatIndex, setBeatIndex]       = useState(0)
   const [isPlaying, setIsPlaying]       = useState(false)
   // Bubble visibility: 'none' | 'partner' | 'both'
-  // In together mode default='partner' (only see other person's thoughts)
-  // In solo mode default='both' (see everything)
-  const [bubbleVisibility, setBubbleVisibility] = useState(() =>
-    sync.mode === 'together' ? 'partner' : 'both'
-  )
+  // Default = 'partner' (DP6: Peer-First — only see other person's thoughts in solo_viewing)
+  // User can manually cycle to 'both' or 'none' via toggle
+  // Together Viewing will switch to 'both' automatically
+  const [bubbleVisibility, setBubbleVisibility] = useState('partner')
   const [showScript, setShowScript]     = useState(false)
   const [showPersonaEditor, setShowPersonaEditor] = useState(false)
   const [annotation, setAnnotation]     = useState('')
@@ -492,9 +491,10 @@ export default function App() {
     if (sync.mode === 'together') {
       // Send self-confirms to server for partner reveal later
       sync.send('annotation:self_confirms', { selfConfirms })
-      // Go to together_viewing — replay with edited versions
+      // Go to together_viewing — replay with edited versions, show both bubbles
       setBeatIndex(0)
       setPhase('together_viewing')
+      setBubbleVisibility('both')  // Together Viewing shows both sides' edited versions
       setIsPlaying(false)
       setPlayReady(false); setPartnerPlayReady(false)
       logPhase('self_confirm', 'together_viewing')
