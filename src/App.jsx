@@ -575,16 +575,24 @@ export default function App() {
     else                return { A: true,  B: false }
   }, [bubbleVisibility, myRole])
 
+  // DEV: Ctrl+D → skip to solo_viewing with base scenario (remove before production)
+  const devSkip = useCallback(() => {
+    setLiveScenario(BASE_SCENARIO); setPersonas(BASE_SCENARIO.personas)
+    setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
+    setPhase('solo_viewing'); setIsPlaying(true)
+  }, [])
+
   useEffect(() => {
     const k = (e) => {
       if (e.code === 'Space')      { e.preventDefault(); handlePlayPause() }
       if (e.code === 'ArrowRight') { advance(); logBeat(beatIndex + 1, 'keyboard') }
       if (e.code === 'KeyT')       handleBubbleCycle()
       if (e.code === 'KeyS')       setShowScript(p => !p)
+      if (e.code === 'KeyD' && e.ctrlKey) { e.preventDefault(); devSkip() }
     }
     window.addEventListener('keydown', k)
     return () => window.removeEventListener('keydown', k)
-  }, [handlePlayPause, advance, beatIndex, handleBubbleCycle])
+  }, [handlePlayPause, advance, beatIndex, handleBubbleCycle, devSkip])
 
   const hBtn = (active, color = '#7ab0e8') => ({
     color:       active ? color : '#3a3a3a',

@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "dev:together": "concurrently \"npm run dev\" \"npm run server\""
+    "dev:together": "concurrently \"vite --host\" \"npm run server\""
   },
   "dependencies": {
     "lucide-react": "^0.344.0",

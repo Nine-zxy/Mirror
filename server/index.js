@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { WebSocketServer } from 'ws'
+import { networkInterfaces } from 'os'
 import { RoomManager } from './roomManager.js'
 
 const PORT = parseInt(process.argv[2] || process.env.ASIDE_WS_PORT || '3001', 10)
@@ -49,13 +50,31 @@ const heartbeat = setInterval(() => {
 
 wss.on('close', () => clearInterval(heartbeat))
 
+// Get LAN IP for display
+const lanIP = (() => {
+  const nets = networkInterfaces()
+  for (const iface of Object.values(nets)) {
+    for (const info of iface) {
+      if (info.family === 'IPv4' && !info.internal) return info.address
+    }
+  }
+  return 'localhost'
+})()
+
 console.log(`
   ╔═══════════════════════════════════════╗
   ║  ASIDE Sync Server                    ║
-  ║  Port: ${String(PORT).padEnd(33)}║
+  ║  Local:   ws://localhost:${PORT}            ║
+  ║  Network: ws://${lanIP}:${PORT}       ║
   ║  Ready for connections                ║
   ╚═══════════════════════════════════════╝
+
+  两台设备使用方法:
+  1. 主机运行: npm run dev:together
+  2. 两台设备都打开: http://${lanIP}:5173
+  3. 设备A创建房间 → 设备B输入房间码加入
 `)
+
 
 // Graceful shutdown
 process.on('SIGINT', () => {

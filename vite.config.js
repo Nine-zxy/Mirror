@@ -18,6 +18,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
+      // Use --host flag when running dev:together for LAN access
+      // e.g. vite --host
       proxy: {
         ...(geminiKey
           ? {
