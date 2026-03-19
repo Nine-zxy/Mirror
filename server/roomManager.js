@@ -63,6 +63,19 @@ export class RoomManager {
       return
     }
 
+    // Clean up any previous room this client was in (e.g. auto-created room)
+    const prevCtx = this.clientRoom.get(ws)
+    if (prevCtx) {
+      const prevRoom = this.rooms.get(prevCtx.code)
+      if (prevRoom && prevCtx.code !== code) {
+        prevRoom.clients.delete(prevCtx.role)
+        if (prevRoom.clients.size === 0) {
+          this.rooms.delete(prevCtx.code)
+          console.log(`[Room] ${prevCtx.code}: cleaned up (client moved to ${code})`)
+        }
+      }
+    }
+
     room.clients.set('B', ws)
     this.clientRoom.set(ws, { code, role: 'B' })
 

@@ -126,6 +126,10 @@ export default function useSync(mode = 'solo') {
   }, [send])
 
   const joinRoom = useCallback((code) => {
+    // Reset any existing room state before joining (e.g. if auto-created a room)
+    setRoomCode(null)
+    setRole(null)
+    setPartnerConnected(false)
     send('room:join', { code: code.toUpperCase().trim() })
   }, [send])
 

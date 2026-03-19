@@ -14,8 +14,9 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
   const [tab, setTab] = useState('create')  // 'create' | 'join'
   const [joinCode, setJoinCode] = useState('')
   const [error, setError] = useState(null)
+  const [joinedRoom, setJoinedRoom] = useState(false) // track if user actively joined
 
-  // Create room on mount if creating
+  // Create room only when on the create tab (not when on join tab)
   useEffect(() => {
     if (tab === 'create' && sync.connected && !sync.roomCode) {
       sync.createRoom(proximity)
@@ -27,6 +28,14 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
     if (sync.mode !== 'together') return
     return sync.onMessage('room:error', (msg) => {
       setError(msg.message)
+    })
+  }, [sync])
+
+  // Track successful join
+  useEffect(() => {
+    if (sync.mode !== 'together') return
+    return sync.onMessage('room:joined', () => {
+      setJoinedRoom(true)
     })
   }, [sync])
 
@@ -182,8 +191,8 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
               加入
             </button>
 
-            {/* Partner status (shown after joining) */}
-            {sync.roomCode && (
+            {/* Partner status (shown after actually joining via the join button) */}
+            {joinedRoom && sync.roomCode && (
               <div className="flex items-center gap-2 mt-1">
                 <div className="w-2 h-2 rounded-full" style={{ background: '#60c880', boxShadow: '0 0 8px #60c880' }} />
                 <span className="font-mono text-[10px]" style={{ color: '#60c880' }}>

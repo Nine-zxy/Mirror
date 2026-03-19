@@ -1100,7 +1100,7 @@ function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute
         return (
           <div key={id} className="absolute" style={{
             left: `${sp.x}%`,
-            bottom: '28%',          // sit on the CSS floor (RoomWalls floor = bottom 28%)
+            bottom: '5%',           // on the floor line of backgrounds
             transform: 'translateX(-50%)',
             transition: 'left 0.9s cubic-bezier(0.4,0,0.2,1), bottom 0.9s ease, opacity 0.5s ease, filter 0.5s ease',
             zIndex: isSpeaking ? 12 : 10,
@@ -1129,7 +1129,7 @@ function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute
                 persona={persona}
                 spPose={sp.pose || 'neutral'}
                 facing={sp.facing || 'right'}
-                scale={(sp.scale || 1.0) * sceneCharScale}
+                scale={(sp.scale || 1.0) * sceneCharScale * 2.5}
                 glow={true}
               />
             </div>

@@ -52,15 +52,15 @@ const BUBBLE_TYPES = {
 }
 
 const EMOTION_STYLE = {
-  anxious:    { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', icon: '〜', label: '焦虑' },
-  defensive:  { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', icon: '◈', label: '防备' },
-  angry:      { bg: 'rgba(210,55,55,0.14)',   border: '#e04040', text: '#f8a0a0', icon: '■', label: '愤怒' },
-  hurt:       { bg: 'rgba(90,80,170,0.10)',   border: '#7060c0', text: '#c0b8f0', icon: '▽', label: '受伤' },
-  withdrawn:  { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', icon: '◁', label: '退缩' },
-  warm:       { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', icon: '◉', label: '温暖' },
-  reflective: { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', icon: '✦', label: '反思' },
-  surprised:  { bg: 'rgba(200,160,55,0.10)',  border: '#d8b040', text: '#f8e8a0', icon: '◎', label: '惊讶' },
-  neutral:    { bg: 'rgba(90,90,90,0.09)',    border: '#7a7a7a', text: '#c0c0c0', icon: '○', label: '平静' },
+  anxious:    { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', icon: '〜', label: '焦虑', imgSrc: '/assets/ui/emotions/stressed.png' },
+  defensive:  { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', icon: '◈', label: '防备', imgSrc: '/assets/ui/emotions/confused.png' },
+  angry:      { bg: 'rgba(210,55,55,0.14)',   border: '#e04040', text: '#f8a0a0', icon: '■', label: '愤怒', imgSrc: '/assets/ui/emotions/angry.png' },
+  hurt:       { bg: 'rgba(90,80,170,0.10)',   border: '#7060c0', text: '#c0b8f0', icon: '▽', label: '受伤', imgSrc: '/assets/ui/emotions/sleepy.png' },
+  withdrawn:  { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', icon: '◁', label: '退缩', imgSrc: '/assets/ui/emotions/sleepy.png' },
+  warm:       { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', icon: '◉', label: '温暖', imgSrc: '/assets/ui/emotions/happy.png' },
+  reflective: { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', icon: '✦', label: '反思', imgSrc: '/assets/ui/emotions/thinking.png' },
+  surprised:  { bg: 'rgba(200,160,55,0.10)',  border: '#d8b040', text: '#f8e8a0', icon: '◎', label: '惊讶', imgSrc: '/assets/ui/emotions/surprised.png' },
+  neutral:    { bg: 'rgba(90,90,90,0.09)',    border: '#7a7a7a', text: '#c0c0c0', icon: '○', label: '平静', imgSrc: '/assets/ui/emotions/thinking.png' },
 }
 
 // Emotion options for re-tagging (subset most relevant to conflict)
@@ -90,32 +90,60 @@ function StatusBadge({ status }) {
 }
 
 // ── Quick reaction bar ──────────────────────────────────────
-function QuickReactBar({ onConfirm, onDispute, onEdit, onClose }) {
+// Two rows: Row 1 = confirm/dispute/edit, Row 2 = emotion quick-tags
+// Emotion tags let users quickly mark "I think they're feeling THIS"
+// without needing to open the full edit panel — lowers interaction cost
+function QuickReactBar({ onConfirm, onDispute, onEdit, onEmotionTag, onClose, currentEmotion }) {
   return (
     <div
-      className="mt-2 flex items-center gap-1 anim-fadeIn"
+      className="mt-2 flex flex-col gap-1.5 anim-fadeIn"
       onClick={e => e.stopPropagation()}
     >
-      <span className="font-mono text-[7px] text-white/25 mr-1">像TA吗？</span>
-      <button onClick={onConfirm}
-        className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
-        style={{ background: 'rgba(96,200,128,0.12)', color: '#60c880', border: '1px solid rgba(96,200,128,0.25)' }}>
-        👍 像
-      </button>
-      <button onClick={onDispute}
-        className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
-        style={{ background: 'rgba(232,122,122,0.12)', color: '#e87a7a', border: '1px solid rgba(232,122,122,0.25)' }}>
-        👎 不像
-      </button>
-      <button onClick={onEdit}
-        className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
-        style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
-        ✎ 改
-      </button>
-      <button onClick={onClose}
-        className="ml-auto font-mono text-[8px] text-white/20 hover:text-white/40 px-1">
-        ✕
-      </button>
+      {/* Row 1: confirm / dispute / edit */}
+      <div className="flex items-center gap-1">
+        <span className="font-mono text-[7px] text-white/25 mr-1">像TA吗？</span>
+        <button onClick={onConfirm}
+          className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+          style={{ background: 'rgba(96,200,128,0.12)', color: '#60c880', border: '1px solid rgba(96,200,128,0.25)' }}>
+          <img src="/assets/ui/icons/yes.png" alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> 像
+        </button>
+        <button onClick={onDispute}
+          className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+          style={{ background: 'rgba(232,122,122,0.12)', color: '#e87a7a', border: '1px solid rgba(232,122,122,0.25)' }}>
+          <img src="/assets/ui/icons/no.png" alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> 不像
+        </button>
+        <button onClick={onEdit}
+          className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+          style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <img src="/assets/ui/icons/edit.png" alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> 改
+        </button>
+        <button onClick={onClose}
+          className="ml-auto font-mono text-[8px] text-white/20 hover:text-white/40 px-1">
+          ✕
+        </button>
+      </div>
+      {/* Row 2: emotion quick-tags — click to re-tag emotion without opening full edit */}
+      <div className="flex items-center gap-0.5">
+        <span className="font-mono text-[6px] text-white/18 mr-0.5">情绪：</span>
+        {EMOTION_RETAG_OPTIONS.map(emo => {
+          const es = EMOTION_STYLE[emo] || EMOTION_STYLE.neutral
+          const active = currentEmotion === emo
+          return (
+            <button key={emo} onClick={() => onEmotionTag(emo)}
+              className="rounded transition-all hover:scale-110"
+              title={es.label}
+              style={{
+                padding: '2px',
+                background: active ? `${es.bg}` : 'transparent',
+                border: `1px solid ${active ? es.border + '60' : 'transparent'}`,
+                opacity: active ? 1 : 0.55,
+              }}>
+              <img src={es.imgSrc} alt={es.label}
+                style={{width:'18px', height:'18px', imageRendering:'pixelated'}} />
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -275,6 +303,19 @@ export default function ThoughtBubble({
     setMode('observe')
   }
 
+  // Quick emotion re-tag: one-tap to change the emotion without editing text
+  const handleEmotionTag = (newEmotion) => {
+    onDispute?.(personaId, beatId, {
+      source: 'user',
+      status: 'edited',
+      text: dispute?.text || thought.text,
+      original: thought.text,
+      emotion: newEmotion,
+      originalEmotion: thought.emotion,
+    })
+    setMode('observe')
+  }
+
   const handleClear = () => {
     onDispute?.(personaId, beatId, null)
     setMode('observe')
@@ -317,9 +358,7 @@ export default function ThoughtBubble({
             style={{ color: `${es.text}99`, opacity: 0.7 }}>
             内心
           </span>
-          <span className="text-[9px]" style={{ fontFamily: 'system-ui', opacity: 0.45 }}>
-            {es.icon}
-          </span>
+          <img src={es.imgSrc} alt="" style={{width:'14px', height:'14px', display:'inline', imageRendering:'pixelated', opacity: 0.7}} />
           {/* Emotion label when re-tagged */}
           {dispute?.emotion && dispute.emotion !== thought.emotion && (
             <span className="font-mono text-[7px] px-1 rounded"
@@ -339,7 +378,7 @@ export default function ThoughtBubble({
                 border: `1px solid ${hasInteraction ? borderColor + '60' : 'rgba(255,255,255,0.08)'}`,
               }}
             >
-              {hasInteraction ? '✎ 改' : '像TA吗？'}
+              {hasInteraction ? <><img src="/assets/ui/icons/edit.png" alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> 改</> : '像TA吗？'}
             </button>
           )}
         </div>
@@ -369,7 +408,9 @@ export default function ThoughtBubble({
           onConfirm={handleConfirm}
           onDispute={handleDisputeQuick}
           onEdit={() => setMode('edit')}
+          onEmotionTag={handleEmotionTag}
           onClose={() => setMode('observe')}
+          currentEmotion={dispute?.emotion || thought.emotion}
         />
       )}
 

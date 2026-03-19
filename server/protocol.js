@@ -35,6 +35,7 @@ export const MSG = {
 
   // Annotations (private until reveal)
   ANNOTATION_UPDATE:        'annotation:update',
+  ANNOTATION_SELF_CONFIRMS: 'annotation:self_confirms',
   ANNOTATION_REVEAL:        'annotation:reveal',
   ANNOTATION_REQUEST_REVEAL:'annotation:request_reveal',
 

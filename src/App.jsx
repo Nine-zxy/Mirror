@@ -14,7 +14,7 @@ import IntroScreen       from './components/IntroScreen'
 import LobbyScreen       from './components/LobbyScreen'
 import ConflictInput     from './components/ConflictInput'
 import Theater           from './components/Theater'
-import EmotionBar        from './components/EmotionBar'
+// EmotionBar removed: Stephy advised against elements without direct research justification
 import ConflictTimeline  from './components/ConflictTimeline'
 import ReflectionOverlay from './components/ReflectionOverlay'
 import DivergenceSummary from './components/DivergenceSummary'
@@ -220,8 +220,6 @@ export default function App() {
   // Together mode state
   const [proximity, setProximity]               = useState(null)
   const [partnerDisputes, setPartnerDisputes]   = useState(null)
-  const [playReady, setPlayReady]               = useState(false)   // "I pressed play, waiting for partner"
-  const [partnerPlayReady, setPartnerPlayReady] = useState(false)   // partner pressed play
 
   const beats       = liveScenario.beats
   const currentBeat = beats[beatIndex]
@@ -264,8 +262,7 @@ export default function App() {
         setPersonas(msg.scenario.personas)
         setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
         setPhase('solo_viewing')
-        setIsPlaying(false)  // Don't auto-play — require both to press play
-        setPlayReady(false); setPartnerPlayReady(false)
+        setIsPlaying(false)  // Don't auto-play — wait for either person to press play
         log('scenario_received', { source: msg.source })
         isRemote.current = false
       }
@@ -284,26 +281,6 @@ export default function App() {
       const newElements = SCENE_ELEMENTS_MAP[msg.sceneKey] || liveScenario.sceneElements
       setLiveScenario(prev => ({ ...prev, scene: msg.sceneKey, sceneElements: newElements }))
       isRemote.current = false
-    }))
-
-    // Ready-to-play gate
-    unsubs.push(sync.onMessage('sync:play_partner_ready', () => {
-      setPartnerPlayReady(true)
-    }))
-
-    unsubs.push(sync.onMessage('sync:play_go', (msg) => {
-      // Both ready → start playback simultaneously
-      isRemote.current = true
-      setPlayReady(false)
-      setPartnerPlayReady(false)
-      if (msg.beatIndex !== undefined) setBeatIndex(msg.beatIndex)
-      setIsPlaying(true)
-      log('playback_play', { beatIndex: msg.beatIndex ?? beatIndex, trigger: 'sync_go' })
-      isRemote.current = false
-    }))
-
-    unsubs.push(sync.onMessage('sync:play_cancel', () => {
-      setPartnerPlayReady(false)
     }))
 
     // Partner annotations reveal (at end phase)
@@ -364,28 +341,12 @@ export default function App() {
       return
     }
 
-    // Together mode: use ready-to-play gate for starting playback
-    if (sync.mode === 'together' && !isPlaying) {
-      if (playReady) {
-        // Cancel ready state
-        setPlayReady(false)
-        setPartnerPlayReady(false)
-        sync.send('sync:play_cancel', {})
-        log('play_ready_cancel', { beatIndex })
-      } else {
-        // Signal readiness
-        setPlayReady(true)
-        sync.send('sync:play_ready', { beatIndex })
-        log('play_ready', { beatIndex })
-      }
-      return
-    }
-
-    // Together mode: pausing is immediate (relay to partner)
-    if (sync.mode === 'together' && isPlaying) {
-      setIsPlaying(false)
-      log('playback_pause', { beatIndex })
-      syncSend('sync:beat', { beatIndex, isPlaying: false })
+    // Together mode: directly start or pause, syncing to partner via sync:beat
+    if (sync.mode === 'together') {
+      const next = !isPlaying
+      setIsPlaying(next)
+      log(next ? 'playback_play' : 'playback_pause', { beatIndex })
+      syncSend('sync:beat', { beatIndex, isPlaying: next })
       return
     }
 
@@ -395,7 +356,7 @@ export default function App() {
       log(next ? 'playback_play' : 'playback_pause', { beatIndex })
       return next
     })
-  }, [phase, beatIndex, syncSend, sync, isPlaying, playReady]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [phase, beatIndex, syncSend, sync, isPlaying]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSelectBeat = useCallback((idx) => {
     clearTimeout(timerRef.current)
@@ -448,9 +409,8 @@ export default function App() {
     logPhase('input', 'solo_viewing')
 
     if (sync.mode === 'together') {
-      // Together: don't auto-play, require both to press play
+      // Together: don't auto-play, wait for either person to press play
       setIsPlaying(false)
-      setPlayReady(false); setPartnerPlayReady(false)
       sync.send('scenario:generated', { scenario })
       syncSend('sync:phase', { phase: 'solo_viewing' })
     } else {
@@ -496,7 +456,6 @@ export default function App() {
       setPhase('together_viewing')
       setBubbleVisibility('both')  // Together Viewing shows both sides' edited versions
       setIsPlaying(false)
-      setPlayReady(false); setPartnerPlayReady(false)
       logPhase('self_confirm', 'together_viewing')
       syncSend('sync:phase', { phase: 'together_viewing' })
     } else {
@@ -664,17 +623,17 @@ export default function App() {
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all relative"
             style={hBtn(bubbleVisibility !== 'none')}
             title={`气泡: ${bubbleVisibility === 'none' ? '关闭' : bubbleVisibility === 'partner' ? '仅对方' : '全部'} (T)`}>
-            💭 {bubbleVisibility === 'none' ? '关闭' : bubbleVisibility === 'partner' ? '对方' : '全部'}
+            <img src="/assets/ui/icons/thought.png" alt="" className="inline w-3.5 h-3.5" style={{imageRendering:'pixelated'}} /> {bubbleVisibility === 'none' ? '关闭' : bubbleVisibility === 'partner' ? '对方' : '全部'}
           </button>
           <button onClick={() => setShowScript(p => !p)}
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
             style={hBtn(showScript, '#c8a850')} title="剧本面板 (S)">
-            📜 剧本
+            剧本
           </button>
           <button onClick={() => setShowPersonaEditor(p => !p)}
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
             style={hBtn(showPersonaEditor, '#b878c8')} title="场景与角色设定">
-            🎭 设定
+            设定
           </button>
         </div>
       </header>
@@ -747,7 +706,6 @@ export default function App() {
         )}
       </div>
 
-      <EmotionBar beat={currentBeat} personas={personas} phase={phase} />
       <ConflictTimeline
         beats={beats}
         beatIndex={beatIndex}
@@ -756,8 +714,6 @@ export default function App() {
         tags={tags}
         onPlayPause={handlePlayPause}
         onSelectBeat={handleSelectBeat}
-        playReady={playReady}
-        partnerPlayReady={partnerPlayReady}
         onFinishAnnotation={phase === 'solo_viewing' ? handleFinishAnnotation : null}
       />
     </div>
