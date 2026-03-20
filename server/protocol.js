@@ -43,6 +43,11 @@ export const MSG = {
   LOG_EVENT:                'log:event',
   LOG_EXPORT:               'log:export',
   LOG_EXPORT_RESULT:        'log:export_result',
+  LOG_SUBSCRIBE:            'log:subscribe',
+  LOG_SUBSCRIBED:           'log:subscribed',
+  LOG_FEED:                 'log:feed',
+  LOG_REQUEST:              'log:request',
+  LOG_RESPONSE:             'log:response',
 
   // Scenario storage (researcher pre-load)
   SCENARIO_SAVE:            'scenario:save',

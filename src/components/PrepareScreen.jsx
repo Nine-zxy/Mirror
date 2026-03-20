@@ -54,6 +54,384 @@ const BUBBLE_LABELS = {
   cloud: '云朵', aggressive: '尖锐', hesitation: '犹豫', warm: '温暖',
 }
 
+// ── WS URL (same logic as useSync) ────────────────────────────
+const WS_HTTP_URL = (() => {
+  const wsUrl = import.meta.env.VITE_WS_URL || `ws://${window.location.hostname}:3001`
+  return wsUrl.replace(/^ws:/, 'http:').replace(/^wss:/, 'https:')
+})()
+
+// ═══════════════════════════════════════════════════════════════
+//  ResearcherMonitor — real-time log monitoring
+// ═══════════════════════════════════════════════════════════════
+
+function ResearcherMonitor() {
+  const sync = useSyncContext()
+  const [monitorRoom, setMonitorRoom] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
+  const [subscribedRoom, setSubscribedRoom] = useState(null)
+  const [logEntries, setLogEntries] = useState([])
+  const [connectedClients, setConnectedClients] = useState([])
+  const [phases, setPhases] = useState({ A: '--', B: '--' })
+  const [logFiles, setLogFiles] = useState([])
+  const [downloading, setDownloading] = useState(false)
+  const logEndRef = useRef(null)
+  const MAX_DISPLAY = 50
+
+  // Fetch log file list
+  const fetchLogFiles = useCallback(async () => {
+    try {
+      const resp = await fetch(`${WS_HTTP_URL}/logs`)
+      const data = await resp.json()
+      setLogFiles(data.files || [])
+    } catch (err) {
+      console.error('[Monitor] Failed to fetch log files:', err)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchLogFiles()
+    const iv = setInterval(fetchLogFiles, 10000)
+    return () => clearInterval(iv)
+  }, [fetchLogFiles])
+
+  // Listen for live log feed
+  useEffect(() => {
+    if (!subscribed) return
+    const unsub = sync.onMessage('log:feed', (msg) => {
+      if (!msg.entry) return
+      setLogEntries(prev => {
+        const next = [...prev, msg.entry]
+        return next.length > MAX_DISPLAY ? next.slice(-MAX_DISPLAY) : next
+      })
+
+      // Track phases
+      if (msg.entry.event === 'phase_change' && msg.entry.data?.to) {
+        setPhases(prev => ({ ...prev, [msg.entry.role]: msg.entry.data.to }))
+      }
+
+      // Track connections
+      if (msg.entry.event === 'monitor_connected' && msg.entry.data?.connectedClients) {
+        setConnectedClients(msg.entry.data.connectedClients)
+      }
+      if (msg.entry.event === 'client_disconnected' && msg.entry.data?.role) {
+        setConnectedClients(prev => prev.filter(r => r !== msg.entry.data.role))
+      }
+    })
+    return unsub
+  }, [subscribed, sync])
+
+  // Auto-scroll
+  useEffect(() => {
+    logEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [logEntries])
+
+  const handleSubscribe = async () => {
+    const code = monitorRoom.toUpperCase().trim()
+    if (!code || !sync.connected) return
+    try {
+      const result = await sync.subscribeToLogs(code)
+      setSubscribed(true)
+      setSubscribedRoom(code)
+      // Load backfill
+      if (result.backfill && result.backfill.length > 0) {
+        setLogEntries(result.backfill.slice(-MAX_DISPLAY))
+        // Extract connected clients from backfill
+        const lastMonitor = [...result.backfill].reverse().find(e => e.event === 'monitor_connected')
+        if (lastMonitor?.data?.connectedClients) {
+          setConnectedClients(lastMonitor.data.connectedClients)
+        }
+      }
+    } catch (err) {
+      console.error('[Monitor] Subscribe failed:', err)
+    }
+  }
+
+  const handleUnsubscribe = () => {
+    setSubscribed(false)
+    setSubscribedRoom(null)
+    setLogEntries([])
+    setConnectedClients([])
+    setPhases({ A: '--', B: '--' })
+  }
+
+  const handleDownloadAll = async () => {
+    setDownloading(true)
+    try {
+      // Download all files matching the subscribed room
+      const roomFiles = logFiles.filter(f => f.filename.startsWith(subscribedRoom))
+      for (const file of roomFiles) {
+        const url = `${WS_HTTP_URL}/logs/${encodeURIComponent(file.filename)}`
+        const a = document.createElement('a')
+        a.href = url
+        a.download = file.filename
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+      }
+      if (roomFiles.length === 0) {
+        // Download all files
+        for (const file of logFiles.slice(0, 10)) {
+          const url = `${WS_HTTP_URL}/logs/${encodeURIComponent(file.filename)}`
+          const a = document.createElement('a')
+          a.href = url
+          a.download = file.filename
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
+        }
+      }
+    } catch (err) {
+      console.error('[Monitor] Download failed:', err)
+    }
+    setDownloading(false)
+  }
+
+  const formatTime = (ts) => {
+    try {
+      const d = new Date(ts)
+      return d.toLocaleTimeString('zh-CN', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    } catch { return '--:--:--' }
+  }
+
+  const eventColor = (event) => {
+    if (event?.includes('phase')) return '#c49cde'
+    if (event?.includes('beat')) return '#7ab0e8'
+    if (event?.includes('assumption') || event?.includes('dispute')) return '#e8c87a'
+    if (event?.includes('disconnect') || event?.includes('error')) return '#e87a7a'
+    if (event?.includes('connect') || event?.includes('session')) return '#58c878'
+    return 'rgba(255,255,255,0.5)'
+  }
+
+  const roleColor = (role) => {
+    if (role === 'A') return '#7ab0e8'
+    if (role === 'B') return '#e87a7a'
+    return 'rgba(255,255,255,0.35)'
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Subscribe bar */}
+      <div className="flex items-center gap-3">
+        {!subscribed ? (
+          <>
+            <input
+              value={monitorRoom}
+              onChange={e => setMonitorRoom(e.target.value.toUpperCase())}
+              placeholder="输入房间码 (如 ABCD)"
+              maxLength={4}
+              className="rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/25 focus:outline-none font-mono tracking-widest"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(122,176,232,0.2)',
+                width: '160px',
+                textTransform: 'uppercase',
+              }}
+              onKeyDown={e => e.key === 'Enter' && handleSubscribe()}
+            />
+            <button
+              onClick={handleSubscribe}
+              disabled={!sync.connected || monitorRoom.trim().length < 2}
+              className="font-mono text-[10px] px-4 py-2 rounded-lg border transition-all"
+              style={{
+                color: '#7ab0e8',
+                borderColor: 'rgba(122,176,232,0.3)',
+                background: 'rgba(122,176,232,0.06)',
+                cursor: sync.connected && monitorRoom.trim().length >= 2 ? 'pointer' : 'not-allowed',
+                opacity: sync.connected && monitorRoom.trim().length >= 2 ? 1 : 0.4,
+              }}
+            >
+              开始监控
+            </button>
+          </>
+        ) : (
+          <>
+            <span className="font-mono text-[11px] font-bold tracking-wider" style={{ color: '#58c878' }}>
+              MONITORING: {subscribedRoom}
+            </span>
+            <button
+              onClick={handleUnsubscribe}
+              className="font-mono text-[9px] px-3 py-1 rounded border transition-all"
+              style={{
+                color: 'rgba(255,255,255,0.4)',
+                borderColor: 'rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.03)',
+                cursor: 'pointer',
+              }}
+            >
+              停止
+            </button>
+            <div className="flex-1" />
+            <button
+              onClick={handleDownloadAll}
+              disabled={downloading}
+              className="font-mono text-[9px] px-3 py-1.5 rounded border transition-all"
+              style={{
+                color: '#58c878',
+                borderColor: 'rgba(88,200,120,0.3)',
+                background: 'rgba(88,200,120,0.06)',
+                cursor: downloading ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {downloading ? '下载中...' : '下载所有日志'}
+            </button>
+          </>
+        )}
+      </div>
+
+      {subscribed && (
+        <>
+          {/* Status panel */}
+          <div className="flex gap-4">
+            {/* Client A */}
+            <div className="flex-1 rounded-lg px-4 py-3" style={{
+              background: 'rgba(122,176,232,0.04)',
+              border: '1px solid rgba(122,176,232,0.12)',
+            }}>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-2 h-2 rounded-full" style={{
+                  background: connectedClients.includes('A') ? '#58c878' : '#e87a7a',
+                  boxShadow: connectedClients.includes('A') ? '0 0 6px rgba(88,200,120,0.5)' : 'none',
+                }} />
+                <span className="font-mono text-[10px] font-bold" style={{ color: '#7ab0e8' }}>
+                  被试 A
+                </span>
+                <span className="font-mono text-[8px]" style={{
+                  color: connectedClients.includes('A') ? '#58c878' : '#e87a7a',
+                }}>
+                  {connectedClients.includes('A') ? '已连接' : '未连接'}
+                </span>
+              </div>
+              <div className="font-mono text-[9px] text-white/40">
+                阶段: <span style={{ color: '#c49cde' }}>{phases.A}</span>
+              </div>
+            </div>
+
+            {/* Client B */}
+            <div className="flex-1 rounded-lg px-4 py-3" style={{
+              background: 'rgba(232,122,122,0.04)',
+              border: '1px solid rgba(232,122,122,0.12)',
+            }}>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-2 h-2 rounded-full" style={{
+                  background: connectedClients.includes('B') ? '#58c878' : '#e87a7a',
+                  boxShadow: connectedClients.includes('B') ? '0 0 6px rgba(88,200,120,0.5)' : 'none',
+                }} />
+                <span className="font-mono text-[10px] font-bold" style={{ color: '#e87a7a' }}>
+                  被试 B
+                </span>
+                <span className="font-mono text-[8px]" style={{
+                  color: connectedClients.includes('B') ? '#58c878' : '#e87a7a',
+                }}>
+                  {connectedClients.includes('B') ? '已连接' : '未连接'}
+                </span>
+              </div>
+              <div className="font-mono text-[9px] text-white/40">
+                阶段: <span style={{ color: '#c49cde' }}>{phases.B}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Live log feed */}
+          <div className="rounded-lg overflow-hidden" style={{
+            background: 'rgba(0,0,0,0.3)',
+            border: '1px solid rgba(255,255,255,0.06)',
+          }}>
+            <div className="flex items-center gap-2 px-4 py-2" style={{
+              background: 'rgba(255,255,255,0.03)',
+              borderBottom: '1px solid rgba(255,255,255,0.05)',
+            }}>
+              <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#e87a7a' }} />
+              <span className="font-mono text-[9px] text-white/40 tracking-widest">LIVE LOG</span>
+              <span className="font-mono text-[8px] text-white/20">{logEntries.length} events</span>
+            </div>
+            <div className="overflow-y-auto" style={{ maxHeight: '320px', minHeight: '160px' }}>
+              {logEntries.length === 0 ? (
+                <div className="font-mono text-[10px] text-white/20 text-center py-8">
+                  等待事件...
+                </div>
+              ) : (
+                <div className="flex flex-col">
+                  {logEntries.map((entry, i) => (
+                    <div key={i} className="flex items-start gap-2 px-4 py-1.5 hover:bg-white/[0.02] transition-colors" style={{
+                      borderBottom: '1px solid rgba(255,255,255,0.02)',
+                    }}>
+                      <span className="font-mono text-[8px] text-white/20 flex-shrink-0 w-16">
+                        {formatTime(entry.timestamp)}
+                      </span>
+                      <span className="font-mono text-[9px] font-bold flex-shrink-0 w-5" style={{
+                        color: roleColor(entry.role),
+                      }}>
+                        {entry.role}
+                      </span>
+                      <span className="font-mono text-[9px] flex-shrink-0" style={{
+                        color: eventColor(entry.event),
+                      }}>
+                        {entry.event}
+                      </span>
+                      <span className="font-mono text-[8px] text-white/20 truncate flex-1">
+                        {entry.data && typeof entry.data === 'object'
+                          ? Object.entries(entry.data)
+                              .filter(([k]) => !['type', 'seq', 't', 'elapsed'].includes(k))
+                              .map(([k, v]) => `${k}=${typeof v === 'object' ? JSON.stringify(v) : v}`)
+                              .join(' ')
+                              .slice(0, 80)
+                          : ''}
+                      </span>
+                    </div>
+                  ))}
+                  <div ref={logEndRef} />
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Log files on disk */}
+      <div className="rounded-lg px-4 py-3" style={{
+        background: 'rgba(255,255,255,0.02)',
+        border: '1px solid rgba(255,255,255,0.06)',
+      }}>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="font-mono text-[9px] text-white/30 tracking-widest">磁盘日志文件</span>
+          <span className="font-mono text-[8px] text-white/20">({logFiles.length}个)</span>
+          <div className="flex-1" />
+          <button
+            onClick={fetchLogFiles}
+            className="font-mono text-[8px] text-white/30 hover:text-white/50 transition-colors"
+          >
+            刷新
+          </button>
+        </div>
+        {logFiles.length === 0 ? (
+          <div className="font-mono text-[9px] text-white/20 py-2">暂无日志文件</div>
+        ) : (
+          <div className="flex flex-col gap-1">
+            {logFiles.map(f => (
+              <a
+                key={f.filename}
+                href={`${WS_HTTP_URL}/logs/${encodeURIComponent(f.filename)}`}
+                download={f.filename}
+                className="flex items-center gap-3 px-3 py-1.5 rounded hover:bg-white/[0.03] transition-colors"
+              >
+                <span className="font-mono text-[9px]" style={{ color: '#7ab0e8' }}>
+                  {f.filename}
+                </span>
+                <span className="font-mono text-[8px] text-white/20">
+                  {(f.size / 1024).toFixed(1)} KB
+                </span>
+                <span className="font-mono text-[8px] text-white/15">
+                  {new Date(f.modified).toLocaleString('zh-CN')}
+                </span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ═══════════════════════════════════════════════════════════════
 //  Sub-components
 // ═══════════════════════════════════════════════════════════════
@@ -238,6 +616,7 @@ function SavedScenarioCard({ item, baseUrl }) {
 
 export default function PrepareScreen() {
   const sync = useSyncContext()
+  const [activeTab, setActiveTab] = useState('prepare') // 'prepare' | 'monitor'
 
   // Input state
   const [rawText, setRawText]         = useState('')
@@ -507,9 +886,35 @@ export default function PrepareScreen() {
         <div className="flex items-center gap-3">
           <span className="font-pixel text-[8px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>ASIDE</span>
           <div className="w-8 h-px" style={{ background: 'linear-gradient(90deg, rgba(122,176,232,0.5), transparent)' }} />
-          <span className="font-mono text-[10px] text-white/30 tracking-[0.2em]">
-            研究员预设模式 / RESEARCHER PREPARE
-          </span>
+
+          {/* Tab switcher */}
+          <div className="flex gap-1">
+            <button
+              onClick={() => setActiveTab('prepare')}
+              className="font-mono text-[9px] px-3 py-1 rounded-md transition-all"
+              style={{
+                color: activeTab === 'prepare' ? '#7ab0e8' : 'rgba(255,255,255,0.3)',
+                background: activeTab === 'prepare' ? 'rgba(122,176,232,0.1)' : 'transparent',
+                border: `1px solid ${activeTab === 'prepare' ? 'rgba(122,176,232,0.25)' : 'rgba(255,255,255,0.05)'}`,
+                cursor: 'pointer',
+              }}
+            >
+              场景预设
+            </button>
+            <button
+              onClick={() => setActiveTab('monitor')}
+              className="font-mono text-[9px] px-3 py-1 rounded-md transition-all"
+              style={{
+                color: activeTab === 'monitor' ? '#e87a7a' : 'rgba(255,255,255,0.3)',
+                background: activeTab === 'monitor' ? 'rgba(232,122,122,0.1)' : 'transparent',
+                border: `1px solid ${activeTab === 'monitor' ? 'rgba(232,122,122,0.25)' : 'rgba(255,255,255,0.05)'}`,
+                cursor: 'pointer',
+              }}
+            >
+              实时监控
+            </button>
+          </div>
+
           <div className="flex-1" />
           <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full" style={{
@@ -524,8 +929,11 @@ export default function PrepareScreen() {
           </div>
         </div>
 
-        {/* ── If scenario generated: show preview + save ── */}
-        {scenario ? (
+        {/* ── Monitor tab ── */}
+        {activeTab === 'monitor' && <ResearcherMonitor />}
+
+        {/* ── Prepare tab ── */}
+        {activeTab === 'prepare' && (scenario ? (
           <div className="flex flex-col gap-5 anim-fadeIn">
             <div className="flex items-center gap-3">
               <span className="font-mono text-[11px] text-white/60">场景预览</span>
@@ -847,10 +1255,10 @@ export default function PrepareScreen() {
               </button>
             </div>
           </div>
-        )}
+        ))}
 
         {/* ── Processing overlay ── */}
-        {processing && (
+        {activeTab === 'prepare' && processing && (
           <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 z-50"
             style={{ background: 'rgba(0,0,0,0.94)' }}>
             <div className="flex gap-2">
@@ -883,7 +1291,7 @@ export default function PrepareScreen() {
         )}
 
         {/* ── Saved scenarios list ── */}
-        {savedScenarios.length > 0 && (
+        {activeTab === 'prepare' && savedScenarios.length > 0 && (
           <div className="flex flex-col gap-3 mt-4">
             <div className="flex items-center gap-2">
               <span className="font-mono text-[9px] text-white/30 tracking-widest">已保存场景</span>

@@ -162,8 +162,9 @@ function buildPrompt({ chatLog, concernA, concernB, context, archetype, calibrat
   const calNames = calibration?.namesDetected || {}
   const parsed = parseChatLog(chatLog, calNames.A || userName, calNames.B)
 
-  // Build beat list from parsed messages
-  const beatList = buildBeatsFromMessages(parsed.messages)
+  // Note: beats are NOT pre-built here. The LLM selects representative messages
+  // based on conflict arc analysis (Gottman stages) and the dynamic beat range.
+  // See getTargetBeatRange() and the prompt's MESSAGE SELECTION PRIORITIES.
 
   // ── Archetype anchoring block ────────────────────────────
   let archetypeBlock = ''
@@ -223,23 +224,27 @@ ${allMessages}
 ${contextBlock}${concernBlock}${archetypeBlock}${calibrationBlock}
 
 YOUR TASK:
-1. Identify the natural conflict stages (Trigger → Escalation → Deadlock → Shift/Rupture → Aftermath, per Gottman's conflict arc). Not all stages are always present.
-2. Select ${beatMin}-${beatMax} beats total (Beat 0 = scene-setting, then ${beatMin-1}-${beatMax-1} dialogue beats).
-3. For each dialogue beat, pick 1-2 REPRESENTATIVE messages from the original conversation that best capture that stage.
-4. COPY the selected message text EXACTLY — do NOT rewrite, summarize, or rephrase.
-5. Generate inner thoughts for BOTH A and B on every dialogue beat.
+1. Read the FULL conversation carefully. Identify the natural conflict stages (Trigger → Escalation → Deadlock → Shift/Rupture → Aftermath, per Gottman's conflict arc). Not all stages are always present — adapt to the actual structure.
+2. Generate ${beatMin}-${beatMax} beats total. Beat 0 = scene-setting narrator. The rest are dialogue beats.
+3. IMPORTANT: Each dialogue beat should contain 1-2 REPRESENTATIVE messages that capture a distinct moment in the conflict. If one person sends multiple short messages in a row about the same point, combine them into ONE beat with the messages joined by \\n.
+4. dialogue.text MUST be COPIED EXACTLY from the original conversation — do NOT rewrite, summarize, paraphrase, or translate.
+5. Generate inner thoughts for BOTH A and B on EVERY dialogue beat. Thoughts should reveal the gap between what was said and what was felt.
+6. narrator field: Use ONLY for Beat 0 (scene-setting: time, place). All other beats: narrator should be null. Do NOT use narrator for emotional commentary or interpretation.
 
-MESSAGE SELECTION PRIORITIES (which messages to keep):
-✓ Emotion escalation moments
+MESSAGE SELECTION PRIORITIES (which messages to KEEP):
+✓ Emotion escalation moments (where tone shifts)
 ✓ The key sentence where misunderstanding occurs
-✓ Failed de-escalation attempts
-✓ Silence/read-but-no-reply moments
+✓ Failed de-escalation attempts (one person tries to calm down, the other doesn't)
+✓ Silence/read-but-no-reply moments (indicate as a beat with narrator noting the gap)
 ✓ First and last messages of the conflict
+✓ Messages that directly relate to the CORE CONCERNS provided above
 
 MESSAGES TO COMPRESS/SKIP:
-✗ Repeated expressions of the same emotion
-✗ Pure factual information exchange
+✗ Repeated expressions of the same emotion (keep the strongest one)
+✗ Pure factual information exchange ("几点下班" "六点")
 ✗ Off-topic tangents
+✗ Short acknowledgments ("嗯" "哦" "好吧") — fold into adjacent beat if meaningful, skip otherwise
+✗ Emoji-only messages — skip unless they carry emotional weight
 
 REQUIRED JSON SCHEMA:
 {
@@ -300,14 +305,17 @@ REQUIRED JSON SCHEMA:
 
 CRITICAL RULES:
 - Generate ${beatMin}-${beatMax} beats total. Beat 0 = scene-setting. The rest are dialogue beats.
-- dialogue.text MUST be COPIED EXACTLY from the original conversation messages. Do NOT rewrite, summarize, or rephrase.
+- dialogue.text MUST be COPIED EXACTLY from the original conversation messages. Do NOT rewrite, summarize, or rephrase. Users will immediately notice if the text is changed.
 - If a beat combines 2 consecutive messages from the same speaker, join them with \\n.
 - Beat 0 is always the scene-setting beat (narrator only, no dialogue, no thoughts).
 - For ALL other beats: thoughts MUST exist for BOTH A and B. No null thoughts on dialogue beats.
-- narrator on Beat 0: time/place only. narrator on other beats: null (or brief factual stage direction if needed).
-- NEVER interpret emotions in narrator. Narrator is purely factual.
-- thoughts text: 2-3 lines, specific and concrete, revealing the gap between what is said and what is felt.
-- thoughts should directly reflect the core concerns if provided.
+- narrator on Beat 0: time/place ONLY (e.g., "晚上十点，卧室"). narrator on ALL other beats: null. Do NOT add narration to dialogue beats.
+- NEVER interpret emotions in narrator. Narrator states facts only.
+- thoughts text: 2-3 sentences in Simplified Chinese. Must be SPECIFIC and CONCRETE — not generic platitudes.
+  BAD: "我觉得很不开心" (too vague)
+  GOOD: "他又在用工作当借口，每次都是这样。我是不是在他心里排不上号？" (specific, reveals hidden assumption)
+- thoughts should DIRECTLY reflect the core concerns if provided. If A's concern is "希望被重视", A's thoughts should echo this need.
+- Each person's thoughts should reveal what they DIDN'T say — the gap between the message and the feeling.
 - intensity: 0.0-1.0, following natural conflict arc (typically rises, peaks, then may drop).
 - All text in Simplified Chinese.
 - valid emotion: anxious | defensive | angry | hurt | withdrawn | warm | reflective | surprised | neutral

@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { scenario as BASE_SCENARIO }                from './data/scenario'
+import { scenario_liuhaoze }                        from './data/scenario_liuhaoze'
+
+// Available pre-built scenarios for study mode
+const STUDY_SCENARIOS = {
+  default: BASE_SCENARIO,
+  liuhaoze: scenario_liuhaoze,
+}
 // SCENE_PRESETS used in Theater.jsx; PersonaEditor removed from App
 import {
   initSession, log, logPhase, logBeat, logSeek,
@@ -80,6 +87,9 @@ const URL_PARAMS = new URLSearchParams(window.location.search)
 const STUDY_ID   = URL_PARAMS.get('study')
 const STUDY_ROLE = URL_PARAMS.get('role')?.toUpperCase()
 const PREPARE_MODE = URL_PARAMS.get('mode') === 'prepare'
+// Direct scenario load: ?scenario=liuhaoze&role=A → skip intro, load pre-built scenario
+const DIRECT_SCENARIO = URL_PARAMS.get('scenario')
+const DIRECT_ROLE = URL_PARAMS.get('role')?.toUpperCase()
 
 // ── Main App ─────────────────────────────────────────────────
 export default function App() {
@@ -90,19 +100,24 @@ export default function App() {
     return <PrepareScreen />
   }
 
-  const [phase, setPhase]               = useState(STUDY_ID ? 'study_loading' : 'intro')
+  // Determine initial phase and scenario
+  const directScenarioData = DIRECT_SCENARIO ? STUDY_SCENARIOS[DIRECT_SCENARIO] : null
+  const initialPhase = STUDY_ID ? 'study_loading' : directScenarioData ? 'self_confirm' : 'intro'
+
+  const [phase, setPhase]               = useState(initialPhase)
   const [beatIndex, setBeatIndex]       = useState(0)
   const [isPlaying, setIsPlaying]       = useState(false)
   // Bubble visibility: 'none' | 'partner' | 'both'
   // Default = 'partner' (DP6: Peer-First — only see other person's thoughts in solo_viewing)
   // User can manually cycle to 'both' or 'none' via toggle
   // Together Viewing will switch to 'both' automatically
-  const [bubbleVisibility, setBubbleVisibility] = useState('partner')
+  const [bubbleVisibility, setBubbleVisibility] = useState(directScenarioData ? 'self' : 'partner')
   const [showScript, setShowScript]     = useState(false)
   const [annotation, setAnnotation]     = useState('')
 
-  const [liveScenario, setLiveScenario] = useState(BASE_SCENARIO)
-  const [personas, setPersonas]         = useState(BASE_SCENARIO.personas)
+  const initScenario = directScenarioData || BASE_SCENARIO
+  const [liveScenario, setLiveScenario] = useState(initScenario)
+  const [personas, setPersonas]         = useState(initScenario.personas)
 
   const [tags, setTags]                 = useState([])
   const [disputes, setDisputes]         = useState({})

@@ -4,9 +4,22 @@
 //  Rooms are ephemeral (no persistence). Each room holds two
 //  clients (role A = creator, role B = joiner) and stores
 //  input data + annotations for the session.
+//  Log events are persisted to disk as JSONL files.
 // ─────────────────────────────────────────────────────────────
 
 import { MSG, RELAY_TYPES, validateMessage } from './protocol.js'
+import { existsSync, mkdirSync, appendFileSync, writeFileSync, readdirSync, readFileSync, statSync } from 'fs'
+import { join, resolve } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const LOGS_DIR = resolve(__dirname, 'logs')
+
+// Ensure logs directory exists
+if (!existsSync(LOGS_DIR)) {
+  mkdirSync(LOGS_DIR, { recursive: true })
+  console.log(`[Logs] Created directory: ${LOGS_DIR}`)
+}
 
 function generateCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // no 0/O/1/I to avoid confusion
@@ -21,6 +34,9 @@ export class RoomManager {
     this.clientRoom = new Map()   // ws → { code, role }
     this.scenarios = new Map()    // scenarioId → { scenario, metadata, createdAt }
     this.inputConfigs = new Map() // configId → { label, config, createdAt }
+    this.studyLogs = new Map()    // roomCode → [log entries]
+    this.logSubscribers = new Map() // roomCode → Set<ws>
+    this.logFiles = new Map()     // roomCode → filename for JSONL append
   }
 
   // ── Room creation ────────────────────────────────────────
@@ -46,6 +62,12 @@ export class RoomManager {
 
     this.rooms.set(code, room)
     this.clientRoom.set(ws, { code, role: 'A' })
+
+    // Initialize log storage and file
+    this.studyLogs.set(code, [])
+    const logFilename = `${code}_${new Date().toISOString().replace(/[:.]/g, '-')}.jsonl`
+    this.logFiles.set(code, logFilename)
+    console.log(`[Logs] Log file for room ${code}: ${logFilename}`)
 
     this.send(ws, { type: MSG.ROOM_CREATED, code, role: 'A' })
     console.log(`[Room] Created ${code} (${room.proximity})`)
@@ -116,6 +138,10 @@ export class RoomManager {
     // Room creation/joining (no room context needed)
     if (msg.type === MSG.ROOM_CREATE) return this.createRoom(ws, msg)
     if (msg.type === MSG.ROOM_JOIN)   return this.joinRoom(ws, msg)
+
+    // Log subscribe (researcher monitor — no room membership needed)
+    if (msg.type === MSG.LOG_SUBSCRIBE) return this.handleLogSubscribe(ws, msg)
+    if (msg.type === MSG.LOG_REQUEST)  return this.handleLogRequest(ws, msg)
 
     // All other messages require room context
     const ctx = this.clientRoom.get(ws)
@@ -207,7 +233,25 @@ export class RoomManager {
     // ── Behavior log sync ─────────────────────────────────
     if (msg.type === MSG.LOG_EVENT) {
       if (msg.entry) {
-        room.logs.push({ role, ...msg.entry })
+        const enriched = {
+          timestamp: new Date().toISOString(),
+          role,
+          event: msg.entry.type || 'unknown',
+          data: msg.entry,
+          phase: msg.entry.phase || null,
+          scenarioId: room.code,
+        }
+        room.logs.push(enriched)
+
+        // Store in studyLogs
+        const logs = this.studyLogs.get(ctx.code)
+        if (logs) logs.push(enriched)
+
+        // Persist to disk (append JSONL — never lose data)
+        this.appendLogToDisk(ctx.code, enriched)
+
+        // Forward to subscribed researcher monitors
+        this.forwardLogToSubscribers(ctx.code, enriched)
       }
       return
     }
@@ -250,11 +294,31 @@ export class RoomManager {
 
     console.log(`[Room] ${ctx.code}: ${ctx.role} disconnected`)
 
-    // Cleanup empty rooms after 60s
+    // Also remove from log subscribers
+    const subs = this.logSubscribers.get(ctx.code)
+    if (subs) subs.delete(ws)
+
+    // Notify subscriber monitors about disconnect
+    this.forwardLogToSubscribers(ctx.code, {
+      timestamp: new Date().toISOString(),
+      role: ctx.role,
+      event: 'client_disconnected',
+      data: { role: ctx.role },
+      phase: null,
+      scenarioId: ctx.code,
+    })
+
+    // When both disconnected → save full dump
     if (room.clients.size === 0) {
+      this.saveFullLogDump(ctx.code, room)
+
+      // Cleanup empty rooms after 60s
       setTimeout(() => {
         if (this.rooms.has(ctx.code) && this.rooms.get(ctx.code).clients.size === 0) {
           this.rooms.delete(ctx.code)
+          this.studyLogs.delete(ctx.code)
+          this.logFiles.delete(ctx.code)
+          this.logSubscribers.delete(ctx.code)
           console.log(`[Room] ${ctx.code}: cleaned up`)
         }
       }, 60000)
@@ -363,6 +427,128 @@ export class RoomManager {
       })
     }
     this.send(ws, { type: MSG.INPUT_LIST_RESULT, configs: list })
+  }
+
+  // ── Log subscribe (researcher monitor) ──────────────────
+  handleLogSubscribe(ws, msg) {
+    const code = (msg.roomCode || '').toUpperCase().trim()
+    if (!code) {
+      this.send(ws, { type: MSG.ROOM_ERROR, message: '缺少房间码' })
+      return
+    }
+
+    if (!this.logSubscribers.has(code)) {
+      this.logSubscribers.set(code, new Set())
+    }
+    this.logSubscribers.get(code).add(ws)
+
+    // Send existing logs as initial backfill
+    const existing = this.studyLogs.get(code) || []
+    this.send(ws, {
+      type: MSG.LOG_SUBSCRIBED,
+      roomCode: code,
+      backfill: existing,
+    })
+
+    // Send current room status
+    const room = this.rooms.get(code)
+    if (room) {
+      this.send(ws, {
+        type: MSG.LOG_FEED,
+        entry: {
+          timestamp: new Date().toISOString(),
+          role: 'SYSTEM',
+          event: 'monitor_connected',
+          data: {
+            connectedClients: [...room.clients.keys()],
+            logCount: room.logs.length,
+          },
+          phase: null,
+          scenarioId: code,
+        },
+      })
+    }
+
+    console.log(`[Monitor] Researcher subscribed to room ${code}`)
+  }
+
+  handleLogRequest(ws, msg) {
+    const code = (msg.roomCode || '').toUpperCase().trim()
+    const logs = this.studyLogs.get(code) || []
+    this.send(ws, {
+      type: MSG.LOG_RESPONSE,
+      roomCode: code,
+      logs,
+    })
+  }
+
+  // ── Log persistence to disk ────────────────────────────
+  appendLogToDisk(roomCode, entry) {
+    try {
+      const filename = this.logFiles.get(roomCode)
+      if (!filename) return
+      const filepath = join(LOGS_DIR, filename)
+      appendFileSync(filepath, JSON.stringify(entry) + '\n', 'utf-8')
+    } catch (err) {
+      console.error(`[Logs] Failed to append log for room ${roomCode}:`, err.message)
+    }
+  }
+
+  forwardLogToSubscribers(roomCode, entry) {
+    const subs = this.logSubscribers.get(roomCode)
+    if (!subs || subs.size === 0) return
+    for (const subWs of subs) {
+      if (subWs.readyState === 1) {
+        this.send(subWs, { type: MSG.LOG_FEED, entry })
+      } else {
+        subs.delete(subWs)
+      }
+    }
+  }
+
+  saveFullLogDump(roomCode, room) {
+    try {
+      const dumpFilename = `${roomCode}_FULL_${new Date().toISOString().replace(/[:.]/g, '-')}.json`
+      const filepath = join(LOGS_DIR, dumpFilename)
+      const dump = {
+        roomCode,
+        mode: room.mode,
+        proximity: room.proximity,
+        createdAt: new Date(room.createdAt).toISOString(),
+        exportedAt: new Date().toISOString(),
+        eventCount: room.logs.length,
+        logs: room.logs,
+      }
+      writeFileSync(filepath, JSON.stringify(dump, null, 2), 'utf-8')
+      console.log(`[Logs] Full dump saved: ${dumpFilename} (${room.logs.length} events)`)
+    } catch (err) {
+      console.error(`[Logs] Failed to save full dump for room ${roomCode}:`, err.message)
+    }
+  }
+
+  // ── Static: list log files on disk ─────────────────────
+  static listLogFiles() {
+    try {
+      if (!existsSync(LOGS_DIR)) return []
+      return readdirSync(LOGS_DIR)
+        .filter(f => f.endsWith('.jsonl') || f.endsWith('.json'))
+        .map(f => {
+          const fpath = join(LOGS_DIR, f)
+          const stat = statSync(fpath)
+          return { filename: f, size: stat.size, modified: stat.mtime.toISOString() }
+        })
+        .sort((a, b) => b.modified.localeCompare(a.modified))
+    } catch {
+      return []
+    }
+  }
+
+  static getLogFilePath(filename) {
+    // Sanitize to prevent path traversal
+    const safe = filename.replace(/[^a-zA-Z0-9_\-\.]/g, '')
+    const fpath = join(LOGS_DIR, safe)
+    if (existsSync(fpath)) return fpath
+    return null
   }
 
   // ── Helpers ──────────────────────────────────────────────

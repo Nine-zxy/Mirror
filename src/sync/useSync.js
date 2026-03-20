@@ -24,6 +24,8 @@ const SOLO_STUB = {
   joinRoom: () => {},
   onMessage: () => () => {},
   requestPartnerAnnotations: () => {},
+  subscribeToLogs: () => Promise.reject(new Error('Solo mode')),
+  requestLogs: () => Promise.reject(new Error('Solo mode')),
   saveScenario: () => Promise.reject(new Error('Solo mode')),
   loadScenario: () => Promise.reject(new Error('Solo mode')),
   listScenarios: () => Promise.resolve([]),
@@ -242,6 +244,33 @@ export default function useSync(mode = 'solo') {
     send('annotation:request_reveal')
   }, [send])
 
+  // ── Log subscription (researcher monitor) ─────────────
+  const subscribeToLogs = useCallback((roomCode) => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('log:subscribed', (msg) => {
+        unsub()
+        resolve(msg)
+      })
+      const unsubErr = onMessage('room:error', (msg) => {
+        unsubErr()
+        reject(new Error(msg.message))
+      })
+      send('log:subscribe', { roomCode })
+      setTimeout(() => { unsub(); unsubErr(); reject(new Error('订阅超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
+  const requestLogs = useCallback((roomCode) => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('log:response', (msg) => {
+        unsub()
+        resolve(msg)
+      })
+      send('log:request', { roomCode })
+      setTimeout(() => { unsub(); reject(new Error('请求超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
   // ── Lifecycle ────────────────────────────────────────────
   useEffect(() => {
     if (mode === 'together') connect()
@@ -268,6 +297,8 @@ export default function useSync(mode = 'solo') {
     joinRoom,
     onMessage,
     requestPartnerAnnotations,
+    subscribeToLogs,
+    requestLogs,
     saveScenario,
     loadScenario,
     listScenarios,
