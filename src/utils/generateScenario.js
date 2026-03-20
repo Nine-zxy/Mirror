@@ -326,7 +326,7 @@ CRITICAL RULES:
 
 // ── Gemini API call ───────────────────────────────────────────
 async function callGemini({ systemPrompt, userPrompt, temperature = 0.7, maxOutputTokens = 12000 }) {
-  const resp = await fetch('/api/gemini/v1beta/models/gemini-2.5-flash:generateContent', {
+  const resp = await fetch('/api/gemini/v1beta/models/gemini-2.0-flash:generateContent', {
     method:  'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
