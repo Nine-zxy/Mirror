@@ -102,7 +102,7 @@ export default function App() {
 
   // Determine initial phase and scenario from URL
   const directScenarioData = DIRECT_SCENARIO ? STUDY_SCENARIOS[DIRECT_SCENARIO] : null
-  const initialPhase = STUDY_ID ? 'study_loading' : directScenarioData ? 'self_confirm' : 'intro'
+  const initialPhase = STUDY_ID ? 'study_loading' : directScenarioData ? 'study_intro' : 'intro'
   const initScenario = directScenarioData || BASE_SCENARIO
 
   const [phase, setPhase]               = useState(initialPhase)
@@ -295,7 +295,7 @@ export default function App() {
     return () => clearTimeout(timerRef.current)
   }, [isPlaying, beatIndex, isPlaybackPhase, currentBeat, advance])
 
-  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby', 'divergence', 'study_loading'])
+  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby', 'divergence', 'study_loading', 'study_intro'])
 
   const handlePlayPause = useCallback(() => {
     if (BLOCKING_PHASES.has(phase)) return
@@ -575,6 +575,95 @@ export default function App() {
             </div>
           </div>
         )}
+      </div>
+    )
+
+  if (phase === 'study_intro')
+    return (
+      <div className="flex flex-col items-center justify-center h-screen" style={{
+        background: 'linear-gradient(180deg, #0a0c1a 0%, #060810 100%)',
+      }}>
+        <div className="flex flex-col items-center gap-6 max-w-lg px-8">
+          {/* Logo */}
+          <div className="flex flex-col items-center gap-2">
+            <span className="font-pixel text-[14px] tracking-[0.4em]" style={{ color: '#7ab0e8' }}>
+              ASIDE
+            </span>
+            <div className="w-16 h-px" style={{ background: 'linear-gradient(90deg, transparent, #7ab0e8, transparent)' }} />
+            <span className="font-mono text-[9px] tracking-[0.25em] text-white/25">
+              DYADIC REFLECTION THEATER
+            </span>
+          </div>
+
+          {/* Show info */}
+          <div className="flex flex-col items-center gap-3 mt-4">
+            <p className="text-[20px] tracking-wider text-white/80" style={{
+              fontFamily: '"Noto Serif SC","Source Han Serif CN","PingFang SC",serif',
+            }}>
+              {liveScenario.title || '冲突回顾'}
+            </p>
+            {liveScenario.subtitle && (
+              <p className="font-mono text-[10px] tracking-[0.2em] text-white/25 italic">
+                {liveScenario.subtitle}
+              </p>
+            )}
+          </div>
+
+          {/* Cast */}
+          <div className="flex items-center gap-8 mt-2">
+            <div className="flex flex-col items-center gap-1">
+              <div className="w-3 h-3 rounded-full" style={{ background: personas.A?.color || '#7ab0e8' }} />
+              <span className="font-mono text-[10px]" style={{ color: personas.A?.color || '#7ab0e8' }}>
+                {personas.A?.name || 'A'}
+              </span>
+            </div>
+            <span className="font-mono text-[8px] text-white/15">×</span>
+            <div className="flex flex-col items-center gap-1">
+              <div className="w-3 h-3 rounded-full" style={{ background: personas.B?.color || '#e87a7a' }} />
+              <span className="font-mono text-[10px]" style={{ color: personas.B?.color || '#e87a7a' }}>
+                {personas.B?.name || 'B'}
+              </span>
+            </div>
+          </div>
+
+          {/* Role indicator */}
+          <div className="mt-2 px-4 py-2 rounded-lg" style={{
+            background: 'rgba(122,176,232,0.06)',
+            border: '1px solid rgba(122,176,232,0.15)',
+          }}>
+            <p className="font-mono text-[10px] text-center" style={{ color: 'rgba(122,176,232,0.6)' }}>
+              你的视角：<span style={{ color: personas[myRole]?.color || '#7ab0e8' }}>{personas[myRole]?.name || myRole}</span>
+            </p>
+          </div>
+
+          {/* Description */}
+          <p className="text-[13px] text-center leading-relaxed text-white/35 mt-2" style={{
+            fontFamily: '"Noto Serif SC","Source Han Serif CN","PingFang SC",serif',
+          }}>
+            今晚，你将以观众的身份<br/>重新目睹那段对话。
+          </p>
+
+          {/* Enter button */}
+          <button
+            onClick={() => {
+              setPhase('self_confirm')
+              setBubbleVisibility('self')
+              setIsPlaying(false)
+              setBeatIndex(0)
+            }}
+            className="mt-4 px-10 py-3 rounded-lg border transition-all hover:scale-105"
+            style={{
+              color: '#7ab0e8',
+              borderColor: 'rgba(122,176,232,0.35)',
+              background: 'rgba(122,176,232,0.07)',
+              fontFamily: '"Noto Serif SC","Source Han Serif CN","PingFang SC",serif',
+              fontSize: '15px',
+              letterSpacing: '0.15em',
+            }}
+          >
+            入场 / ENTER
+          </button>
+        </div>
       </div>
     )
 
