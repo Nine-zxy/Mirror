@@ -8,6 +8,11 @@
 //  Env var required: GEMINI_API_KEY
 // ─────────────────────────────────────────────────────────────
 
+// Vercel serverless function config: extend timeout for LLM generation
+export const config = {
+  maxDuration: 60, // 60 seconds (Vercel Pro allows up to 300s, free tier up to 60s)
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
