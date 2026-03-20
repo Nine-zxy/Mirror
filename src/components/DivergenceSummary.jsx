@@ -77,7 +77,7 @@ export default function DivergenceSummary({
             <>
               <Stat label="你的标注" value={totalAnnotated} />
               <Stat label="对方标注" value={partnerEntries.length} />
-              <Stat label="认知差异" value={divergences.length} color="#f0c060" />
+              <Stat label="认知差异" value={divergences.length} color="#7ab0e8" />
               <Stat label="标记时刻" value={tags.length} />
             </>
           ) : (
@@ -98,7 +98,7 @@ export default function DivergenceSummary({
               <span className="font-mono text-[9px] tracking-widest text-white/35 uppercase">认知差异</span>
               <span className="font-mono text-[7px] text-white/18">你和对方对同一幕的不同标注</span>
               <div className="flex-1 h-px bg-white/8" />
-              <span className="font-mono text-[8px]" style={{ color: '#f0c060' }}>{divergences.length}</span>
+              <span className="font-mono text-[8px]" style={{ color: '#7ab0e8' }}>{divergences.length}</span>
             </div>
             {divergences.map(div => {
               const persona = personas[div.personaId]
@@ -367,7 +367,7 @@ function CardHeader({ persona, beat, status, divergent = false }) {
       </span>
       {divergent && (
         <span className="font-mono text-[7px] px-1.5 py-0.5 rounded ml-auto"
-          style={{ background: 'rgba(240,192,96,0.1)', color: '#f0c060', border: '1px solid rgba(240,192,96,0.3)' }}>
+          style={{ background: 'rgba(122,176,232,0.1)', color: '#7ab0e8', border: '1px solid rgba(122,176,232,0.3)' }}>
           ⚡ 差异
         </span>
       )}

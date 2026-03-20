@@ -65,18 +65,121 @@ RULES:
 - Be precise and insightful, not generic`
 }
 
-// ── Main system prompt ────────────────────────────────────────
-const BASE_SYSTEM_PROMPT = `You are the scenario reconstruction engine for Aside — a research system for HCI studies on dyadic conflict dynamics.
-Analyse the relationship conflict provided and output a structured 7-beat dramatic scenario in JSON.
-The scenario reconstructs the conflict as a theatrical performance with two characters.
+// ── Chat log parser ──────────────────────────────────────────
+// Parses WeChat-style chat logs into structured messages
+// Supports formats:
+//   "小美：你为什么不回我消息？"
+//   "小凯: 我在忙啊"
+//   "小美(2024/3/15 22:01): 你为什么不回我"
+function parseChatLog(chatLog, nameA, nameB) {
+  const lines = chatLog.trim().split('\n').filter(l => l.trim())
+  const messages = []
+  // Detect speaker patterns
+  const speakerPattern = /^([^\s，。,\.:\n(（]{1,8})\s*(?:\([^)]*\))?\s*[:：]\s*(.+)/
+  const detectedNames = new Set()
+
+  for (const line of lines) {
+    const match = line.match(speakerPattern)
+    if (match) {
+      const name = match[1].trim()
+      const text = match[2].trim()
+      if (text.length > 0) {
+        detectedNames.add(name)
+        messages.push({ name, text })
+      }
+    }
+  }
+
+  // Map detected names to A/B roles
+  const nameList = [...detectedNames]
+  let mapNameToRole = {}
+  if (nameA && nameList.includes(nameA)) {
+    mapNameToRole[nameA] = 'A'
+    const otherNames = nameList.filter(n => n !== nameA)
+    if (otherNames.length > 0) mapNameToRole[otherNames[0]] = 'B'
+  } else if (nameB && nameList.includes(nameB)) {
+    mapNameToRole[nameB] = 'B'
+    const otherNames = nameList.filter(n => n !== nameB)
+    if (otherNames.length > 0) mapNameToRole[otherNames[0]] = 'A'
+  } else if (nameList.length >= 2) {
+    mapNameToRole[nameList[0]] = 'A'
+    mapNameToRole[nameList[1]] = 'B'
+  } else if (nameList.length === 1) {
+    mapNameToRole[nameList[0]] = 'A'
+  }
+
+  // Build structured messages with roles
+  const parsed = messages
+    .map(m => ({ role: mapNameToRole[m.name] || null, name: m.name, text: m.text }))
+    .filter(m => m.role)
+
+  // Merge consecutive messages from same speaker
+  const merged = []
+  for (const msg of parsed) {
+    const last = merged[merged.length - 1]
+    if (last && last.role === msg.role && last.text.length + msg.text.length < 60) {
+      last.text += '\n' + msg.text
+    } else {
+      merged.push({ ...msg })
+    }
+  }
+
+  return {
+    messages: merged,
+    nameA: Object.entries(mapNameToRole).find(([,v]) => v === 'A')?.[0] || nameA || '伴侣A',
+    nameB: Object.entries(mapNameToRole).find(([,v]) => v === 'B')?.[0] || nameB || '伴侣B',
+  }
+}
+
+// ── Build beats from parsed messages ─────────────────────────
+// Each message becomes one beat with its original dialogue preserved
+function buildBeatsFromMessages(messages) {
+  const beats = []
+
+  // Beat 0: scene-setting (no dialogue)
+  beats.push({
+    id: 0,
+    speaker: null,
+    text: null,
+    isOpening: true,
+  })
+
+  // Each message = one beat
+  for (let i = 0; i < messages.length; i++) {
+    beats.push({
+      id: i + 1,
+      speaker: messages[i].role,
+      text: messages[i].text,
+      isOpening: false,
+    })
+  }
+
+  return beats
+}
+
+// ── Main system prompt (new: thoughts-only generation) ───────
+const BASE_SYSTEM_PROMPT = `You are the inner-thought inference engine for Aside — a research system for HCI studies on dyadic conflict reflection.
+
+Your job: Given a sequence of dialogue beats from a real conflict conversation, generate the INNER THOUGHTS (what each person was thinking but not saying) for every beat.
+
+You do NOT generate dialogue — the dialogue is already provided from the original chat log.
+You ONLY generate thoughts, emotions, spatial staging, and scene metadata.
+
 Output ONLY valid JSON — no markdown, no explanation, no code fences.`
 
-// ── Main prompt builder ───────────────────────────────────────
-function buildPrompt({ chatLog, concernA, concernB, context, archetype, calibration }) {
+// ── Main prompt builder (new architecture) ───────────────────
+function buildPrompt({ chatLog, concernA, concernB, context, archetype, calibration, userRole, userName }) {
   const contextBlock = context ? `\nBACKGROUND CONTEXT:\n${context}\n` : ''
   const concernBlock = (concernA || concernB)
     ? `\nCORE CONCERNS:\n- Partner A: ${concernA || '(not provided)'}\n- Partner B: ${concernB || '(not provided)'}\n`
     : ''
+
+  // Parse chat log into structured messages
+  const calNames = calibration?.namesDetected || {}
+  const parsed = parseChatLog(chatLog, calNames.A || userName, calNames.B)
+
+  // Build beat list from parsed messages
+  const beatList = buildBeatsFromMessages(parsed.messages)
 
   // ── Archetype anchoring block ────────────────────────────
   let archetypeBlock = ''
@@ -92,13 +195,11 @@ function buildPrompt({ chatLog, concernA, concernB, context, archetype, calibrat
     })
 
     archetypeBlock = `
-[ARCHETYPE ANCHORING — Role-play constraints, not personality labels]
+[ARCHETYPE ANCHORING]
 Relationship type: ${relType?.label || ''} — ${relType?.promptHint || ''}
-Partner A communication archetype: ${stylesA.join('; ')}
-Partner B communication archetype: ${stylesB.join('; ')}
-→ Ensure dialogue word choice, response style, and inner thoughts reflect these archetypes consistently.
-  Example: an avoidant person does NOT say "I don't want to talk" — they say "Fine" or go silent.
-  An anxious person repeats the same question in different forms across beats.
+Partner A (${parsed.nameA}) communication style: ${stylesA.join('; ')}
+Partner B (${parsed.nameB}) communication style: ${stylesB.join('; ')}
+→ Inner thoughts should reflect these communication patterns.
 `
   }
 
@@ -109,39 +210,45 @@ Partner B communication archetype: ${stylesB.join('; ')}
     const confirmedB = (calibration.inferB || []).filter(i => i.confirmed !== false)
     if (confirmedA.length > 0 || confirmedB.length > 0) {
       calibrationBlock = `
-[BEHAVIORAL CALIBRATION — User-verified patterns from actual conversation]
-Partner A confirmed patterns:
-${confirmedA.map(i => `- ${i.adjusted || i.text}`).join('\n')}
-Partner B confirmed patterns:
-${confirmedB.map(i => `- ${i.adjusted || i.text}`).join('\n')}
-→ These patterns MUST be visible in both dialogue (Diction) and inner thoughts (Thought).
-  They are the user's ground truth about how these two people communicate.
+[BEHAVIORAL CALIBRATION — User-verified patterns]
+Partner A patterns: ${confirmedA.map(i => i.adjusted || i.text).join('; ')}
+Partner B patterns: ${confirmedB.map(i => i.adjusted || i.text).join('; ')}
+→ These patterns MUST be reflected in the generated inner thoughts.
 `
     }
   }
 
-  // ── Scene enum — expanded ─────────────────────────────────
+  // ── Scene enum ─────────────────────────────────────────────
   const sceneEnum = archetype?.relationshipType === 'colleagues'
     ? 'bedroom_night | livingroom_evening | kitchen_morning | outdoor_park | cafe | office'
     : 'bedroom_night | livingroom_evening | kitchen_morning | outdoor_park | cafe'
 
-  return `Analyse this conflict and return a JSON scenario matching the schema below exactly.
+  // ── Build the pre-structured beats for the prompt ──────────
+  const beatsDescription = beatList.map(b => {
+    if (b.isOpening) return `Beat ${b.id}: [OPENING — no dialogue, scene-setting]`
+    return `Beat ${b.id}: ${b.speaker} says: "${b.text}"`
+  }).join('\n')
 
-CONFLICT INPUT:
-"""
-${chatLog.trim()}
-"""
+  return `Here is a parsed conflict conversation between ${parsed.nameA} (Partner A) and ${parsed.nameB} (Partner B).
+The dialogue is ALREADY extracted from the original chat log — do NOT change it.
+Your job is to generate inner thoughts for each beat.
+
+PARSED DIALOGUE (${beatList.length} beats):
+${beatsDescription}
 ${contextBlock}${concernBlock}${archetypeBlock}${calibrationBlock}
-REQUIRED JSON SCHEMA (output this object only):
+Generate a complete JSON scenario. The dialogue for each beat is FIXED — copy it exactly as shown above.
+You must generate thoughts for BOTH A and B on every beat that has dialogue.
+
+REQUIRED JSON SCHEMA:
 {
   "id": "generated_conflict",
-  "title": "<8-char Chinese title>",
-  "subtitle": "<English subtitle>",
+  "title": "<4-8 char Chinese title summarizing the conflict>",
+  "subtitle": "<short English subtitle>",
   "scene": "<one of: ${sceneEnum}>",
-  "sceneElements": ["<3-5 items from: bed, sofa, table, lamp, phone_screen, window, moon, tree, bench, cup, desk, coffee>"],
+  "sceneElements": ["<3-5 items>"],
   "personas": {
     "A": {
-      "id": "A", "name": "<Person A name from input>", "label": "PARTNER A",
+      "id": "A", "name": "${parsed.nameA}", "label": "PARTNER A",
       "color": "#7ab0e8", "darkColor": "#4a80c8", "glowColor": "rgba(122,176,232,0.55)",
       "thoughtBg": "rgba(80,130,210,0.13)", "thoughtBorder": "#5882d0",
       "hairColor": "#8B4513", "outfitColor": "#4a80c8", "outfitDark": "#2a5098",
@@ -150,7 +257,7 @@ REQUIRED JSON SCHEMA (output this object only):
       "accessory": "<none|glasses|hat>"
     },
     "B": {
-      "id": "B", "name": "<Person B name from input>", "label": "PARTNER B",
+      "id": "B", "name": "${parsed.nameB}", "label": "PARTNER B",
       "color": "#e87a7a", "darkColor": "#b84a4a", "glowColor": "rgba(232,122,122,0.55)",
       "thoughtBg": "rgba(210,80,80,0.13)", "thoughtBorder": "#c85050",
       "hairColor": "#3a2820", "outfitColor": "#b84a4a", "outfitDark": "#7a2a2a",
@@ -161,117 +268,45 @@ REQUIRED JSON SCHEMA (output this object only):
   },
   "beats": [
     {
-      "id": 0, "duration": 3200, "intensity": 0.05,
-      "narrator": "<scene-setting sentence in Chinese>",
+      "id": 0, "duration": 3000, "intensity": 0.05,
+      "narrator": "<纯事实：时间地点，如'晚上十点，卧室'>",
       "proxemic": { "state": "neutral", "divider": false },
       "spatial": {
-        "A": { "x": 18, "facing": "right", "pose": "neutral", "lean": "none", "scale": 1.0, "visible": true },
-        "B": { "x": 74, "facing": "left",  "pose": "neutral", "lean": "none", "scale": 1.0, "visible": true }
+        "A": { "x": 25, "facing": "right", "pose": "neutral", "lean": "none", "scale": 1.0, "visible": true },
+        "B": { "x": 75, "facing": "left",  "pose": "neutral", "lean": "none", "scale": 1.0, "visible": true }
       },
       "thoughts": { "A": null, "B": null },
       "dialogue": null
     },
     {
-      "id": 1, "duration": 4600, "intensity": 0.25,
+      "id": 1, "duration": 4500, "intensity": 0.2,
       "narrator": null,
-      "proxemic": { "state": "approaching", "divider": false },
+      "proxemic": { "state": "<proxemic state>", "divider": false },
       "spatial": {
-        "A": { "x": 30, "facing": "right", "pose": "confrontational", "lean": "forward", "scale": 1.05, "visible": true },
-        "B": { "x": 72, "facing": "left",  "pose": "neutral", "lean": "none", "scale": 1.0, "visible": true }
+        "A": { "x": "<15-85>", "facing": "<left|right>", "pose": "<pose>", "lean": "none", "scale": 1.0, "visible": true },
+        "B": { "x": "<15-85>", "facing": "<left|right>", "pose": "<pose>", "lean": "none", "scale": 1.0, "visible": true }
       },
       "thoughts": {
-        "A": { "text": "<A's unspoken opening feeling — 2 lines Chinese>", "emotion": "anxious", "bubbleType": "hesitation" },
-        "B": null
+        "A": { "text": "<说这句话/听到这句话时没说出口的真实想法，2-3行>", "emotion": "<emotion>", "bubbleType": "<cloud|aggressive|hesitation|warm>" },
+        "B": { "text": "<听到/说这句话时的内心反应，2-3行>", "emotion": "<emotion>", "bubbleType": "<cloud|aggressive|hesitation|warm>" }
       },
-      "dialogue": { "speaker": "A", "text": "<A's opening line — match A's communication archetype>" }
-    },
-    {
-      "id": 2, "duration": 3800, "intensity": 0.45,
-      "narrator": null,
-      "proxemic": { "state": "tension", "divider": true },
-      "spatial": {
-        "A": { "x": 32, "facing": "right", "pose": "anxious", "lean": "none", "scale": 1.0, "visible": true },
-        "B": { "x": 67, "facing": "left",  "pose": "defensive", "lean": "back", "scale": 1.0, "visible": true }
-      },
-      "thoughts": {
-        "A": null,
-        "B": { "text": "<B's defensive reaction — 2 lines>", "emotion": "defensive", "bubbleType": "cloud" }
-      },
-      "dialogue": { "speaker": "B", "text": "<B's response — match B's communication archetype>" }
-    },
-    {
-      "id": 3, "duration": 4800, "intensity": 0.62,
-      "isPausePoint": true,
-      "reflectionPrompt": "<First reflection question about the escalation — Chinese>",
-      "proxemic": { "state": "hot", "divider": true },
-      "spatial": {
-        "A": { "x": 38, "facing": "right", "pose": "confrontational", "lean": "forward", "scale": 1.05, "visible": true },
-        "B": { "x": 64, "facing": "left",  "pose": "defensive", "lean": "back", "scale": 1.0, "visible": true }
-      },
-      "thoughts": {
-        "A": { "text": "<A's escalated inner state — 2 lines>", "emotion": "hurt", "bubbleType": "hesitation" },
-        "B": { "text": "<B's inner frustration — 2 lines>", "emotion": "defensive", "bubbleType": "cloud" }
-      },
-      "dialogue": { "speaker": "A", "text": "<A's escalated line>" }
-    },
-    {
-      "id": 4, "duration": 4200, "intensity": 0.78,
-      "narrator": null,
-      "proxemic": { "state": "hot", "divider": true },
-      "spatial": {
-        "A": { "x": 40, "facing": "right", "pose": "hurt", "lean": "back", "scale": 1.0, "visible": true },
-        "B": { "x": 62, "facing": "left",  "pose": "angry", "lean": "forward", "scale": 1.08, "visible": true }
-      },
-      "thoughts": {
-        "A": null,
-        "B": { "text": "<B's peak frustration — 2 lines>", "emotion": "angry", "bubbleType": "aggressive" }
-      },
-      "dialogue": { "speaker": "B", "text": "<B's peak outburst — true to B's archetype>" }
-    },
-    {
-      "id": 5, "duration": 4800, "intensity": 0.88,
-      "narrator": null,
-      "proxemic": { "state": "cold", "divider": true },
-      "spatial": {
-        "A": { "x": 28, "facing": "right", "pose": "withdrawn", "lean": "back", "scale": 0.98, "visible": true },
-        "B": { "x": 72, "facing": "left",  "pose": "withdrawn", "lean": "back", "scale": 0.98, "visible": true }
-      },
-      "thoughts": {
-        "A": { "text": "<A's withdrawal inner state — 2 lines>", "emotion": "hurt", "bubbleType": "cloud" },
-        "B": { "text": "<B's inner regret — 2 lines>", "emotion": "reflective", "bubbleType": "hesitation" }
-      },
-      "dialogue": { "speaker": "A", "text": "<A's quiet hurt or silence line>" }
-    },
-    {
-      "id": 6, "duration": 5200, "intensity": 0.95,
-      "isPausePoint": true,
-      "reflectionPrompt": "<Final reflection — what was never said? Chinese>",
-      "proxemic": { "state": "cold", "divider": true },
-      "spatial": {
-        "A": { "x": 22, "facing": "right", "pose": "hurt", "lean": "none", "scale": 1.0, "visible": true },
-        "B": { "x": 78, "facing": "left",  "pose": "withdrawn", "lean": "none", "scale": 1.0, "visible": true }
-      },
-      "thoughts": {
-        "A": { "text": "<A's final unspoken wish — 2 lines>", "emotion": "reflective", "bubbleType": "warm" },
-        "B": { "text": "<B's final unspoken wish — 2 lines>", "emotion": "reflective", "bubbleType": "warm" }
-      },
-      "dialogue": null
+      "dialogue": { "speaker": "<A or B — MUST match the parsed beat>", "text": "<EXACT text from parsed beat — do NOT rewrite>" }
     }
+    // ... generate ALL ${beatList.length} beats
   ]
 }
 
-RULES:
-- All narrative text (narrator, thoughts, dialogue, reflectionPrompt) MUST be in Simplified Chinese.
-- Extract real names from the input if available; otherwise use 小美 (A) and 小凯 (B).
-- Dialogue: 1–2 short sentences. Match each persona's communication archetype in word choice and tone.
-- Thought text: exactly 2 lines separated by \\n, revealing what is NOT being said aloud.
-- Thoughts should directly relate to the core concerns if provided.
-- 7 beats total, 2 pause points at beat 3 and beat 6.
-- Intensity arc: 0.05 → 0.25 → 0.45 → 0.62 → 0.78 → 0.88 → 0.95
-- scene: choose based on relationship type and conflict content.
-- sceneElements: pick 3-5 elements relevant to the conflict.
-- hairStyle: assign contrasting styles for A and B (visual distinctiveness matters).
-- outfitStyle: assign contrasting styles (e.g. A=casual, B=formal or A=hoodie, B=casual).
+CRITICAL RULES:
+- dialogue.text for each beat MUST be the EXACT text from the PARSED DIALOGUE above. Do NOT rewrite, summarize, or rephrase.
+- dialogue.speaker MUST match the parsed beat (A or B as shown above).
+- Beat 0 is always the scene-setting beat (narrator only, no dialogue, no thoughts).
+- For ALL other beats: thoughts MUST exist for BOTH A and B. No null thoughts on dialogue beats.
+- narrator: null on most beats. Only use for observable facts (time/place/action). NEVER interpret emotions in narrator.
+- thoughts text: 2-3 lines, specific and concrete, revealing the gap between what is said and what is felt.
+- thoughts should directly reflect the core concerns if provided.
+- intensity: 0.0-1.0, following natural conflict arc across all beats.
+- All text in Simplified Chinese.
+- valid emotion: anxious | defensive | angry | hurt | withdrawn | warm | reflective | surprised | neutral
 - valid pose: neutral | sitting | confrontational | defensive | angry | hurt | anxious | withdrawn
 - valid proxemic.state: neutral | approaching | tension | hot | cold
 - valid bubbleType: cloud | aggressive | hesitation | warm`
@@ -358,7 +393,11 @@ function fallbackScenario(input) {
 // ─────────────────────────────────────────────────────────────
 //  Public API
 // ─────────────────────────────────────────────────────────────
-export const API_KEY_AVAILABLE = Boolean(import.meta.env.VITE_GEMINI_API_KEY)
+// In dev: VITE_GEMINI_API_KEY enables the Vite proxy.
+// In production: the serverless function at /api/gemini handles the key server-side,
+// so we enable AI calls whenever we're not in dev mode OR have a key set.
+export const API_KEY_AVAILABLE =
+  import.meta.env.PROD || Boolean(import.meta.env.VITE_GEMINI_API_KEY)
 
 // Stage 1: light calibration call
 export async function callGeminiCalibration(chatLog, archetype) {

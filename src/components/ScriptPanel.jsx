@@ -62,7 +62,7 @@ function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
 
       {/* Narrator */}
       {beat.narrator && (
-        <p className="text-[10px] text-white/28 leading-snug italic mb-1"
+        <p className="text-[12px] text-white/28 leading-snug italic mb-1"
           style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
           {beat.narrator}
         </p>
@@ -75,7 +75,7 @@ function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
             style={{ color: speakerColor }}>
             {personas[speaker]?.name}
           </span>
-          <p className="text-[11px] text-white/60 leading-snug"
+          <p className="text-[12px] text-white/60 leading-snug"
             style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
             {beat.dialogue.text}
           </p>
@@ -108,7 +108,7 @@ function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
                   {dispute.original}
                 </p>
               )}
-              <p className="text-[9px] leading-snug" style={{
+              <p className="text-[12px] leading-snug" style={{
                 color: badge ? badge.color + 'cc' : `${color}99`,
                 fontFamily: '"PingFang SC","Inter",sans-serif',
               }}>
@@ -134,12 +134,12 @@ export default function ScriptPanel({
 }) {
   return (
     <div
-      className="flex flex-col border-l border-white/8 bg-black overflow-hidden flex-shrink-0"
-      style={{ width: '240px' }}
+      className="flex flex-col border-l border-white/8 overflow-hidden flex-shrink-0"
+      style={{ background: '#060810', width: '240px' }}
     >
       {/* Header */}
       <div className="px-3 py-2 border-b border-white/8 flex-shrink-0 flex items-center gap-2">
-        <span className="font-mono text-[8px] tracking-[0.2em] text-white/30">剧本 / SCRIPT</span>
+        <span className="font-mono text-[11px] tracking-[0.2em]" style={{ color: '#7ab0e8aa' }}>剧本 / SCRIPT</span>
         <div className="flex-1" />
         {tags.length > 0 && (
           <span className="font-mono text-[7px] text-white/20">🏷 {tags.length}</span>

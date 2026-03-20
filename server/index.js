@@ -9,7 +9,7 @@ import { WebSocketServer } from 'ws'
 import { networkInterfaces } from 'os'
 import { RoomManager } from './roomManager.js'
 
-const PORT = parseInt(process.argv[2] || process.env.ASIDE_WS_PORT || '3001', 10)
+const PORT = parseInt(process.argv[2] || process.env.PORT || process.env.ASIDE_WS_PORT || '3001', 10)
 const manager = new RoomManager()
 
 const wss = new WebSocketServer({ port: PORT })

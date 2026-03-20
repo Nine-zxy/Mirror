@@ -1,0 +1,15 @@
+{
+  "name": "aside-sync-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ws": "^8.19.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

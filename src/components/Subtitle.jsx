@@ -56,43 +56,49 @@ export default function Subtitle({ dialogue, personas }) {
 
   const persona = personas[dialogue.speaker]
   const speakerColor = persona?.color || '#7ab0e8'
+  const isA = dialogue.speaker === 'A'
+  // Use pixel dialogue box assets — blue box for A, red box for B
+  const dialogueBoxImg = isA
+    ? '/assets/ui/dialogue/blue box.png'
+    : '/assets/ui/dialogue/red box.png'
 
   return (
-    <div className="relative flex-shrink-0" style={{
-      height: '110px',
-      background: 'rgba(8,10,20,0.88)',
-      backdropFilter: 'blur(12px)',
-      borderTop: `1px solid rgba(255,255,255,0.12)`,
+    <div className="relative flex-shrink-0 flex items-center justify-center" style={{
+      height: '130px',
+      background: 'transparent',
     }}>
-      {/* Subtle top glow line */}
-      <div className="absolute top-0 left-[15%] right-[15%] h-px" style={{
-        background: `linear-gradient(90deg, transparent, ${speakerColor}30, transparent)`,
+      {/* Pixel dialogue box as background frame — 9-slice style stretch */}
+      <div className="absolute inset-x-4 inset-y-1 pointer-events-none" style={{
+        backgroundImage: `url("${dialogueBoxImg}")`,
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
+        imageRendering: 'pixelated',
+        opacity: 0.85,
       }} />
 
-      {/* Speaker name tab */}
-      <div className="absolute top-0 left-6 -translate-y-full">
-        <div className="px-3 py-1 rounded-t-md font-mono text-[10px] tracking-[0.15em]" style={{
-          background: 'rgba(8,10,20,0.92)',
-          borderTop: `1.5px solid ${speakerColor}80`,
-          borderLeft: `1.5px solid ${speakerColor}80`,
-          borderRight: `1.5px solid ${speakerColor}80`,
+      {/* Speaker name tab — sits on top-left of the box */}
+      <div className="absolute top-0 left-8 -translate-y-1/2 z-[2]">
+        <div className="px-3 py-1 font-mono text-[13px] tracking-[0.15em]" style={{
+          background: '#060810',
+          border: `2px solid ${speakerColor}`,
+          borderRadius: '4px',
           color: speakerColor,
-          textShadow: `0 0 12px ${speakerColor}, 0 0 4px ${speakerColor}80`,
+          imageRendering: 'pixelated',
         }}>
           {persona?.name || '???'}
         </div>
       </div>
 
-      {/* Dialogue content */}
-      <div className="h-full flex flex-col justify-center px-8 py-4">
-        <p className="text-[18px] leading-[1.75] tracking-wide" style={{
+      {/* Dialogue content — centered over the box */}
+      <div className="h-full flex flex-col items-center justify-center px-12 py-4 relative z-[1]">
+        <p className="text-[20px] leading-[1.75] tracking-wide text-center" style={{
           color: 'rgba(255,255,255,0.93)',
           fontFamily: '"PingFang SC","Inter","Microsoft YaHei",sans-serif',
           textShadow: '0 1px 8px rgba(0,0,0,0.5)',
         }}>
           {displayText}
           {!isComplete && (
-            <span className="inline-block w-[2px] h-[16px] ml-0.5 align-middle" style={{
+            <span className="inline-block w-[2px] h-[18px] ml-0.5 align-middle" style={{
               background: speakerColor,
               animation: 'blink 0.8s step-end infinite',
             }} />
@@ -101,7 +107,7 @@ export default function Subtitle({ dialogue, personas }) {
 
         {/* Continue indicator */}
         {isComplete && (
-          <div className="absolute bottom-3 right-6 font-mono text-[10px] tracking-wider anim-fadeIn" style={{
+          <div className="absolute bottom-4 right-10 font-mono text-[12px] tracking-wider anim-fadeIn" style={{
             color: 'rgba(255,255,255,0.25)',
             animation: 'blink 1.5s ease-in-out infinite',
           }}>
@@ -109,12 +115,6 @@ export default function Subtitle({ dialogue, personas }) {
           </div>
         )}
       </div>
-
-      {/* Corner decorations */}
-      <div className="absolute top-2 left-2 w-3 h-3 border-t border-l" style={{ borderColor: 'rgba(255,255,255,0.08)' }} />
-      <div className="absolute top-2 right-2 w-3 h-3 border-t border-r" style={{ borderColor: 'rgba(255,255,255,0.08)' }} />
-      <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l" style={{ borderColor: 'rgba(255,255,255,0.08)' }} />
-      <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r" style={{ borderColor: 'rgba(255,255,255,0.08)' }} />
     </div>
   )
 }

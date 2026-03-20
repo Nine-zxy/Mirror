@@ -940,8 +940,17 @@ function ProxemicDivider({ proxemic, xA, xB }) {
   )
 }
 
-// ── Floating mark button ──────────────────────────────────────
-const TAG_EMOJIS = ['📌', '⚠️', '💡', '😠', '😢', '🤔', '❗', '✨']
+// ── Floating mark button (pixel emotion icons) ──────────────
+const MARK_EMOTIONS = [
+  { key: 'angry',     src: '/assets/ui/emotions/angry.png',     label: '愤怒' },
+  { key: 'confused',  src: '/assets/ui/emotions/confused.png',  label: '困惑' },
+  { key: 'happy',     src: '/assets/ui/emotions/happy.png',     label: '开心' },
+  { key: 'love',      src: '/assets/ui/emotions/love.png',      label: '爱' },
+  { key: 'sleepy',    src: '/assets/ui/emotions/sleepy.png',    label: '疲惫' },
+  { key: 'stressed',  src: '/assets/ui/emotions/stressed.png',  label: '压力' },
+  { key: 'surprised', src: '/assets/ui/emotions/surprised.png', label: '惊讶' },
+  { key: 'thinking',  src: '/assets/ui/emotions/thinking.png',  label: '思考' },
+]
 
 function FloatingMark({ onMark, phase }) {
   const [open, setOpen] = useState(false)
@@ -951,17 +960,18 @@ function FloatingMark({ onMark, phase }) {
   return (
     <div className="absolute" style={{
       bottom: '16px', right: '14px',
-      zIndex: 40,   // explicit — Tailwind z-25 is not standard
+      zIndex: 40,
       userSelect: 'none',
     }}>
-      {/* Emoji tray (opens upward) */}
+      {/* Emotion icon grid (opens upward) */}
       {open && (
-        <div className="flex flex-col gap-1.5 mb-2 items-center anim-fadeIn">
-          {TAG_EMOJIS.map(emoji => (
+        <div className="grid grid-cols-2 gap-1.5 mb-2 anim-fadeIn" style={{ width: '82px' }}>
+          {MARK_EMOTIONS.map(emo => (
             <button
-              key={emoji}
-              onClick={() => { onMark(emoji); setOpen(false) }}
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-[18px] transition-all hover:scale-115"
+              key={emo.key}
+              onClick={() => { onMark(emo.key); setOpen(false) }}
+              className="w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:scale-110"
+              title={emo.label}
               style={{
                 background: 'rgba(0,0,0,0.78)',
                 border: '1px solid rgba(255,255,255,0.16)',
@@ -969,7 +979,7 @@ function FloatingMark({ onMark, phase }) {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
               }}
             >
-              {emoji}
+              <img src={emo.src} alt={emo.label} style={{ width: '22px', height: '22px', imageRendering: 'pixelated' }} />
             </button>
           ))}
         </div>
@@ -981,13 +991,16 @@ function FloatingMark({ onMark, phase }) {
         title="标记当前时刻 / Mark moment"
         style={{
           padding: '6px 10px',
-          background: open ? 'rgba(122,176,232,0.22)' : 'rgba(0,0,0,0.72)',
-          border: `1.5px solid ${open ? 'rgba(122,176,232,0.5)' : 'rgba(255,255,255,0.18)'}`,
+          background: open ? 'rgba(212,168,82,0.22)' : 'rgba(0,0,0,0.72)',
+          border: `1.5px solid ${open ? 'rgba(212,168,82,0.5)' : 'rgba(255,255,255,0.18)'}`,
           backdropFilter: 'blur(6px)',
           boxShadow: '0 2px 10px rgba(0,0,0,0.4)',
         }}
       >
-        <span style={{ fontSize: '14px' }}>{open ? '✕' : '🏷'}</span>
+        {open
+          ? <span style={{ fontSize: '14px' }}>✕</span>
+          : <img src="/assets/ui/emotions/thinking.png" alt="" style={{ width: '18px', height: '18px', imageRendering: 'pixelated' }} />
+        }
         {!open && <span className="font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.5)' }}>标记</span>}
       </button>
     </div>
@@ -1129,7 +1142,7 @@ function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute
                 persona={persona}
                 spPose={sp.pose || 'neutral'}
                 facing={sp.facing || 'right'}
-                scale={(sp.scale || 1.0) * sceneCharScale * 2.5}
+                scale={(sp.scale || 1.0) * sceneCharScale * 1.5}
                 glow={true}
               />
             </div>
@@ -1173,7 +1186,7 @@ export default function Theater({
     <div className="relative w-full h-full flex flex-col">
 
       {/* ── Outer: fills flex-1, centers the 16:9 scene, black letterbox bars ── */}
-      <div className="relative flex-1 overflow-hidden bg-black flex items-center justify-center">
+      <div className="relative flex-1 overflow-hidden flex items-center justify-center" style={{ background: '#0a0808' }}>
 
         {/* ── Inner: enforces 16:9 aspect ratio ── */}
         <div
@@ -1216,7 +1229,7 @@ export default function Theater({
           {/* ── Narrator pill — lower-center of scene, large and readable ── */}
           {beat.narrator && (
             <div className="absolute left-0 right-0 flex justify-center anim-fadeIn" style={{
-              top: '44%', transform: 'translateY(-50%)', zIndex: 25,
+              top: '12%', transform: 'translateY(-50%)', zIndex: 25,
             }}>
               <div
                 className="flex items-center gap-3 px-5 py-3 text-center"
@@ -1230,13 +1243,13 @@ export default function Theater({
                 }}
               >
                 <span className="font-mono flex-shrink-0" style={{
-                  fontSize: '8px', letterSpacing: '0.2em',
+                  fontSize: '12px', letterSpacing: '0.2em',
                   color: 'rgba(255,255,255,0.30)', textTransform: 'uppercase',
                 }}>
                   旁白
                 </span>
                 <span style={{
-                  fontSize: '15px',
+                  fontSize: '20px',
                   color: 'rgba(255,255,255,0.88)',
                   fontFamily: '"PingFang SC","Inter","Microsoft YaHei",sans-serif',
                   letterSpacing: '0.04em',

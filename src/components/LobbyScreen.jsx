@@ -53,9 +53,9 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-black overflow-hidden">
+    <div className="flex flex-col items-center justify-center h-screen overflow-hidden" style={{ background: '#060810' }}>
       <div className="absolute inset-0 opacity-10"
-        style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 60%, #90e8a8 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 60%, #7ab0e8 0%, transparent 70%)' }}
       />
 
       <div className="relative flex flex-col items-center gap-6 px-8 max-w-md text-center anim-fadeIn">
@@ -65,7 +65,7 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
           <span className="font-pixel text-[14px] tracking-[0.3em]" style={{ color: '#7ab0e8' }}>
             ASIDE
           </span>
-          <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #90e8a8, transparent)' }} />
+          <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #7ab0e8, transparent)' }} />
           <p className="font-mono text-[9px] tracking-[0.2em] text-white/30">
             {proximity === 'colocated' ? '同处一室模式' : '远程连线模式'}
           </p>
@@ -75,8 +75,8 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full transition-colors"
             style={{
-              background: sync.connected ? '#60c880' : '#666',
-              boxShadow: sync.connected ? '0 0 6px #60c880' : 'none',
+              background: sync.connected ? '#7ab0e8' : '#666',
+              boxShadow: sync.connected ? '0 0 6px #7ab0e8' : 'none',
             }}
           />
           <span className="font-mono text-[9px] text-white/40">
@@ -92,8 +92,8 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
               onClick={() => { setTab(key); setError(null) }}
               className="font-mono text-[10px] px-5 py-2 transition-all"
               style={{
-                color: tab === key ? '#90e8a8' : 'rgba(255,255,255,0.3)',
-                background: tab === key ? 'rgba(144,232,168,0.1)' : 'transparent',
+                color: tab === key ? '#7ab0e8' : 'rgba(255,255,255,0.3)',
+                background: tab === key ? 'rgba(122,176,232,0.1)' : 'transparent',
               }}
             >
               {label}
@@ -113,10 +113,10 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
                     <span key={i}
                       className="font-mono text-[28px] tracking-wider px-2.5 py-1.5 rounded-lg"
                       style={{
-                        color: '#90e8a8',
-                        background: 'rgba(144,232,168,0.08)',
-                        border: '1px solid rgba(144,232,168,0.2)',
-                        textShadow: '0 0 12px rgba(144,232,168,0.4)',
+                        color: '#7ab0e8',
+                        background: 'rgba(122,176,232,0.08)',
+                        border: '1px solid rgba(122,176,232,0.2)',
+                        textShadow: '0 0 12px rgba(122,176,232,0.4)',
                       }}
                     >
                       {ch}
@@ -131,13 +131,13 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full transition-all"
                     style={{
-                      background: sync.partnerConnected ? '#60c880' : '#555',
-                      boxShadow: sync.partnerConnected ? '0 0 8px #60c880' : 'none',
+                      background: sync.partnerConnected ? '#7ab0e8' : '#555',
+                      boxShadow: sync.partnerConnected ? '0 0 8px #7ab0e8' : 'none',
                       animation: sync.partnerConnected ? 'none' : 'pulseSoft 2s ease-in-out infinite',
                     }}
                   />
                   <span className="font-mono text-[10px]"
-                    style={{ color: sync.partnerConnected ? '#60c880' : 'rgba(255,255,255,0.3)' }}>
+                    style={{ color: sync.partnerConnected ? '#7ab0e8' : 'rgba(255,255,255,0.3)' }}>
                     {sync.partnerConnected ? '对方已加入' : '等待对方加入…'}
                   </span>
                 </div>
@@ -165,9 +165,9 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
               maxLength={6}
               className="font-mono text-[24px] text-center tracking-[0.3em] px-4 py-3 rounded-lg bg-transparent border outline-none transition-all w-[240px]"
               style={{
-                color: '#90e8a8',
-                borderColor: error ? 'rgba(232,122,122,0.5)' : 'rgba(144,232,168,0.25)',
-                background: 'rgba(144,232,168,0.04)',
+                color: '#7ab0e8',
+                borderColor: error ? 'rgba(232,122,122,0.5)' : 'rgba(122,176,232,0.25)',
+                background: 'rgba(122,176,232,0.04)',
               }}
               autoFocus
             />
@@ -183,9 +183,9 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
               disabled={joinCode.length < 4 || !sync.connected}
               className="font-mono text-[11px] tracking-wider px-8 py-2.5 rounded-lg border transition-all disabled:opacity-30"
               style={{
-                color: '#90e8a8',
-                borderColor: 'rgba(144,232,168,0.3)',
-                background: 'rgba(144,232,168,0.08)',
+                color: '#7ab0e8',
+                borderColor: 'rgba(122,176,232,0.3)',
+                background: 'rgba(122,176,232,0.08)',
               }}
             >
               加入
@@ -194,8 +194,8 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
             {/* Partner status (shown after actually joining via the join button) */}
             {joinedRoom && sync.roomCode && (
               <div className="flex items-center gap-2 mt-1">
-                <div className="w-2 h-2 rounded-full" style={{ background: '#60c880', boxShadow: '0 0 8px #60c880' }} />
-                <span className="font-mono text-[10px]" style={{ color: '#60c880' }}>
+                <div className="w-2 h-2 rounded-full" style={{ background: '#7ab0e8', boxShadow: '0 0 8px #7ab0e8' }} />
+                <span className="font-mono text-[10px]" style={{ color: '#7ab0e8' }}>
                   已加入房间 {sync.roomCode}
                 </span>
               </div>
@@ -209,13 +209,13 @@ export default function LobbyScreen({ proximity, onBothReady, onBack }) {
             onClick={handleStart}
             className="font-mono text-sm tracking-[0.2em] px-10 py-3.5 rounded-lg border transition-all anim-fadeIn"
             style={{
-              color: '#90e8a8',
-              borderColor: 'rgba(144,232,168,0.5)',
-              background: 'rgba(144,232,168,0.1)',
-              boxShadow: '0 0 20px rgba(144,232,168,0.15)',
+              color: '#7ab0e8',
+              borderColor: 'rgba(122,176,232,0.5)',
+              background: 'rgba(122,176,232,0.1)',
+              boxShadow: '0 0 20px rgba(122,176,232,0.15)',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(144,232,168,0.2)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(144,232,168,0.1)' }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(122,176,232,0.2)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(122,176,232,0.1)' }}
           >
             双方就绪 — 开始
           </button>

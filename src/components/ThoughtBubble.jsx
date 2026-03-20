@@ -260,6 +260,12 @@ export default function ThoughtBubble({
   const bt   = BUBBLE_TYPES[thought.bubbleType] || BUBBLE_TYPES.default
   const isA  = personaId === 'A'
 
+  // Pixel bubble background asset selection
+  const isEdited = status === 'edited' || status === 'disputed'
+  const bubbleBgSrc = isA
+    ? (isEdited ? '/assets/ui/dialogue/thought_bubble_blue_edited.svg' : '/assets/ui/dialogue/blue-bubble.svg')
+    : (isEdited ? '/assets/ui/dialogue/thought_bubble_red_edited.svg' : '/assets/ui/dialogue/red-bubble.svg')
+
   // Determine displayed text
   const shownText = (status === 'edited' || status === 'disputed') ? (dispute?.text || displayText) : displayText
   const hasInteraction = status !== 'original'
@@ -336,8 +342,9 @@ export default function ThoughtBubble({
         background: es.bg,
         border: `${bt.borderWidth} ${status === 'disputed' ? 'solid' : bt.borderStyle} ${borderColor}`,
         borderRadius: bt.borderRadius,
+        overflow: 'hidden',
         color:     es.text,
-        fontSize:  '11px',
+        fontSize:  '14px',
         fontStyle: bt.italic && mode === 'observe' ? 'italic' : 'normal',
         lineHeight: '1.7',
         whiteSpace: 'pre-line',
@@ -351,21 +358,24 @@ export default function ThoughtBubble({
       }}
       onClick={() => mode === 'observe' && setMode('react')}
     >
+      {/* Pixel bubble SVG background overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `url("${bubbleBgSrc}")`,
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        opacity: 0.35,
+        borderRadius: bt.borderRadius,
+      }} />
+
       {/* Top row: label + icon + status + actions */}
-      <div className="flex items-center justify-between mb-1.5">
+      <div className="flex items-center justify-between mb-1.5 relative z-[1]">
         <div className="flex items-center gap-1">
           <span className="font-mono text-[7px] tracking-wider"
-            style={{ color: `${es.text}99`, opacity: 0.7 }}>
+            style={{ color: '#e8dcc8', opacity: 0.5 }}>
             内心
           </span>
           <img src={es.imgSrc} alt="" style={{width:'14px', height:'14px', display:'inline', imageRendering:'pixelated', opacity: 0.7}} />
-          {/* Emotion label when re-tagged */}
-          {dispute?.emotion && dispute.emotion !== thought.emotion && (
-            <span className="font-mono text-[7px] px-1 rounded"
-              style={{ color: es.text, background: `${es.bg}`, border: `1px solid ${es.border}40`, opacity: 0.7 }}>
-              {es.label}
-            </span>
-          )}
         </div>
         <div className="flex items-center gap-1.5">
           {hasInteraction && <StatusBadge status={status} />}

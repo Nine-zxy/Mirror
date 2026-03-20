@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { scenario as BASE_SCENARIO }                from './data/scenario'
-import { APPEARANCE_OPTIONS, SCENE_PRESETS }        from './data/dramaElements'
+// SCENE_PRESETS used in Theater.jsx; PersonaEditor removed from App
 import {
   initSession, log, logPhase, logBeat, logSeek,
   logTag, logDispute, logToggle, logReflect,
@@ -65,135 +65,6 @@ const SCENE_ELEMENTS_MAP = {
   office:             ['window', 'desk', 'coffee', 'bookshelf', 'plant'],
 }
 
-// ── PersonaEditor + SceneSelector panel ─────────────────────
-function PersonaEditor({ personas, onUpdate, currentScene, onSceneChange, onClose }) {
-  const [tab, setTab] = useState('scene')
-  const hairStyles   = APPEARANCE_OPTIONS.hairStyles
-  const outfitStyles = APPEARANCE_OPTIONS.outfitStyles
-  const accessories  = APPEARANCE_OPTIONS.accessories
-
-  function Chip({ active, onClick, label, color = '#7ab0e8' }) {
-    return (
-      <button onClick={onClick}
-        className="px-2 py-0.5 rounded font-mono text-[9px] transition-all"
-        style={{
-          background:  active ? `${color}22` : 'rgba(255,255,255,0.04)',
-          border:      `1px solid ${active ? `${color}55` : 'rgba(255,255,255,0.08)'}`,
-          color:       active ? color : 'rgba(255,255,255,0.38)',
-        }}>
-        {label}
-      </button>
-    )
-  }
-
-  function PersonaSection({ id }) {
-    const p = personas[id]
-    const accent = p.color || (id === 'A' ? '#7ab0e8' : '#e87a7a')
-    return (
-      <div className="mb-5">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: accent }} />
-          <span className="font-mono text-[10px] tracking-[0.15em]" style={{ color: accent }}>
-            {p.name} · {id === 'A' ? '你' : '对方'}
-          </span>
-        </div>
-        <div className="mb-2">
-          <p className="font-mono text-[8px] text-white/22 tracking-wider mb-1.5">发型</p>
-          <div className="flex flex-wrap gap-1">
-            {hairStyles.map(h => (
-              <Chip key={h.id} active={p.hairStyle === h.id} label={h.label} color={accent}
-                onClick={() => onUpdate(id, { hairStyle: h.id })} />
-            ))}
-          </div>
-        </div>
-        <div className="mb-2">
-          <p className="font-mono text-[8px] text-white/22 tracking-wider mb-1.5">服装</p>
-          <div className="flex flex-wrap gap-1">
-            {outfitStyles.map(o => (
-              <Chip key={o.id} active={p.outfitStyle === o.id} label={o.label} color={accent}
-                onClick={() => onUpdate(id, { outfitStyle: o.id })} />
-            ))}
-          </div>
-        </div>
-        <div>
-          <p className="font-mono text-[8px] text-white/22 tracking-wider mb-1.5">配件</p>
-          <div className="flex flex-wrap gap-1">
-            {accessories.map(a => (
-              <Chip key={a.id} active={(p.accessory || 'none') === a.id} label={a.label} color={accent}
-                onClick={() => onUpdate(id, { accessory: a.id })} />
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  function SceneSection() {
-    return (
-      <div>
-        <p className="font-mono text-[8px] text-white/22 tracking-wider mb-2">选择场景</p>
-        <div className="grid grid-cols-2 gap-1.5">
-          {Object.entries(SCENE_PRESETS).map(([key, preset]) => {
-            const active = currentScene === key
-            return (
-              <button key={key} onClick={() => onSceneChange(key)}
-                className="relative rounded overflow-hidden transition-all"
-                style={{
-                  border: `1.5px solid ${active ? preset.ambientColor : 'rgba(255,255,255,0.07)'}`,
-                  boxShadow: active ? `0 0 12px ${preset.ambientColor}40` : 'none',
-                  aspectRatio: '16/9',
-                }}>
-                <div style={{ position: 'absolute', inset: 0, background: preset.fallbackGradient, opacity: active ? 0.9 : 0.55 }} />
-                <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translate(-50%,-50%)',
-                  width: '14px', height: '14px', borderRadius: '50%', background: preset.ambientColor, filter: 'blur(5px)', opacity: 0.6 }} />
-                <div className="absolute inset-0 flex flex-col items-center justify-end pb-1">
-                  <span className="font-mono text-[8px]"
-                    style={{ color: active ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.45)' }}>
-                    {preset.label}
-                  </span>
-                  {active && <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ background: preset.ambientColor }} />}
-                </div>
-              </button>
-            )
-          })}
-        </div>
-        <p className="font-mono text-[7px] text-white/15 mt-2">场景切换立即生效</p>
-      </div>
-    )
-  }
-
-  return (
-    <div className="absolute inset-0 flex items-start justify-end pointer-events-none" style={{ top: 0, zIndex: 50 }}>
-      <div className="pointer-events-auto relative flex flex-col anim-fadeIn"
-        style={{ width: '230px', maxHeight: 'calc(100% - 8px)', background: 'rgba(7,9,16,0.97)',
-          border: '1px solid rgba(255,255,255,0.09)', borderTop: 'none', borderRight: 'none', backdropFilter: 'blur(14px)' }}>
-        <div className="flex items-center justify-between px-4 py-2 border-b flex-shrink-0" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
-          <div className="flex gap-0">
-            {[['scene','场景'], ['persona','角色']].map(([t, label]) => (
-              <button key={t} onClick={() => setTab(t)}
-                className="font-mono text-[9px] px-3 py-1 transition-all"
-                style={{ color: tab === t ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.25)',
-                  borderBottom: tab === t ? '1px solid rgba(255,255,255,0.4)' : '1px solid transparent' }}>
-                {label}
-              </button>
-            ))}
-          </div>
-          <button onClick={onClose} className="font-mono text-[10px] text-white/20 hover:text-white/50 transition-colors">✕</button>
-        </div>
-        <div className="flex-1 overflow-y-auto px-4 pt-3 pb-3" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.08) transparent' }}>
-          {tab === 'scene' ? <SceneSection /> : (
-            <>
-              <PersonaSection id="A" />
-              <div className="border-t mb-4" style={{ borderColor: 'rgba(255,255,255,0.05)' }} />
-              <PersonaSection id="B" />
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // ── Main App ─────────────────────────────────────────────────
 export default function App() {
   const sync = useSyncContext()
@@ -207,7 +78,6 @@ export default function App() {
   // Together Viewing will switch to 'both' automatically
   const [bubbleVisibility, setBubbleVisibility] = useState('partner')
   const [showScript, setShowScript]     = useState(false)
-  const [showPersonaEditor, setShowPersonaEditor] = useState(false)
   const [annotation, setAnnotation]     = useState('')
 
   const [liveScenario, setLiveScenario] = useState(BASE_SCENARIO)
@@ -318,8 +188,8 @@ export default function App() {
     const nb = beats[next]
     setBeatIndex(next)
     logBeat(next, 'auto')
-    syncSend('sync:beat', { beatIndex: next, isPlaying: !nb.isPausePoint })
-    if (nb.isPausePoint) setIsPlaying(false)
+    syncSend('sync:beat', { beatIndex: next, isPlaying: true })
+    // isPausePoint auto-pause removed — disruptive during study
   }, [beatIndex, beats, phase, syncSend])
 
   const isPlaybackPhase = phase === 'solo_viewing' || phase === 'together_viewing'
@@ -534,6 +404,15 @@ export default function App() {
     else                return { A: true,  B: false }
   }, [bubbleVisibility, myRole])
 
+  // Auto-sync bubbleVisibility when phase changes
+  useEffect(() => {
+    if (phase === 'together_viewing') {
+      setBubbleVisibility('both')
+    } else if (phase === 'solo_viewing') {
+      setBubbleVisibility('partner')
+    }
+  }, [phase])
+
   // DEV: Ctrl+D → skip to solo_viewing with base scenario (remove before production)
   const devSkip = useCallback(() => {
     setLiveScenario(BASE_SCENARIO); setPersonas(BASE_SCENARIO.personas)
@@ -603,10 +482,10 @@ export default function App() {
 
   // ── Playback phases: solo_viewing, together_viewing (and legacy simulation/reflection/end) ──
   return (
-    <div className="flex flex-col h-screen bg-black overflow-hidden select-none">
+    <div className="flex flex-col h-screen overflow-hidden select-none" style={{ background: '#060810' }}>
 
       {/* ── Header ── */}
-      <header className="flex items-center justify-between px-5 h-9 bg-black border-b border-white/5 flex-shrink-0 relative z-40">
+      <header className="flex items-center justify-between px-5 h-9 border-b flex-shrink-0 relative z-40" style={{ background: '#060810', borderColor: 'rgba(122,176,232,0.12)' }}>
         <div className="flex items-center gap-2">
           <span className="font-pixel text-[8px] tracking-[0.3em]" style={{ color: '#7ab0e8' }}>
             ASIDE
@@ -615,8 +494,8 @@ export default function App() {
         </div>
         <span className="font-mono text-[10px] text-white/20 tracking-widest truncate mx-4">
           {liveScenario.title}
-          {phase === 'solo_viewing' && <span className="ml-2 text-[8px] text-white/12">· SOLO VIEWING</span>}
-          {phase === 'together_viewing' && <span className="ml-2 text-[8px] text-white/12">· TOGETHER</span>}
+          {phase === 'solo_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· SOLO VIEWING</span>}
+          {phase === 'together_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· TOGETHER</span>}
         </span>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <button onClick={handleBubbleCycle}
@@ -627,13 +506,8 @@ export default function App() {
           </button>
           <button onClick={() => setShowScript(p => !p)}
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
-            style={hBtn(showScript, '#c8a850')} title="剧本面板 (S)">
-            剧本
-          </button>
-          <button onClick={() => setShowPersonaEditor(p => !p)}
-            className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
-            style={hBtn(showPersonaEditor, '#b878c8')} title="场景与角色设定">
-            设定
+            style={hBtn(showScript, '#7ab0e8')} title="剧本面板 (S)">
+            <img src="/assets/ui/icons/script.svg" alt="" className="inline w-3.5 h-3.5" style={{imageRendering:'auto'}} />
           </button>
         </div>
       </header>
@@ -683,15 +557,6 @@ export default function App() {
             />
           )}
 
-          {showPersonaEditor && (
-            <PersonaEditor
-              personas={personas}
-              onUpdate={handlePersonaUpdate}
-              currentScene={liveScenario.scene || 'bedroom_night'}
-              onSceneChange={handleSceneChange}
-              onClose={() => setShowPersonaEditor(false)}
-            />
-          )}
         </div>
 
         {showScript && (

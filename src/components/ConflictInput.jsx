@@ -33,8 +33,8 @@ const STEPS = [
 const FORMAT_COLORS = {
   'wechat-html-native': '#60c878',
   'wechat-html-tool':   '#60c878',
-  'wechat-txt':         '#d4a852',
-  'wechat-copy':        '#d4a852',
+  'wechat-txt':         '#7ab0e8',
+  'wechat-copy':        '#7ab0e8',
   'simple-colon':       '#c080e8',
   'freetext':           '#888',
   'empty':              '#555',
@@ -82,7 +82,7 @@ function ProcessingOverlay({ step, source }) {
         {[0, 1, 2].map(i => (
           <div key={i} style={{
             width: '8px', height: '8px', borderRadius: '50%',
-            background: '#d4a852',
+            background: '#7ab0e8',
             animation: `blink 1.1s ${i * 0.28}s ease-in-out infinite`,
           }} />
         ))}
@@ -96,8 +96,8 @@ function ProcessingOverlay({ step, source }) {
               style={{ opacity: done ? 0.4 : active ? 1 : 0.2 }}>
               <div style={{
                 width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0,
-                background:  done ? '#58c878' : active ? '#d4a852' : 'rgba(255,255,255,0.15)',
-                boxShadow:   active ? '0 0 8px #d4a852' : 'none',
+                background:  done ? '#58c878' : active ? '#7ab0e8' : 'rgba(255,255,255,0.15)',
+                boxShadow:   active ? '0 0 8px #7ab0e8' : 'none',
                 transition:  'all 0.4s',
               }} />
               <div>
@@ -114,9 +114,9 @@ function ProcessingOverlay({ step, source }) {
       </div>
       {source && (
         <div className="font-mono text-[8px] px-3 py-1 rounded-full anim-fadeIn" style={{
-          background: source === 'ai' ? 'rgba(212,168,82,0.12)' : 'rgba(255,255,255,0.06)',
-          border:     `1px solid ${source === 'ai' ? 'rgba(212,168,82,0.3)' : 'rgba(255,255,255,0.1)'}`,
-          color:      source === 'ai' ? '#d4a852' : 'rgba(255,255,255,0.35)',
+          background: source === 'ai' ? 'rgba(122,176,232,0.12)' : 'rgba(255,255,255,0.06)',
+          border:     `1px solid ${source === 'ai' ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.1)'}`,
+          color:      source === 'ai' ? '#7ab0e8' : 'rgba(255,255,255,0.35)',
         }}>
           {source === 'ai' ? '✦ 场景重构完成' : '模板重建'}
         </div>
@@ -148,7 +148,7 @@ function HowToGuide() {
         <div className="px-4 pb-4 flex flex-col gap-4 anim-fadeIn">
           {HOW_TO.map((section, si) => (
             <div key={si}>
-              <div className="font-mono text-[9px] mb-1.5" style={{ color: '#d4a852' }}>
+              <div className="font-mono text-[9px] mb-1.5" style={{ color: '#7ab0e8' }}>
                 {section.title}
               </div>
               <ol className="flex flex-col gap-1">
@@ -198,8 +198,8 @@ function FileDropZone({ onFile, isDragging, setIsDragging }) {
       className="flex flex-col items-center justify-center gap-3 rounded-xl cursor-pointer"
       style={{
         height: '130px',
-        background: isDragging ? 'rgba(212,168,82,0.1)' : 'rgba(255,255,255,0.025)',
-        border: `1.5px dashed ${isDragging ? 'rgba(212,168,82,0.6)' : 'rgba(255,255,255,0.12)'}`,
+        background: isDragging ? 'rgba(122,176,232,0.1)' : 'rgba(255,255,255,0.025)',
+        border: `1.5px dashed ${isDragging ? 'rgba(122,176,232,0.6)' : 'rgba(255,255,255,0.12)'}`,
         transition: 'all 0.2s',
       }}
     >
@@ -207,7 +207,7 @@ function FileDropZone({ onFile, isDragging, setIsDragging }) {
         {isDragging ? '📂' : '📁'}
       </div>
       <div className="flex flex-col items-center gap-1">
-        <span className="font-mono text-[10px]" style={{ color: isDragging ? '#d4a852' : 'rgba(255,255,255,0.4)' }}>
+        <span className="font-mono text-[10px]" style={{ color: isDragging ? '#7ab0e8' : 'rgba(255,255,255,0.4)' }}>
           拖入聊天记录文件
         </span>
         <span className="font-mono text-[8px] text-white/22">
@@ -227,15 +227,15 @@ function RelTypeCard({ type, selected, onSelect }) {
       onClick={() => onSelect(type.id)}
       className="flex-1 flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl transition-all"
       style={{
-        background: selected ? 'rgba(212,168,82,0.12)' : 'rgba(255,255,255,0.03)',
-        border: `1.5px solid ${selected ? 'rgba(212,168,82,0.5)' : 'rgba(255,255,255,0.07)'}`,
+        background: selected ? 'rgba(122,176,232,0.12)' : 'rgba(255,255,255,0.03)',
+        border: `1.5px solid ${selected ? 'rgba(122,176,232,0.5)' : 'rgba(255,255,255,0.07)'}`,
         transform: selected ? 'scale(1.03)' : 'scale(1)',
         cursor: 'pointer',
       }}
     >
       <span style={{ fontSize: '18px' }}>{type.icon}</span>
       <span className="font-mono text-[9px]" style={{
-        color: selected ? '#d4a852' : 'rgba(255,255,255,0.45)',
+        color: selected ? '#7ab0e8' : 'rgba(255,255,255,0.45)',
       }}>
         {type.label}
       </span>
@@ -284,7 +284,7 @@ function StyleCheckbox({ style, selected, onToggle, accentColor }) {
 // ── Archetype section ─────────────────────────────────────────
 // singleColumn: in Together mode, each person only picks their OWN style
 function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setStyleA, styleB, setStyleB, nameA, nameB, singleColumn = false }) {
-  const A_COLOR = '#d4a852'
+  const A_COLOR = '#7ab0e8'
   const B_COLOR = '#e87a7a'
 
   const toggleStyle = (setter, current, id) => {
@@ -454,7 +454,7 @@ function WaitingOverlay({ partnerReady, generating, role }) {
             {[0, 1, 2].map(i => (
               <div key={i} style={{
                 width: '6px', height: '6px', borderRadius: '50%',
-                background: generating ? '#d4a852' : 'rgba(255,255,255,0.3)',
+                background: generating ? '#7ab0e8' : 'rgba(255,255,255,0.3)',
                 animation: `blink 1.1s ${i * 0.28}s ease-in-out infinite`,
               }} />
             ))}
@@ -639,6 +639,7 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
     const input = {
       chatLog,
       userRole,
+      userName: userRole === 'A' ? (nameA || '伴侣A') : (nameB || '伴侣B'),
       concernA: concernA.trim(),     // "你最想让对方理解的是什么？"
       feeling:  feeling.trim(),      // "你当时最强烈的感受是什么？"
       context:  context.trim(),
@@ -707,7 +708,7 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
   const fmtColor = detectedFmt ? (FORMAT_COLORS[detectedFmt.format] ?? '#888') : null
 
   return (
-    <div className="relative flex min-h-screen bg-black overflow-hidden">
+    <div className="relative flex flex-col min-h-screen overflow-hidden" style={{ background: '#060810' }}>
 
       {/* Subtle grid */}
       <div className="fixed inset-0 pointer-events-none" style={{
@@ -718,62 +719,14 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
         backgroundSize: '44px 44px',
       }} />
 
-      {/* ── Left panel ── */}
-      <div className="relative flex flex-col gap-4 p-8 border-r border-white/5 flex-shrink-0"
-        style={{ width: '280px' }}>
+      {/* ── Single panel ── */}
+      <div className="relative flex flex-col flex-1 px-8 py-6 gap-4 anim-fadeIn overflow-y-auto max-w-4xl mx-auto w-full">
 
-        <div className="flex flex-col gap-0.5 mb-2">
-          <span className="font-pixel text-[8px] tracking-[0.35em]" style={{ color: '#d4a852' }}>ASIDE</span>
-          <div className="w-8 h-px" style={{ background: 'linear-gradient(90deg, rgba(212,168,82,0.5), transparent)' }} />
-          <p className="font-mono text-[8px] text-white/22 tracking-[0.15em] mt-1">INPUT CONFLICT</p>
-        </div>
-
-        <FileDropZone onFile={handleFile} isDragging={isDragging} setIsDragging={setIsDragging} />
-
-        {fileName && (
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg anim-fadeIn" style={{
-            background: 'rgba(88,200,120,0.08)',
-            border:     '1px solid rgba(88,200,120,0.2)',
-          }}>
-            <span className="text-[10px]">✓</span>
-            <div className="min-w-0">
-              <div className="font-mono text-[9px] text-white/60 truncate">{fileName}</div>
-              {detectedFmt && (
-                <div className="font-mono text-[7px] mt-0.5" style={{ color: fmtColor }}>
-                  {FORMAT_LABELS[detectedFmt.format]}
-                  {detectedFmt.messageCount > 0 && ` · ${detectedFmt.messageCount} 条消息`}
-                </div>
-              )}
-            </div>
-            <button
-              onClick={() => { setFileName(null); setRawText(''); setParsedText(''); setDetectedFmt(null) }}
-              className="font-mono text-[10px] text-white/25 hover:text-white/55 ml-auto flex-shrink-0"
-            >✕</button>
-          </div>
-        )}
-
-        <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg" style={{
-          background: API_KEY_AVAILABLE ? 'rgba(212,168,82,0.07)' : 'rgba(255,255,255,0.03)',
-          border:     `1px solid ${API_KEY_AVAILABLE ? 'rgba(212,168,82,0.2)' : 'rgba(255,255,255,0.07)'}`,
-        }}>
-          <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{
-            background: API_KEY_AVAILABLE ? '#d4a852' : '#444',
-            boxShadow:  API_KEY_AVAILABLE ? '0 0 5px #d4a852' : 'none',
-          }} />
-          <span className="font-mono text-[8px]" style={{ color: API_KEY_AVAILABLE ? '#d4a852' : 'rgba(255,255,255,0.22)' }}>
-            {API_KEY_AVAILABLE ? '引擎就绪' : '离线模式 · 配置 .env.local'}
-          </span>
-        </div>
-
-        <div className="flex-1" />
-        <HowToGuide />
-      </div>
-
-      {/* ── Right panel ── */}
-      <div className="relative flex flex-col flex-1 p-8 gap-4 anim-fadeIn overflow-y-auto">
-
+        {/* ── Top area: title + together hint ── */}
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
+            <span className="font-pixel text-[8px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>ASIDE</span>
+            <div className="w-8 h-px" style={{ background: 'linear-gradient(90deg, rgba(122,176,232,0.5), transparent)' }} />
             <p className="font-mono text-[10px] text-white/30 tracking-[0.2em]">
               冲突描述 / CONFLICT INPUT
             </p>
@@ -783,7 +736,7 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
                 border: '1px solid rgba(88,200,120,0.25)',
                 color: '#58c878',
               }}>
-                👥 TOGETHER · {sync.role === 'A' ? '你是 A' : '你是 B'}
+                TOGETHER · {sync.role === 'A' ? '你是 A' : '你是 B'}
               </span>
             )}
           </div>
@@ -797,11 +750,11 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
         {/* Together mode sync hint */}
         {isTogether && (
           <div className="rounded-lg px-4 py-3 anim-fadeIn" style={{
-            background: 'rgba(212,168,82,0.06)',
-            border: '1px solid rgba(212,168,82,0.18)',
+            background: 'rgba(122,176,232,0.06)',
+            border: '1px solid rgba(122,176,232,0.18)',
           }}>
             <p className="text-[11px] leading-relaxed" style={{
-              color: 'rgba(212,168,82,0.75)',
+              color: 'rgba(122,176,232,0.75)',
               fontFamily: '"PingFang SC","Inter",sans-serif',
             }}>
               对方此刻正在独立完成同样的描述。你们的回答将在不知道对方写了什么的情况下，分别驱动 AI 对彼此内心的推断。
@@ -809,44 +762,73 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
           </div>
         )}
 
-        {/* Format badge */}
-        {detectedFmt && detectedFmt.format !== 'freetext' && (
-          <div className="flex items-center gap-2 anim-fadeIn">
-            <div className="w-1.5 h-1.5 rounded-full" style={{ background: fmtColor }} />
-            <span className="font-mono text-[9px]" style={{ color: fmtColor }}>
-              识别格式：{FORMAT_LABELS[detectedFmt.format]}
-            </span>
-            {detectedFmt.messageCount > 0 && (
-              <span className="font-mono text-[8px] text-white/30">
-                · 解析出 {detectedFmt.messageCount} 条消息
-              </span>
+        {/* ── Upload + Paste row: side by side ── */}
+        <div className="flex gap-4" style={{ minHeight: '180px' }}>
+          {/* Left half: file drag-drop zone */}
+          <div className="flex-1 flex flex-col gap-2">
+            <FileDropZone onFile={handleFile} isDragging={isDragging} setIsDragging={setIsDragging} />
+            {fileName && (
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg anim-fadeIn" style={{
+                background: 'rgba(88,200,120,0.08)',
+                border:     '1px solid rgba(88,200,120,0.2)',
+              }}>
+                <span className="text-[10px]">✓</span>
+                <div className="min-w-0">
+                  <div className="font-mono text-[9px] text-white/60 truncate">{fileName}</div>
+                  {detectedFmt && (
+                    <div className="font-mono text-[7px] mt-0.5" style={{ color: fmtColor }}>
+                      {FORMAT_LABELS[detectedFmt.format]}
+                      {detectedFmt.messageCount > 0 && ` · ${detectedFmt.messageCount} 条消息`}
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => { setFileName(null); setRawText(''); setParsedText(''); setDetectedFmt(null) }}
+                  className="font-mono text-[10px] text-white/25 hover:text-white/55 ml-auto flex-shrink-0"
+                >✕</button>
+              </div>
             )}
+            <HowToGuide />
           </div>
-        )}
 
-        {/* Textarea */}
-        <div className="relative" style={{ minHeight: '200px' }}>
-          <textarea
-            value={rawText}
-            onChange={e => handleTextChange(e.target.value)}
-            placeholder={`粘贴微信聊天记录，或自由描述冲突……\n\n支持格式：\n• 微信PC「合并转发」→ HTML文件（拖入左侧）\n• 微信「手机复制」格式（长按→更多→复制）\n• 名字：消息内容 格式\n• 自由描述（想到什么写什么）\n\n示例：\n小美：你为什么不回我消息？\n小凯：我当时在忙啊\n小美：忙？发一条消息要多少时间？`}
-            className="w-full rounded-xl px-4 py-3.5 text-sm resize-none focus:outline-none"
-            style={{
-              background:  'rgba(255,255,255,0.04)',
-              border:      `1px solid ${rawText.length > 20 ? 'rgba(212,168,82,0.22)' : 'rgba(255,255,255,0.08)'}`,
-              color:       'rgba(255,255,255,0.78)',
-              fontFamily:  '"PingFang SC","JetBrains Mono","Inter",monospace',
-              fontSize:    '13px',
-              lineHeight:  '1.65',
-              caretColor:  '#d4a852',
-              transition:  'border-color 0.2s',
-              minHeight:   '200px',
-            }}
-          />
-          <div className="absolute bottom-3 right-4 font-mono text-[8px]" style={{
-            color: rawText.length > 20 ? 'rgba(212,168,82,0.45)' : 'rgba(255,255,255,0.15)',
-          }}>
-            {rawText.length} 字
+          {/* Right half: text paste area */}
+          <div className="flex-1 flex flex-col relative">
+            {/* Format badge */}
+            {detectedFmt && detectedFmt.format !== 'freetext' && (
+              <div className="flex items-center gap-2 mb-1 anim-fadeIn">
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: fmtColor }} />
+                <span className="font-mono text-[9px]" style={{ color: fmtColor }}>
+                  {FORMAT_LABELS[detectedFmt.format]}
+                </span>
+                {detectedFmt.messageCount > 0 && (
+                  <span className="font-mono text-[8px] text-white/30">
+                    · {detectedFmt.messageCount} 条
+                  </span>
+                )}
+              </div>
+            )}
+            <textarea
+              value={rawText}
+              onChange={e => handleTextChange(e.target.value)}
+              placeholder={'粘贴微信聊天记录，或自由描述冲突……\n\n示例：\n小美：你为什么不回我消息？\n小凯：我当时在忙啊\n小美：忙？发一条消息要多少时间？'}
+              className="w-full flex-1 rounded-xl px-4 py-3.5 text-sm resize-none focus:outline-none"
+              style={{
+                background:  'rgba(255,255,255,0.04)',
+                border:      `1px solid ${rawText.length > 20 ? 'rgba(122,176,232,0.22)' : 'rgba(255,255,255,0.08)'}`,
+                color:       'rgba(255,255,255,0.78)',
+                fontFamily:  '"PingFang SC","JetBrains Mono","Inter",monospace',
+                fontSize:    '13px',
+                lineHeight:  '1.65',
+                caretColor:  '#7ab0e8',
+                transition:  'border-color 0.2s',
+                minHeight:   '160px',
+              }}
+            />
+            <div className="absolute bottom-3 right-4 font-mono text-[8px]" style={{
+              color: rawText.length > 20 ? 'rgba(122,176,232,0.45)' : 'rgba(255,255,255,0.15)',
+            }}>
+              {rawText.length} 字
+            </div>
           </div>
         </div>
 
@@ -866,89 +848,57 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
           </details>
         )}
 
-        {/* Role identification — "在这段对话里，你是哪一位？" */}
+        {/* ── Concerns row: side by side ── */}
         {(parsedText || rawText).trim().length > 20 && (
-          <div className="flex flex-col gap-2 anim-fadeIn">
-            <p className="font-mono text-[9px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              在这段对话里，你是哪一位？ *
-            </p>
-            <div className="flex gap-3">
-              {[
-                { key: 'A', label: nameA || 'A' },
-                { key: 'B', label: nameB || 'B' },
-              ].map(opt => (
-                <button
-                  key={opt.key}
-                  onClick={() => setUserRole(opt.key)}
-                  className="flex-1 py-2.5 px-4 rounded-lg font-mono text-[12px] transition-all"
-                  style={{
-                    background: userRole === opt.key ? 'rgba(212,168,82,0.15)' : 'rgba(255,255,255,0.03)',
-                    border: `1.5px solid ${userRole === opt.key ? 'rgba(212,168,82,0.5)' : 'rgba(255,255,255,0.08)'}`,
-                    color: userRole === opt.key ? '#d4a852' : 'rgba(255,255,255,0.4)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {opt.label === opt.key ? `角色 ${opt.key}` : opt.label}
-                </button>
-              ))}
+          <div className="flex gap-4 anim-fadeIn">
+            {/* Left: concern */}
+            <div className="flex-1">
+              <label className="font-mono text-[8px] mb-1 block" style={{ color: '#7ab0e8' }}>
+                你最想让对方理解的是什么？ *
+              </label>
+              <input
+                value={concernA}
+                onChange={e => setConcernA(e.target.value)}
+                maxLength={80}
+                placeholder="例：我不是在无理取闹，我只是需要被回应"
+                className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
+                style={{
+                  background: 'rgba(122,176,232,0.06)',
+                  border: `1px solid ${concernA ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                  fontFamily: '"PingFang SC","Inter",sans-serif',
+                  transition: 'border-color 0.2s',
+                }}
+              />
+            </div>
+            {/* Right: feeling */}
+            <div className="flex-1">
+              <label className="font-mono text-[8px] mb-1 block" style={{ color: '#7ab0e8' }}>
+                你当时最强烈的感受是什么？ *
+              </label>
+              <input
+                value={feeling}
+                onChange={e => setFeeling(e.target.value)}
+                maxLength={80}
+                placeholder="例：觉得不被重视"
+                className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
+                style={{
+                  background: 'rgba(122,176,232,0.06)',
+                  border: `1px solid ${feeling ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                  fontFamily: '"PingFang SC","Inter",sans-serif',
+                  transition: 'border-color 0.2s',
+                }}
+              />
             </div>
           </div>
         )}
 
-        {/* Core concerns — individual input (each person fills their own) */}
-        <div className="flex flex-col gap-3">
-          <p className="font-mono text-[9px] text-white/30 tracking-[0.15em]">
-            你的内心描述 *
+        {isTogether && (parsedText || rawText).trim().length > 20 && (
+          <p className="font-mono text-[8px] text-white/18">
+            对方正在另一台设备上独立描述 TA 的感受。
           </p>
+        )}
 
-          {/* Field 1: 你最想让对方理解的是什么？ */}
-          <div>
-            <label className="font-mono text-[8px] mb-1 block" style={{ color: '#d4a852' }}>
-              你最想让对方理解的是什么？
-            </label>
-            <input
-              value={concernA}
-              onChange={e => setConcernA(e.target.value)}
-              maxLength={80}
-              placeholder="例：我不是在无理取闹，我只是需要被回应"
-              className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
-              style={{
-                background: 'rgba(212,168,82,0.06)',
-                border: `1px solid ${concernA ? 'rgba(212,168,82,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                fontFamily: '"PingFang SC","Inter",sans-serif',
-                transition: 'border-color 0.2s',
-              }}
-            />
-          </div>
-
-          {/* Field 2: 你当时最强烈的感受是什么？ */}
-          <div>
-            <label className="font-mono text-[8px] mb-1 block" style={{ color: '#d4a852' }}>
-              你当时最强烈的感受是什么？
-            </label>
-            <input
-              value={feeling}
-              onChange={e => setFeeling(e.target.value)}
-              maxLength={80}
-              placeholder="例：觉得不被重视"
-              className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
-              style={{
-                background: 'rgba(212,168,82,0.06)',
-                border: `1px solid ${feeling ? 'rgba(212,168,82,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                fontFamily: '"PingFang SC","Inter",sans-serif',
-                transition: 'border-color 0.2s',
-              }}
-            />
-          </div>
-
-          {isTogether && (
-            <p className="font-mono text-[8px] text-white/18">
-              对方正在另一台设备上独立描述 TA 的感受。
-            </p>
-          )}
-        </div>
-
-        {/* Context — required */}
+        {/* Background — single input, full width */}
         <div className="flex flex-col gap-1">
           <p className="font-mono text-[8px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
             背景信息 · 一句话背景 *
@@ -961,12 +911,41 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
             className="w-full rounded-lg px-3 py-2 text-[12px] text-white/70 placeholder-white/18 focus:outline-none"
             style={{
               background: 'rgba(255,255,255,0.03)',
-              border: `1px solid ${context.trim() ? 'rgba(212,168,82,0.3)' : 'rgba(255,255,255,0.07)'}`,
+              border: `1px solid ${context.trim() ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.07)'}`,
               fontFamily: '"PingFang SC","Inter",sans-serif',
               transition: 'border-color 0.2s',
             }}
           />
         </div>
+
+        {/* Role selection — full width */}
+        {(parsedText || rawText).trim().length > 20 && (
+          <div className="flex flex-col gap-2 anim-fadeIn">
+            <p className="font-mono text-[9px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              你是对话中的哪一位？ *
+            </p>
+            <div className="flex gap-3">
+              {[
+                { key: 'A', label: nameA || 'A' },
+                { key: 'B', label: nameB || 'B' },
+              ].map(opt => (
+                <button
+                  key={opt.key}
+                  onClick={() => setUserRole(opt.key)}
+                  className="flex-1 py-2.5 px-4 rounded-lg font-mono text-[12px] transition-all"
+                  style={{
+                    background: userRole === opt.key ? 'rgba(122,176,232,0.15)' : 'rgba(255,255,255,0.03)',
+                    border: `1.5px solid ${userRole === opt.key ? 'rgba(122,176,232,0.5)' : 'rgba(255,255,255,0.08)'}`,
+                    color: userRole === opt.key ? '#7ab0e8' : 'rgba(255,255,255,0.4)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {opt.label === opt.key ? `角色 ${opt.key}` : opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* ── Archetype section ── */}
         <ArchetypeSection
@@ -992,6 +971,20 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
           </div>
         )}
 
+        {/* Engine status */}
+        <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg" style={{
+          background: API_KEY_AVAILABLE ? 'rgba(122,176,232,0.07)' : 'rgba(255,255,255,0.03)',
+          border:     `1px solid ${API_KEY_AVAILABLE ? 'rgba(122,176,232,0.2)' : 'rgba(255,255,255,0.07)'}`,
+        }}>
+          <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{
+            background: API_KEY_AVAILABLE ? '#7ab0e8' : '#444',
+            boxShadow:  API_KEY_AVAILABLE ? '0 0 5px #7ab0e8' : 'none',
+          }} />
+          <span className="font-mono text-[8px]" style={{ color: API_KEY_AVAILABLE ? '#7ab0e8' : 'rgba(255,255,255,0.22)' }}>
+            {API_KEY_AVAILABLE ? '引擎就绪' : '离线模式 · 配置 .env.local'}
+          </span>
+        </div>
+
         {/* Submit */}
         <div className="flex items-center justify-between pb-4">
           <span className="font-mono text-[8px] text-white/18">
@@ -1004,20 +997,20 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
             disabled={!canSubmit || processing || submitted}
             className="font-mono text-[12px] tracking-[0.15em] px-8 py-3 rounded-xl border transition-all duration-300"
             style={{
-              color:       (canSubmit && !submitted) ? '#d4a852' : 'rgba(255,255,255,0.2)',
-              borderColor: (canSubmit && !submitted) ? 'rgba(212,168,82,0.4)' : 'rgba(255,255,255,0.07)',
-              background:  (canSubmit && !submitted) ? 'rgba(212,168,82,0.07)' : 'transparent',
+              color:       (canSubmit && !submitted) ? '#7ab0e8' : 'rgba(255,255,255,0.2)',
+              borderColor: (canSubmit && !submitted) ? 'rgba(122,176,232,0.4)' : 'rgba(255,255,255,0.07)',
+              background:  (canSubmit && !submitted) ? 'rgba(122,176,232,0.07)' : 'transparent',
               cursor:      (canSubmit && !submitted) ? 'pointer' : 'not-allowed',
             }}
             onMouseEnter={e => {
               if (!canSubmit || submitted) return
-              e.currentTarget.style.background  = 'rgba(212,168,82,0.15)'
-              e.currentTarget.style.borderColor = 'rgba(212,168,82,0.7)'
+              e.currentTarget.style.background  = 'rgba(122,176,232,0.15)'
+              e.currentTarget.style.borderColor = 'rgba(122,176,232,0.7)'
             }}
             onMouseLeave={e => {
               if (!canSubmit || submitted) return
-              e.currentTarget.style.background  = 'rgba(212,168,82,0.07)'
-              e.currentTarget.style.borderColor = 'rgba(212,168,82,0.4)'
+              e.currentTarget.style.background  = 'rgba(122,176,232,0.07)'
+              e.currentTarget.style.borderColor = 'rgba(122,176,232,0.4)'
             }}
           >
             {processing ? '重构中…' : submitted ? '已提交 ✓' : isTogether ? '提交我的输入 / SUBMIT' : '进入剧场 / ENTER'}
@@ -1036,7 +1029,7 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
         <CalibrationOverlay
           personaA={{
             name:  extractNames(pendingInput.chatLog).nameA,
-            color: '#d4a852',
+            color: '#7ab0e8',
           }}
           personaB={{
             name:  extractNames(pendingInput.chatLog).nameB,

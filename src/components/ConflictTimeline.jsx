@@ -28,7 +28,7 @@ export default function ConflictTimeline({
     return () => ro.disconnect()
   }, [])
 
-  const H     = 36
+  const H     = 48
   const PAD_X = 32
   const TRACK_Y = H / 2
   const usableW = Math.max(svgW - PAD_X * 2, 100)
@@ -51,8 +51,8 @@ export default function ConflictTimeline({
 
   return (
     <div
-      className="flex items-center gap-3 px-4 border-t border-white/5 bg-black flex-shrink-0"
-      style={{ height: '56px' }}
+      className="flex items-center gap-3 px-4 border-t border-white/5 flex-shrink-0"
+      style={{ background: '#060810', height: '68px' }}
     >
       {/* Play/Pause */}
       <div className="flex flex-col items-center flex-shrink-0" style={{ minWidth: '36px' }}>
@@ -61,7 +61,7 @@ export default function ConflictTimeline({
           disabled={disabled}
           className="w-9 h-9 flex items-center justify-center rounded transition-all"
           style={{
-            color: disabled ? '#333' : '#d4a852',
+            color: disabled ? '#333' : '#7ab0e8',
             opacity: disabled ? 0.4 : 1,
           }}
         >
@@ -92,7 +92,7 @@ export default function ConflictTimeline({
             <line
               x1={beatX[0]} y1={TRACK_Y}
               x2={beatX[beatIndex]} y2={TRACK_Y}
-              stroke="rgba(212,168,82,0.35)"
+              stroke="rgba(122,176,232,0.35)"
               strokeWidth="2"
               strokeLinecap="round"
             />
@@ -113,22 +113,22 @@ export default function ConflictTimeline({
                 {/* Pause point indicator */}
                 {beat.isPausePoint && (
                   <circle cx={x} cy={TRACK_Y} r={9}
-                    fill="none" stroke="rgba(212,168,82,0.3)" strokeWidth="1"
+                    fill="none" stroke="rgba(122,176,232,0.3)" strokeWidth="1"
                     strokeDasharray="2 2" />
                 )}
 
                 {/* Beat dot */}
                 <circle
                   cx={x} cy={TRACK_Y}
-                  r={isCurr ? 5 : 3.5}
-                  fill={isCurr ? '#d4a852' : isPast ? 'rgba(212,168,82,0.6)' : 'rgba(255,255,255,0.18)'}
+                  r={isCurr ? 7 : 5}
+                  fill={isCurr ? '#7ab0e8' : isPast ? 'rgba(122,176,232,0.6)' : 'rgba(255,255,255,0.18)'}
                   style={{ transition: 'r 0.25s, fill 0.3s' }}
                 />
 
                 {/* Current beat glow */}
                 {isCurr && (
                   <circle cx={x} cy={TRACK_Y} r={8}
-                    fill="none" stroke="rgba(212,168,82,0.25)" strokeWidth="1" />
+                    fill="none" stroke="rgba(122,176,232,0.25)" strokeWidth="1" />
                 )}
 
                 {/* Tag pins above */}
@@ -148,7 +148,7 @@ export default function ConflictTimeline({
                 {/* Dialogue label on current */}
                 {isCurr && beat.dialogue && (
                   <text x={x} y={TRACK_Y + 16} textAnchor="middle"
-                    fontSize="7" fill="rgba(255,255,255,0.25)"
+                    fontSize="9" fill="rgba(255,255,255,0.25)"
                     fontFamily="'JetBrains Mono', monospace">
                     {beat.dialogue.text.slice(0, 14)}{beat.dialogue.text.length > 14 ? '…' : ''}
                   </text>
@@ -161,7 +161,7 @@ export default function ConflictTimeline({
 
       {/* Readout */}
       <div className="flex flex-col items-end gap-0.5 flex-shrink-0 min-w-[44px]">
-        <span className="font-mono text-[9px] text-white/30">
+        <span className="font-mono text-[11px] text-white/30">
           {beatIndex + 1} / {beats.length}
         </span>
       </div>
@@ -172,9 +172,9 @@ export default function ConflictTimeline({
           onClick={onFinishAnnotation}
           className="font-mono text-[10px] px-4 py-1.5 rounded-lg border transition-all hover:scale-105 flex-shrink-0 anim-fadeIn"
           style={{
-            color: '#d4a852',
-            borderColor: 'rgba(212,168,82,0.35)',
-            background: 'rgba(212,168,82,0.07)',
+            color: '#7ab0e8',
+            borderColor: 'rgba(122,176,232,0.35)',
+            background: 'rgba(122,176,232,0.07)',
           }}
         >
           完成标注 →
