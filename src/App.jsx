@@ -328,7 +328,7 @@ export default function App() {
     clearTimeout(timerRef.current)
     setBeatIndex(idx); setIsPlaying(false)
     // Stay in current phase if it's a playback phase, else go to solo_viewing
-    if (phase !== 'solo_viewing' && phase !== 'together_viewing') {
+    if (phase !== 'solo_viewing' && phase !== 'together_viewing' && phase !== 'self_confirm') {
       setPhase('solo_viewing')
     }
     logSeek(idx)
