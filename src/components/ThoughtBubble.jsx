@@ -19,35 +19,37 @@ import { useEffect, useRef, useState } from 'react'
 // ─────────────────────────────────────────────────────────────
 
 const BUBBLE_TYPES = {
+  // All bubble types now use the same clean, high-contrast style
+  // No blur, no shake, no animation differences — just clear readable text
   cloud: {
-    borderRadius: '20px', borderStyle: 'dashed', borderWidth: '1.5px',
-    filter: 'blur(0.2px)', anim: 'floatUp 3.5s ease-in-out infinite',
-    extraShadow: '0 4px 20px rgba(0,0,0,0.22)',
-    italic: true,
+    borderRadius: '14px', borderStyle: 'solid', borderWidth: '2.5px',
+    filter: 'none', anim: 'none',
+    extraShadow: 'none',
+    italic: false,
   },
   aggressive: {
-    borderRadius: '4px', borderStyle: 'solid', borderWidth: '2px',
-    filter: 'none', anim: 'shake 0.3s ease-in-out infinite',
-    extraShadow: '0 0 16px rgba(220,60,60,0.4)',
+    borderRadius: '14px', borderStyle: 'solid', borderWidth: '2.5px',
+    filter: 'none', anim: 'none',
+    extraShadow: 'none',
     italic: false,
   },
   hesitation: {
-    borderRadius: '16px', borderStyle: 'dashed', borderWidth: '1.5px',
-    filter: 'none', anim: 'pulseSoft 2s ease-in-out infinite',
+    borderRadius: '14px', borderStyle: 'solid', borderWidth: '2.5px',
+    filter: 'none', anim: 'none',
     extraShadow: 'none',
-    italic: true,
+    italic: false,
   },
   warm: {
-    borderRadius: '18px', borderStyle: 'dashed', borderWidth: '1.5px',
-    filter: 'none', anim: 'warmGlow 2s ease-in-out infinite',
-    extraShadow: '0 0 20px rgba(80,200,120,0.25)',
-    italic: true,
+    borderRadius: '14px', borderStyle: 'solid', borderWidth: '2.5px',
+    filter: 'none', anim: 'none',
+    extraShadow: 'none',
+    italic: false,
   },
   default: {
-    borderRadius: '16px', borderStyle: 'dashed', borderWidth: '1.5px',
-    filter: 'none', anim: 'pulseSoft 2.5s ease-in-out infinite',
+    borderRadius: '14px', borderStyle: 'solid', borderWidth: '2.5px',
+    filter: 'none', anim: 'none',
     extraShadow: 'none',
-    italic: true,
+    italic: false,
   },
 }
 
@@ -356,8 +358,8 @@ export default function ThoughtBubble({
         lineHeight: '1.7',
         whiteSpace: 'pre-line',
         zIndex:    20,
-        animation: mode !== 'observe' ? 'none' : bt.anim,
-        filter:    bt.filter,
+        animation: 'none',
+        filter:    'none',
         boxShadow: `0 0 20px ${isA ? 'rgba(80,120,220,0.4)' : 'rgba(220,80,80,0.4)'}, 0 2px 12px rgba(0,0,0,0.5)${status === 'edited' ? ', 0 0 12px rgba(144,232,168,0.2)' : ''}`,
         backdropFilter: 'none',
         cursor:    mode === 'observe' ? 'pointer' : 'default',
