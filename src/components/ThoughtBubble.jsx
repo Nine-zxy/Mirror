@@ -265,10 +265,10 @@ export default function ThoughtBubble({
   const bt   = BUBBLE_TYPES[thought.bubbleType] || BUBBLE_TYPES.default
   const isA  = personaId === 'A'
 
-  // Persona-based bubble background: A=blue, B=red — SOLID dark tint, not transparent
+  // Persona-based bubble background: A=blue, B=red — FULLY OPAQUE
   const personaBg = isA
-    ? 'rgba(15,25,55,0.92)'
-    : 'rgba(55,15,15,0.92)'
+    ? 'rgb(15,25,55)'
+    : 'rgb(55,15,15)'
   const personaBorder = isA ? '#6888d8' : '#d86868'
   // Text color matches persona: A=blue, B=red
   const personaTextColor = isA ? '#a8c8f8' : '#f8a8a8'
@@ -365,7 +365,7 @@ export default function ThoughtBubble({
         animation: mode !== 'observe' ? 'none' : bt.anim,
         filter:    bt.filter,
         boxShadow: `${bt.extraShadow}, inset 0 0 14px ${personaBg}${status === 'edited' ? ', 0 0 12px rgba(144,232,168,0.15)' : ''}`,
-        backdropFilter: thought.bubbleType === 'cloud' ? 'blur(3px)' : 'none',
+        backdropFilter: 'none',
         cursor:    mode === 'observe' ? 'pointer' : 'default',
         transition: 'border-color 0.3s, box-shadow 0.3s',
       }}
@@ -377,7 +377,7 @@ export default function ThoughtBubble({
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        opacity: 0.35,
+        opacity: 1,
         borderRadius: bt.borderRadius,
       }} />
 
