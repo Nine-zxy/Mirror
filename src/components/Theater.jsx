@@ -1116,12 +1116,10 @@ function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute
             left: `${sp.x}%`,
             bottom: '5%',           // on the floor line of backgrounds
             transform: 'translateX(-50%)',
-            transition: 'left 0.9s cubic-bezier(0.4,0,0.2,1), bottom 0.9s ease, opacity 0.5s ease, filter 0.5s ease',
+            transition: 'left 0.9s cubic-bezier(0.4,0,0.2,1), bottom 0.9s ease',
             zIndex: isSpeaking ? 12 : 10,
-            // Dim silent character
-            opacity: isSilent ? 0.62 : 1.0,
-            filter: isSilent ? 'brightness(0.72) saturate(0.75)' : 'none',
           }}>
+            {/* Thought bubble — NEVER dimmed, always full opacity */}
             <div className="relative" style={{ minHeight: '8px' }}>
               <ThoughtBubble
                 thought={thought}
@@ -1132,12 +1130,15 @@ function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute
                 onDispute={onDispute}
               />
             </div>
-            {/* Character sprite with speaking bob or idle breathe */}
+            {/* Character sprite — dim when silent (not speaking), but bubble stays bright */}
             <div style={{
               animation: isSpeaking
                 ? `charBob 0.55s ease-in-out infinite`
                 : `charBreathe 3s ease-in-out infinite`,
               '--char-sx': scaleX,
+              opacity: isSilent ? 0.62 : 1.0,
+              filter: isSilent ? 'brightness(0.72) saturate(0.75)' : 'none',
+              transition: 'opacity 0.5s ease, filter 0.5s ease',
             }}>
               <CharacterSprite
                 persona={persona}
