@@ -87,6 +87,9 @@ const URL_PARAMS = new URLSearchParams(window.location.search)
 const STUDY_ID   = URL_PARAMS.get('study')
 const STUDY_ROLE = URL_PARAMS.get('role')?.toUpperCase()
 const PREPARE_MODE = URL_PARAMS.get('mode') === 'prepare'
+// Direct scenario load: ?scenario=liuhaoze&role=A → skip intro, load pre-built scenario
+const DIRECT_SCENARIO = URL_PARAMS.get('scenario')
+const DIRECT_ROLE = URL_PARAMS.get('role')?.toUpperCase()
 
 // ── Main App ─────────────────────────────────────────────────
 export default function App() {
@@ -97,21 +100,24 @@ export default function App() {
     return <PrepareScreen />
   }
 
-  // Determine initial phase
-  const initialPhase = STUDY_ID ? 'study_loading' : 'intro'
+  // Determine initial phase and scenario from URL
+  const directScenarioData = DIRECT_SCENARIO ? STUDY_SCENARIOS[DIRECT_SCENARIO] : null
+  const initialPhase = STUDY_ID ? 'study_loading' : directScenarioData ? 'self_confirm' : 'intro'
+  const initScenario = directScenarioData || BASE_SCENARIO
 
   const [phase, setPhase]               = useState(initialPhase)
   const [beatIndex, setBeatIndex]       = useState(0)
   const [isPlaying, setIsPlaying]       = useState(false)
   // Bubble visibility: 'none' | 'self' | 'partner' | 'both'
-  // Default = 'partner' (DP6: Peer-First — only see other person's thoughts in solo_viewing)
-  // self_confirm phase sets to 'self', together_viewing sets to 'both'
-  const [bubbleVisibility, setBubbleVisibility] = useState('partner')
+  // self_confirm: 'self' (see only own thoughts)
+  // solo_viewing: 'partner' (see only partner's thoughts)
+  // together_viewing: 'both'
+  const [bubbleVisibility, setBubbleVisibility] = useState(directScenarioData ? 'self' : 'partner')
   const [showScript, setShowScript]     = useState(false)
   const [annotation, setAnnotation]     = useState('')
 
-  const [liveScenario, setLiveScenario] = useState(BASE_SCENARIO)
-  const [personas, setPersonas]         = useState(BASE_SCENARIO.personas)
+  const [liveScenario, setLiveScenario] = useState(initScenario)
+  const [personas, setPersonas]         = useState(initScenario.personas)
 
   const [tags, setTags]                 = useState([])
   const [disputes, setDisputes]         = useState({})
@@ -490,7 +496,7 @@ export default function App() {
   }, [])
 
   // Compute per-character thought visibility for Theater
-  const myRole = STUDY_ROLE || sync.role || 'A'  // study mode uses URL param, solo defaults to A
+  const myRole = DIRECT_ROLE || STUDY_ROLE || sync.role || 'A'  // URL param > study mode > sync > default A
   const thoughtVisibility = useMemo(() => {
     if (bubbleVisibility === 'none')    return { A: false, B: false }
     if (bubbleVisibility === 'both')    return { A: true,  B: true }
