@@ -27,18 +27,20 @@ import SyncStatusBadge   from './components/SyncStatusBadge'
 // ─────────────────────────────────────────────────────────────
 //  App — Root state machine  (Version B)
 //
-//  Phase flow (V2 — pilot-informed):
-//    intro → [lobby] → input → self_confirm → solo_viewing
+//  Phase flow (V3 — Peer-First restored):
+//    intro → [lobby] → input → solo_viewing → self_confirm
 //      → [together_viewing] → divergence
 //
-//  self_confirm:     FIRST — confirm/edit AI's inference about YOUR OWN thoughts (in theater)
-//  solo_viewing:     THEN — see partner's AI-inferred thoughts, edit them (in theater)
+//  solo_viewing:     FIRST — see partner's AI-inferred thoughts, edit them (Peer-First, DP6)
+//  self_confirm:     THEN — confirm/edit AI's inference about YOUR OWN thoughts (in theater)
 //  together_viewing: (Together mode only) Watch together with edited versions
 //  divergence:       Three-layer comparison cards
 //
-//  Rationale for self_confirm FIRST:
-//  User establishes their own ground truth before editing partner's thoughts.
-//  Both phases happen in the theater view (not separate card screen).
+//  Rationale for Peer-First ordering (DP6):
+//  1. Eyal et al. (2018): independent perspective construction before self-anchoring
+//  2. Avoids anchoring: seeing AI's guess about YOU first biases self-report
+//  3. User's edit of partner = pure mental model, uncontaminated by self-reflection
+//  Both phases happen in the theater view.
 //
 //  Lobby phase only in Together mode
 //  together_viewing only in Together mode
@@ -292,10 +294,10 @@ export default function App() {
       logArchetype(arc.relationshipType, arc.communicationStyle || [], arc.communicationStyle || [])
     }
     setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
-    // V2: Go to self_confirm FIRST (confirm own thoughts before editing partner's)
-    setPhase('self_confirm')
-    setBubbleVisibility('self')
-    logPhase('input', 'self_confirm')
+    // V3 Peer-First (DP6): solo_viewing FIRST — edit partner before seeing own inference
+    setPhase('solo_viewing')
+    setBubbleVisibility('partner')
+    logPhase('input', 'solo_viewing')
 
     if (sync.mode === 'together') {
       setIsPlaying(false)
@@ -318,34 +320,34 @@ export default function App() {
 
   // ── Version B: Phase transition handlers ────────────────────
 
-  // self_confirm → solo_viewing (user clicks "确认完成，开始标注对方")
-  const handleSelfConfirmToSoloViewing = useCallback(() => {
+  // solo_viewing → self_confirm (Peer-First: edit partner first, then confirm own)
+  const handleSoloViewingToSelfConfirm = useCallback(() => {
     setIsPlaying(false)
     setBeatIndex(0)
-    setPhase('solo_viewing')
-    setBubbleVisibility('partner')
-    logPhase('self_confirm', 'solo_viewing')
-    syncSend('sync:phase', { phase: 'solo_viewing' })
-    log('self_confirm_finished', { selfConfirmCount: Object.keys(selfConfirms).length })
-  }, [selfConfirms, syncSend])
-
-  // solo_viewing → together_viewing or divergence (user clicks "完成标注")
-  const handleFinishAnnotation = useCallback(() => {
-    setIsPlaying(false)
+    setPhase('self_confirm')
+    setBubbleVisibility('self')
+    logPhase('solo_viewing', 'self_confirm')
+    syncSend('sync:phase', { phase: 'self_confirm' })
     log('annotation_finished', { disputeCount: Object.keys(disputes).length })
+  }, [disputes, syncSend])
+
+  // self_confirm → together_viewing or divergence (user clicks "确认完成")
+  const handleFinishSelfConfirm = useCallback(() => {
+    setIsPlaying(false)
+    log('self_confirm_finished', { selfConfirmCount: Object.keys(selfConfirms).length })
     if (sync.mode === 'together') {
       sync.send('annotation:self_confirms', { selfConfirms })
       setBeatIndex(0)
       setPhase('together_viewing')
       setBubbleVisibility('both')
       setIsPlaying(false)
-      logPhase('solo_viewing', 'together_viewing')
+      logPhase('self_confirm', 'together_viewing')
       syncSend('sync:phase', { phase: 'together_viewing' })
     } else {
       setPhase('divergence')
-      logPhase('solo_viewing', 'divergence')
+      logPhase('self_confirm', 'divergence')
     }
-  }, [disputes, sync, syncSend, selfConfirms])
+  }, [selfConfirms, sync, syncSend])
 
   // SelfConfirmScreen: confirm/edit a single beat
   const handleSelfConfirm = useCallback((role, beatId, data) => {
@@ -514,8 +516,8 @@ export default function App() {
         </div>
         <span className="font-mono text-[10px] text-white/20 tracking-widest truncate mx-4">
           {liveScenario.title}
-          {phase === 'self_confirm' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· 确认自己的内心</span>}
           {phase === 'solo_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· 标注对方的内心</span>}
+          {phase === 'self_confirm' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· 确认自己的内心</span>}
           {phase === 'together_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· 一起观看</span>}
         </span>
         <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -601,13 +603,13 @@ export default function App() {
         onPlayPause={handlePlayPause}
         onSelectBeat={handleSelectBeat}
         onFinishAnnotation={
-          phase === 'self_confirm' ? handleSelfConfirmToSoloViewing :
-          phase === 'solo_viewing' ? handleFinishAnnotation :
+          phase === 'solo_viewing' ? handleSoloViewingToSelfConfirm :
+          phase === 'self_confirm' ? handleFinishSelfConfirm :
           null
         }
         finishLabel={
-          phase === 'self_confirm' ? '确认完成，标注对方 →' :
-          phase === 'solo_viewing' ? '完成标注 →' :
+          phase === 'solo_viewing' ? '完成标注，确认自己 →' :
+          phase === 'self_confirm' ? '确认完成 →' :
           null
         }
       />
