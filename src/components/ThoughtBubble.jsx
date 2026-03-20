@@ -181,8 +181,13 @@ function EditPanel({ original, current, originalEmotion, currentEmotion, onSave,
           onChange={e => setText(e.target.value)}
           placeholder="写出你认为TA真正的想法..."
           rows={2}
-          className="w-full bg-white/6 rounded px-2 py-1.5 text-[11px] text-white/80 placeholder-white/18 resize-none focus:outline-none border border-white/10 focus:border-white/25"
-          style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
+          className="w-full rounded px-2.5 py-2 text-[13px] text-white/90 placeholder-white/25 resize-none focus:outline-none"
+          style={{
+            fontFamily: '"PingFang SC","Inter",sans-serif',
+            background: 'rgba(10,10,20,0.85)',
+            border: '1.5px solid rgba(122,176,232,0.4)',
+            lineHeight: '1.7',
+          }}
         />
 
         {/* Emotion re-tag */}
@@ -260,11 +265,13 @@ export default function ThoughtBubble({
   const bt   = BUBBLE_TYPES[thought.bubbleType] || BUBBLE_TYPES.default
   const isA  = personaId === 'A'
 
-  // Persona-based bubble background: A=blue, B=red, semi-transparent
+  // Persona-based bubble background: A=blue, B=red — SOLID dark tint, not transparent
   const personaBg = isA
-    ? 'rgba(60,100,200,0.18)'
-    : 'rgba(200,60,60,0.18)'
+    ? 'rgba(15,25,55,0.92)'
+    : 'rgba(55,15,15,0.92)'
   const personaBorder = isA ? '#6888d8' : '#d86868'
+  // Text color matches persona: A=blue, B=red
+  const personaTextColor = isA ? '#a8c8f8' : '#f8a8a8'
 
   // Pixel bubble background asset selection
   const isEdited = status === 'edited' || status === 'disputed'
@@ -349,7 +356,7 @@ export default function ThoughtBubble({
         border: `${bt.borderWidth} ${status === 'disputed' ? 'solid' : bt.borderStyle} ${borderColor}`,
         borderRadius: bt.borderRadius,
         overflow: 'hidden',
-        color:     es.text,
+        color:     personaTextColor,
         fontSize:  '15px',
         fontStyle: bt.italic && mode === 'observe' ? 'italic' : 'normal',
         lineHeight: '1.7',
