@@ -265,13 +265,13 @@ export default function ThoughtBubble({
   const bt   = BUBBLE_TYPES[thought.bubbleType] || BUBBLE_TYPES.default
   const isA  = personaId === 'A'
 
-  // Persona-based bubble background: A=blue, B=red — FULLY OPAQUE
+  // Persona-based bubble background: A=blue, B=red — FULLY OPAQUE, high contrast
   const personaBg = isA
-    ? 'rgb(15,25,55)'
-    : 'rgb(55,15,15)'
-  const personaBorder = isA ? '#6888d8' : '#d86868'
-  // Text color matches persona: A=blue, B=red
-  const personaTextColor = isA ? '#a8c8f8' : '#f8a8a8'
+    ? 'rgb(20,35,75)'
+    : 'rgb(75,20,20)'
+  const personaBorder = isA ? '#88aae8' : '#e88888'
+  // Text color: near-white with persona tint for maximum readability
+  const personaTextColor = isA ? '#dce8ff' : '#ffe0e0'
 
   // Determine displayed text
   const shownText = (status === 'edited' || status === 'disputed') ? (dispute?.text || displayText) : displayText
@@ -347,7 +347,7 @@ export default function ThoughtBubble({
         maxWidth:  '290px',
         padding:   '9px 13px',
         background: personaBg,
-        border: `${bt.borderWidth} ${status === 'disputed' ? 'solid' : bt.borderStyle} ${borderColor}`,
+        border: `2.5px solid ${borderColor}`,
         borderRadius: bt.borderRadius,
         overflow: 'hidden',
         color:     personaTextColor,
@@ -358,7 +358,7 @@ export default function ThoughtBubble({
         zIndex:    20,
         animation: mode !== 'observe' ? 'none' : bt.anim,
         filter:    bt.filter,
-        boxShadow: `${bt.extraShadow}, inset 0 0 14px ${personaBg}${status === 'edited' ? ', 0 0 12px rgba(144,232,168,0.15)' : ''}`,
+        boxShadow: `0 0 20px ${isA ? 'rgba(80,120,220,0.4)' : 'rgba(220,80,80,0.4)'}, 0 2px 12px rgba(0,0,0,0.5)${status === 'edited' ? ', 0 0 12px rgba(144,232,168,0.2)' : ''}`,
         backdropFilter: 'none',
         cursor:    mode === 'observe' ? 'pointer' : 'default',
         transition: 'border-color 0.3s, box-shadow 0.3s',
