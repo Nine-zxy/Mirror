@@ -14,6 +14,7 @@ import { useSyncContext } from './sync/SyncContext'
 import IntroScreen       from './components/IntroScreen'
 import LobbyScreen       from './components/LobbyScreen'
 import ConflictInput     from './components/ConflictInput'
+import PrepareScreen     from './components/PrepareScreen'
 import Theater           from './components/Theater'
 // EmotionBar removed: Stephy advised against elements without direct research justification
 import ConflictTimeline  from './components/ConflictTimeline'
@@ -74,11 +75,22 @@ const SCENE_ELEMENTS_MAP = {
   office:             ['window', 'desk', 'coffee', 'bookshelf', 'plant'],
 }
 
+// ── URL parameter detection ───────────────────────────────────
+const URL_PARAMS = new URLSearchParams(window.location.search)
+const STUDY_ID   = URL_PARAMS.get('study')
+const STUDY_ROLE = URL_PARAMS.get('role')?.toUpperCase()
+const PREPARE_MODE = URL_PARAMS.get('mode') === 'prepare'
+
 // ── Main App ─────────────────────────────────────────────────
 export default function App() {
   const sync = useSyncContext()
 
-  const [phase, setPhase]               = useState('intro')
+  // Researcher prepare mode — completely separate screen
+  if (PREPARE_MODE) {
+    return <PrepareScreen />
+  }
+
+  const [phase, setPhase]               = useState(STUDY_ID ? 'study_loading' : 'intro')
   const [beatIndex, setBeatIndex]       = useState(0)
   const [isPlaying, setIsPlaying]       = useState(false)
   // Bubble visibility: 'none' | 'partner' | 'both'
@@ -105,12 +117,60 @@ export default function App() {
   const timerRef    = useRef(null)
   const isRemote    = useRef(false)  // prevents echo loops for sync
 
+  // ── Study mode: load pre-generated scenario from server ──────
+  const [studyError, setStudyError] = useState(null)
+
+  useEffect(() => {
+    if (!STUDY_ID) return
+
+    // Switch to together mode and connect to server
+    if (sync.mode !== 'together') {
+      sync.setMode('together')
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!STUDY_ID || phase !== 'study_loading') return
+    if (!sync.connected) return
+
+    // Use the scenarioId as room code: create or join room
+    const role = STUDY_ROLE === 'B' ? 'B' : 'A'
+
+    // Load scenario
+    sync.loadScenario(STUDY_ID).then(({ scenario: loadedScenario }) => {
+      setLiveScenario(loadedScenario)
+      setPersonas(loadedScenario.personas)
+      setBeatIndex(0)
+      setAnnotation('')
+      setTags([])
+      setDisputes({})
+      setSelfConfirms({})
+
+      // Join room using scenarioId as room code
+      if (role === 'A') {
+        sync.createRoom('colocated')
+      }
+      // Wait briefly for room creation, then set phase
+      // Role B needs to join the room created by A
+      // We use scenarioId as a coordination mechanism but actual rooms are separate
+      // Both clients will use scenarioId-based room pairing
+
+      setPhase('self_confirm')
+      setBubbleVisibility('self')
+      setIsPlaying(false)
+      log('study_mode_loaded', { studyId: STUDY_ID, role })
+    }).catch((err) => {
+      console.error('[Study] Failed to load scenario:', err)
+      setStudyError(err.message || '加载场景失败')
+    })
+  }, [STUDY_ID, phase, sync.connected]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     initSession({
-      scenarioId: BASE_SCENARIO.id,
+      scenarioId: STUDY_ID || BASE_SCENARIO.id,
       appVersion: '0.7.0',
-      mode: sync.mode,
-      role: sync.role,
+      mode: STUDY_ID ? 'study' : sync.mode,
+      role: STUDY_ROLE || sync.role,
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -220,7 +280,7 @@ export default function App() {
     return () => clearTimeout(timerRef.current)
   }, [isPlaying, beatIndex, isPlaybackPhase, currentBeat, advance])
 
-  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby', 'divergence'])
+  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby', 'divergence', 'study_loading'])
 
   const handlePlayPause = useCallback(() => {
     if (BLOCKING_PHASES.has(phase)) return
@@ -421,7 +481,7 @@ export default function App() {
   }, [])
 
   // Compute per-character thought visibility for Theater
-  const myRole = sync.role || 'A'  // solo mode defaults to A
+  const myRole = STUDY_ROLE || sync.role || 'A'  // study mode uses URL param, solo defaults to A
   const thoughtVisibility = useMemo(() => {
     if (bubbleVisibility === 'none')    return { A: false, B: false }
     if (bubbleVisibility === 'both')    return { A: true,  B: true }
@@ -472,6 +532,37 @@ export default function App() {
   })
 
   // ── Phase routing ──────────────────────────────────────────
+
+  if (phase === 'study_loading')
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ background: '#060810' }}>
+        <span className="font-pixel text-[8px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>ASIDE</span>
+        {studyError ? (
+          <div className="flex flex-col items-center gap-3">
+            <div className="font-mono text-[11px]" style={{ color: '#e87a7a' }}>{studyError}</div>
+            <div className="font-mono text-[9px] text-white/30">请确认场景 ID 正确且服务器正在运行</div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex gap-2">
+              {[0, 1, 2].map(i => (
+                <div key={i} style={{
+                  width: '6px', height: '6px', borderRadius: '50%', background: '#7ab0e8',
+                  animation: `blink 1.1s ${i * 0.28}s ease-in-out infinite`,
+                }} />
+              ))}
+            </div>
+            <div className="font-mono text-[10px] text-white/50">
+              {sync.connected ? '正在加载场景...' : '正在连接服务器...'}
+            </div>
+            <div className="font-mono text-[8px] text-white/25">
+              场景 ID: {STUDY_ID} / 角色: {STUDY_ROLE || 'A'}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+
   if (phase === 'intro')
     return <IntroScreen scenario={liveScenario} onBegin={handleBegin} />
 

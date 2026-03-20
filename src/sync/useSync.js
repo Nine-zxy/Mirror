@@ -24,6 +24,12 @@ const SOLO_STUB = {
   joinRoom: () => {},
   onMessage: () => () => {},
   requestPartnerAnnotations: () => {},
+  saveScenario: () => Promise.reject(new Error('Solo mode')),
+  loadScenario: () => Promise.reject(new Error('Solo mode')),
+  listScenarios: () => Promise.resolve([]),
+  saveInputConfig: () => Promise.reject(new Error('Solo mode')),
+  loadInputConfig: () => Promise.reject(new Error('Solo mode')),
+  listInputConfigs: () => Promise.resolve([]),
 }
 
 export default function useSync(mode = 'solo') {
@@ -145,6 +151,92 @@ export default function useSync(mode = 'solo') {
     }
   }, [])
 
+  // ── Scenario storage (researcher pre-load) ──────────────
+  const saveScenario = useCallback((scenario, metadata = {}) => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('scenario:saved', (msg) => {
+        unsub()
+        resolve(msg.scenarioId)
+      })
+      // Also listen for errors
+      const unsubErr = onMessage('room:error', (msg) => {
+        unsubErr()
+        reject(new Error(msg.message))
+      })
+      send('scenario:save', { scenario, metadata })
+      // Timeout after 5s
+      setTimeout(() => { unsub(); unsubErr(); reject(new Error('保存超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
+  const loadScenario = useCallback((scenarioId) => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('scenario:loaded', (msg) => {
+        unsub()
+        resolve({ scenario: msg.scenario, metadata: msg.metadata })
+      })
+      const unsubErr = onMessage('room:error', (msg) => {
+        unsubErr()
+        reject(new Error(msg.message))
+      })
+      send('scenario:load', { scenarioId })
+      setTimeout(() => { unsub(); unsubErr(); reject(new Error('加载超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
+  const listScenarios = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('scenario:list_result', (msg) => {
+        unsub()
+        resolve(msg.scenarios)
+      })
+      send('scenario:list', {})
+      setTimeout(() => { unsub(); reject(new Error('列表超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
+  // ── Input config storage (researcher pre-load) ─────────
+  const saveInputConfig = useCallback((label, config) => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('input:saved', (msg) => {
+        unsub()
+        resolve(msg.configId)
+      })
+      const unsubErr = onMessage('room:error', (msg) => {
+        unsubErr()
+        reject(new Error(msg.message))
+      })
+      send('input:save', { label, config })
+      setTimeout(() => { unsub(); unsubErr(); reject(new Error('保存超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
+  const loadInputConfig = useCallback((configId) => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('input:loaded', (msg) => {
+        unsub()
+        resolve({ configId: msg.configId, label: msg.label, config: msg.config })
+      })
+      const unsubErr = onMessage('room:error', (msg) => {
+        unsubErr()
+        reject(new Error(msg.message))
+      })
+      send('input:load', { configId })
+      setTimeout(() => { unsub(); unsubErr(); reject(new Error('加载超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
+  const listInputConfigs = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      const unsub = onMessage('input:list_result', (msg) => {
+        unsub()
+        resolve(msg.configs)
+      })
+      send('input:list', {})
+      setTimeout(() => { unsub(); reject(new Error('列表超时')) }, 5000)
+    })
+  }, [send, onMessage])
+
   // ── Request partner annotations (at end phase) ──────────
   const requestPartnerAnnotations = useCallback(() => {
     send('annotation:request_reveal')
@@ -176,5 +268,11 @@ export default function useSync(mode = 'solo') {
     joinRoom,
     onMessage,
     requestPartnerAnnotations,
+    saveScenario,
+    loadScenario,
+    listScenarios,
+    saveInputConfig,
+    loadInputConfig,
+    listInputConfigs,
   }
 }

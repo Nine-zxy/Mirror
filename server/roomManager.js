@@ -17,8 +17,10 @@ function generateCode() {
 
 export class RoomManager {
   constructor() {
-    this.rooms = new Map()       // code → Room
-    this.clientRoom = new Map()  // ws → { code, role }
+    this.rooms = new Map()        // code → Room
+    this.clientRoom = new Map()   // ws → { code, role }
+    this.scenarios = new Map()    // scenarioId → { scenario, metadata, createdAt }
+    this.inputConfigs = new Map() // configId → { label, config, createdAt }
   }
 
   // ── Room creation ────────────────────────────────────────
@@ -100,6 +102,16 @@ export class RoomManager {
       this.send(ws, { type: MSG.PONG })
       return
     }
+
+    // Scenario storage (no room context needed)
+    if (msg.type === MSG.SCENARIO_SAVE)  return this.saveScenario(ws, msg)
+    if (msg.type === MSG.SCENARIO_LOAD)  return this.loadScenario(ws, msg)
+    if (msg.type === MSG.SCENARIO_LIST)  return this.listScenarios(ws)
+
+    // Input config storage (no room context needed)
+    if (msg.type === MSG.INPUT_SAVE)  return this.saveInputConfig(ws, msg)
+    if (msg.type === MSG.INPUT_LOAD)  return this.loadInputConfig(ws, msg)
+    if (msg.type === MSG.INPUT_LIST)  return this.listInputConfigs(ws)
 
     // Room creation/joining (no room context needed)
     if (msg.type === MSG.ROOM_CREATE) return this.createRoom(ws, msg)
@@ -253,6 +265,105 @@ export class RoomManager {
   // Handled naturally by joinRoom — if role A disconnected and
   // reconnects, they create a new room. For simplicity, we don't
   // support transparent reconnection in v1.
+
+  // ── Scenario storage (researcher pre-load) ─────────────
+  saveScenario(ws, msg) {
+    const { scenario, metadata } = msg
+    if (!scenario) {
+      this.send(ws, { type: MSG.ROOM_ERROR, message: '缺少场景数据' })
+      return
+    }
+
+    let id
+    do { id = generateCode() } while (this.scenarios.has(id))
+
+    this.scenarios.set(id, {
+      scenario,
+      metadata: metadata || {},
+      createdAt: Date.now(),
+    })
+
+    this.send(ws, { type: MSG.SCENARIO_SAVED, scenarioId: id })
+    console.log(`[Scenario] Saved ${id} (${this.scenarios.size} total)`)
+  }
+
+  loadScenario(ws, msg) {
+    const id = (msg.scenarioId || '').toUpperCase().trim()
+    const entry = this.scenarios.get(id)
+    if (!entry) {
+      this.send(ws, { type: MSG.ROOM_ERROR, message: '场景不存在' })
+      return
+    }
+    this.send(ws, {
+      type: MSG.SCENARIO_LOADED,
+      scenarioId: id,
+      scenario: entry.scenario,
+      metadata: entry.metadata,
+    })
+    console.log(`[Scenario] Loaded ${id}`)
+  }
+
+  listScenarios(ws) {
+    const list = []
+    for (const [id, entry] of this.scenarios) {
+      list.push({
+        scenarioId: id,
+        title: entry.scenario?.title || '(无标题)',
+        createdAt: entry.createdAt,
+        metadata: entry.metadata,
+      })
+    }
+    this.send(ws, { type: MSG.SCENARIO_LIST_RESULT, scenarios: list })
+  }
+
+  // ── Input config storage (researcher pre-load) ────────
+  saveInputConfig(ws, msg) {
+    const { label, config } = msg
+    if (!config) {
+      this.send(ws, { type: MSG.ROOM_ERROR, message: '缺少输入配置数据' })
+      return
+    }
+
+    let id
+    do { id = generateCode() } while (this.inputConfigs.has(id))
+
+    this.inputConfigs.set(id, {
+      label: label || '(未命名)',
+      config,
+      createdAt: Date.now(),
+    })
+
+    this.send(ws, { type: MSG.INPUT_SAVED, configId: id })
+    console.log(`[InputConfig] Saved ${id} "${label}" (${this.inputConfigs.size} total)`)
+  }
+
+  loadInputConfig(ws, msg) {
+    const id = (msg.configId || '').toUpperCase().trim()
+    const entry = this.inputConfigs.get(id)
+    if (!entry) {
+      this.send(ws, { type: MSG.ROOM_ERROR, message: '输入配置不存在' })
+      return
+    }
+    this.send(ws, {
+      type: MSG.INPUT_LOADED,
+      configId: id,
+      label: entry.label,
+      config: entry.config,
+    })
+    console.log(`[InputConfig] Loaded ${id}`)
+  }
+
+  listInputConfigs(ws) {
+    const list = []
+    for (const [id, entry] of this.inputConfigs) {
+      list.push({
+        configId: id,
+        label: entry.label,
+        createdAt: entry.createdAt,
+      })
+    }
+    this.send(ws, { type: MSG.INPUT_LIST_RESULT, configs: list })
+  }
 
   // ── Helpers ──────────────────────────────────────────────
   send(ws, msg) {

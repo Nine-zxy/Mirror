@@ -44,6 +44,22 @@ export const MSG = {
   LOG_EXPORT:               'log:export',
   LOG_EXPORT_RESULT:        'log:export_result',
 
+  // Scenario storage (researcher pre-load)
+  SCENARIO_SAVE:            'scenario:save',
+  SCENARIO_SAVED:           'scenario:saved',
+  SCENARIO_LOAD:            'scenario:load',
+  SCENARIO_LOADED:          'scenario:loaded',
+  SCENARIO_LIST:            'scenario:list',
+  SCENARIO_LIST_RESULT:     'scenario:list_result',
+
+  // Input config storage (researcher pre-load)
+  INPUT_SAVE:               'input:save',
+  INPUT_SAVED:              'input:saved',
+  INPUT_LOAD:               'input:load',
+  INPUT_LOADED:             'input:loaded',
+  INPUT_LIST:               'input:list',
+  INPUT_LIST_RESULT:        'input:list_result',
+
   // Heartbeat
   PING:                     'ping',
   PONG:                     'pong',
