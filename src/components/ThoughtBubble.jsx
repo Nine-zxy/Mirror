@@ -273,12 +273,6 @@ export default function ThoughtBubble({
   // Text color matches persona: A=blue, B=red
   const personaTextColor = isA ? '#a8c8f8' : '#f8a8a8'
 
-  // Pixel bubble background asset selection
-  const isEdited = status === 'edited' || status === 'disputed'
-  const bubbleBgSrc = isA
-    ? (isEdited ? '/assets/ui/dialogue/thought_bubble_blue_edited.svg' : '/assets/ui/dialogue/blue-bubble.svg')
-    : (isEdited ? '/assets/ui/dialogue/thought_bubble_red_edited.svg' : '/assets/ui/dialogue/red-bubble.svg')
-
   // Determine displayed text
   const shownText = (status === 'edited' || status === 'disputed') ? (dispute?.text || displayText) : displayText
   const hasInteraction = status !== 'original'
@@ -371,18 +365,8 @@ export default function ThoughtBubble({
       }}
       onClick={() => mode === 'observe' && setMode('react')}
     >
-      {/* Pixel bubble SVG background overlay */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `url("${bubbleBgSrc}")`,
-        backgroundSize: '100% 100%',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        opacity: 1,
-        borderRadius: bt.borderRadius,
-      }} />
-
-      {/* Top row: label + status + actions (emotion icon removed — emotion is internal, not displayed) */}
-      <div className="flex items-center justify-between mb-1.5 relative z-[1]">
+      {/* Top row: label + status + actions */}
+      <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-1">
           <span className="font-mono text-[7px] tracking-wider"
             style={{ color: '#e8dcc8', opacity: 0.5 }}>
