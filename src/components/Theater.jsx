@@ -1100,7 +1100,8 @@ function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute
     <div className="absolute inset-0">
       {['A', 'B'].map(id => {
         const sp = spatial[id]
-        if (!sp?.visible) return null
+        if (!sp) return null
+        if (sp.visible === false) return null  // explicitly hidden only
         const persona   = personas[id]
         const thought   = thoughts?.[id]
         const dispute   = disputes?.[`${id}-${beat.id}`]
