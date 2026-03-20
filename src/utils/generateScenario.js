@@ -131,30 +131,14 @@ function parseChatLog(chatLog, nameA, nameB) {
   }
 }
 
-// ── Build beats from parsed messages ─────────────────────────
-// Each message becomes one beat with its original dialogue preserved
-function buildBeatsFromMessages(messages) {
-  const beats = []
-
-  // Beat 0: scene-setting (no dialogue)
-  beats.push({
-    id: 0,
-    speaker: null,
-    text: null,
-    isOpening: true,
-  })
-
-  // Each message = one beat
-  for (let i = 0; i < messages.length; i++) {
-    beats.push({
-      id: i + 1,
-      speaker: messages[i].role,
-      text: messages[i].text,
-      isOpening: false,
-    })
-  }
-
-  return beats
+// ── Dynamic beat range based on message count ────────────────
+// Instead of 1 message = 1 beat, determine a target range
+// and let LLM select representative messages per conflict stage
+function getTargetBeatRange(messageCount) {
+  if (messageCount <= 10)  return { min: 3, max: 5 }
+  if (messageCount <= 25)  return { min: 5, max: 7 }
+  if (messageCount <= 50)  return { min: 6, max: 8 }
+  return { min: 7, max: 9 }  // cap at 9 — user attention limit
 }
 
 // ── Main system prompt (new: thoughts-only generation) ───────
@@ -223,21 +207,39 @@ Partner B patterns: ${confirmedB.map(i => i.adjusted || i.text).join('; ')}
     ? 'bedroom_night | livingroom_evening | kitchen_morning | outdoor_park | cafe | office'
     : 'bedroom_night | livingroom_evening | kitchen_morning | outdoor_park | cafe'
 
-  // ── Build the pre-structured beats for the prompt ──────────
-  const beatsDescription = beatList.map(b => {
-    if (b.isOpening) return `Beat ${b.id}: [OPENING — no dialogue, scene-setting]`
-    return `Beat ${b.id}: ${b.speaker} says: "${b.text}"`
-  }).join('\n')
+  // ── Dynamic beat range ──────────────────────────────────────
+  const { min: beatMin, max: beatMax } = getTargetBeatRange(parsed.messages.length)
 
-  return `Here is a parsed conflict conversation between ${parsed.nameA} (Partner A) and ${parsed.nameB} (Partner B).
-The dialogue is ALREADY extracted from the original chat log — do NOT change it.
-Your job is to generate inner thoughts for each beat.
+  // ── Format all messages for LLM context ───────────────────
+  const allMessages = parsed.messages.map((m, i) =>
+    `[${i+1}] ${m.role}(${m.name}): "${m.text}"`
+  ).join('\n')
 
-PARSED DIALOGUE (${beatList.length} beats):
-${beatsDescription}
+  return `Here is a conflict conversation between ${parsed.nameA} (Partner A) and ${parsed.nameB} (Partner B).
+Total messages: ${parsed.messages.length}
+
+FULL CONVERSATION:
+${allMessages}
 ${contextBlock}${concernBlock}${archetypeBlock}${calibrationBlock}
-Generate a complete JSON scenario. The dialogue for each beat is FIXED — copy it exactly as shown above.
-You must generate thoughts for BOTH A and B on every beat that has dialogue.
+
+YOUR TASK:
+1. Identify the natural conflict stages (Trigger → Escalation → Deadlock → Shift/Rupture → Aftermath, per Gottman's conflict arc). Not all stages are always present.
+2. Select ${beatMin}-${beatMax} beats total (Beat 0 = scene-setting, then ${beatMin-1}-${beatMax-1} dialogue beats).
+3. For each dialogue beat, pick 1-2 REPRESENTATIVE messages from the original conversation that best capture that stage.
+4. COPY the selected message text EXACTLY — do NOT rewrite, summarize, or rephrase.
+5. Generate inner thoughts for BOTH A and B on every dialogue beat.
+
+MESSAGE SELECTION PRIORITIES (which messages to keep):
+✓ Emotion escalation moments
+✓ The key sentence where misunderstanding occurs
+✓ Failed de-escalation attempts
+✓ Silence/read-but-no-reply moments
+✓ First and last messages of the conflict
+
+MESSAGES TO COMPRESS/SKIP:
+✗ Repeated expressions of the same emotion
+✗ Pure factual information exchange
+✗ Off-topic tangents
 
 REQUIRED JSON SCHEMA:
 {
@@ -292,19 +294,21 @@ REQUIRED JSON SCHEMA:
       },
       "dialogue": { "speaker": "<A or B — MUST match the parsed beat>", "text": "<EXACT text from parsed beat — do NOT rewrite>" }
     }
-    // ... generate ALL ${beatList.length} beats
+    // ... generate ${beatMin}-${beatMax} beats total (including Beat 0)
   ]
 }
 
 CRITICAL RULES:
-- dialogue.text for each beat MUST be the EXACT text from the PARSED DIALOGUE above. Do NOT rewrite, summarize, or rephrase.
-- dialogue.speaker MUST match the parsed beat (A or B as shown above).
+- Generate ${beatMin}-${beatMax} beats total. Beat 0 = scene-setting. The rest are dialogue beats.
+- dialogue.text MUST be COPIED EXACTLY from the original conversation messages. Do NOT rewrite, summarize, or rephrase.
+- If a beat combines 2 consecutive messages from the same speaker, join them with \\n.
 - Beat 0 is always the scene-setting beat (narrator only, no dialogue, no thoughts).
 - For ALL other beats: thoughts MUST exist for BOTH A and B. No null thoughts on dialogue beats.
-- narrator: null on most beats. Only use for observable facts (time/place/action). NEVER interpret emotions in narrator.
+- narrator on Beat 0: time/place only. narrator on other beats: null (or brief factual stage direction if needed).
+- NEVER interpret emotions in narrator. Narrator is purely factual.
 - thoughts text: 2-3 lines, specific and concrete, revealing the gap between what is said and what is felt.
 - thoughts should directly reflect the core concerns if provided.
-- intensity: 0.0-1.0, following natural conflict arc across all beats.
+- intensity: 0.0-1.0, following natural conflict arc (typically rises, peaks, then may drop).
 - All text in Simplified Chinese.
 - valid emotion: anxious | defensive | angry | hurt | withdrawn | warm | reflective | surprised | neutral
 - valid pose: neutral | sitting | confrontational | defensive | angry | hurt | anxious | withdrawn

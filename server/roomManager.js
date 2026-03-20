@@ -38,6 +38,7 @@ export class RoomManager {
       scenario: null,
       playReadyA: false,
       playReadyB: false,
+      logs: [],           // per-room behavior log events from both clients
       createdAt: Date.now(),
     }
 
@@ -189,6 +190,24 @@ export class RoomManager {
         room[store][msg.key] = msg.dispute
       }
       return // NOT forwarded — privacy until reveal
+    }
+
+    // ── Behavior log sync ─────────────────────────────────
+    if (msg.type === MSG.LOG_EVENT) {
+      if (msg.entry) {
+        room.logs.push({ role, ...msg.entry })
+      }
+      return
+    }
+
+    if (msg.type === MSG.LOG_EXPORT) {
+      this.send(ws, {
+        type: MSG.LOG_EXPORT_RESULT,
+        logs: room.logs,
+        roomCode: room.code,
+        exportedAt: new Date().toISOString(),
+      })
+      return
     }
 
     // ── Annotation reveal request ─────────────────────────

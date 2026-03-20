@@ -39,6 +39,11 @@ export const MSG = {
   ANNOTATION_REVEAL:        'annotation:reveal',
   ANNOTATION_REQUEST_REVEAL:'annotation:request_reveal',
 
+  // Behavior log sync
+  LOG_EVENT:                'log:event',
+  LOG_EXPORT:               'log:export',
+  LOG_EXPORT_RESULT:        'log:export_result',
+
   // Heartbeat
   PING:                     'ping',
   PONG:                     'pong',

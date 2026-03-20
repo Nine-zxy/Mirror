@@ -34,6 +34,7 @@ const state = {
   startedAt:   null,
   meta:        {},
   events:      [],
+  syncCallback: null,  // optional: called with each log entry for real-time sync
 }
 
 // ── Init ──────────────────────────────────────────────────────
@@ -46,6 +47,12 @@ export function initSession(meta = {}) {
   return state.sessionId
 }
 
+// ── Sync callback setter ─────────────────────────────────────
+// Set a callback to be invoked with each log entry (for real-time sync via WebSocket)
+export function setSyncCallback(cb) {
+  state.syncCallback = cb || null
+}
+
 // ── Append one event ─────────────────────────────────────────
 export function log(type, data = {}) {
   const entry = {
@@ -56,6 +63,9 @@ export function log(type, data = {}) {
     ...data,
   }
   state.events.push(entry)
+  if (state.syncCallback) {
+    try { state.syncCallback(entry) } catch (_) { /* ignore sync errors */ }
+  }
   return entry
 }
 

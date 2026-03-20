@@ -161,7 +161,7 @@ function EditPanel({ original, current, originalEmotion, currentEmotion, onSave,
   return (
     <div
       className="mt-2 rounded-lg overflow-hidden anim-fadeIn"
-      style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(0,0,0,0.6)' }}
+      style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(20,24,36,0.95)' }}
       onClick={e => e.stopPropagation()}
     >
       {/* Original text (struck through) */}
@@ -260,6 +260,12 @@ export default function ThoughtBubble({
   const bt   = BUBBLE_TYPES[thought.bubbleType] || BUBBLE_TYPES.default
   const isA  = personaId === 'A'
 
+  // Persona-based bubble background: A=blue, B=red, semi-transparent
+  const personaBg = isA
+    ? 'rgba(60,100,200,0.18)'
+    : 'rgba(200,60,60,0.18)'
+  const personaBorder = isA ? '#6888d8' : '#d86868'
+
   // Pixel bubble background asset selection
   const isEdited = status === 'edited' || status === 'disputed'
   const bubbleBgSrc = isA
@@ -270,13 +276,13 @@ export default function ThoughtBubble({
   const shownText = (status === 'edited' || status === 'disputed') ? (dispute?.text || displayText) : displayText
   const hasInteraction = status !== 'original'
 
-  // Border color based on status
+  // Border color based on status (default uses persona color)
   const borderColor = {
-    original:  es.border,
+    original:  personaBorder,
     confirmed: 'rgba(96,200,128,0.45)',
     disputed:  'rgba(232,122,122,0.45)',
     edited:    'rgba(144,232,168,0.50)',
-  }[status] || es.border
+  }[status] || personaBorder
 
   // Handlers
   const handleConfirm = () => {
@@ -339,19 +345,19 @@ export default function ThoughtBubble({
         minWidth:  '160px',
         maxWidth:  '290px',
         padding:   '9px 13px',
-        background: es.bg,
+        background: personaBg,
         border: `${bt.borderWidth} ${status === 'disputed' ? 'solid' : bt.borderStyle} ${borderColor}`,
         borderRadius: bt.borderRadius,
         overflow: 'hidden',
         color:     es.text,
-        fontSize:  '14px',
+        fontSize:  '15px',
         fontStyle: bt.italic && mode === 'observe' ? 'italic' : 'normal',
         lineHeight: '1.7',
         whiteSpace: 'pre-line',
         zIndex:    20,
         animation: mode !== 'observe' ? 'none' : bt.anim,
         filter:    bt.filter,
-        boxShadow: `${bt.extraShadow}, inset 0 0 14px ${es.bg}${status === 'edited' ? ', 0 0 12px rgba(144,232,168,0.15)' : ''}`,
+        boxShadow: `${bt.extraShadow}, inset 0 0 14px ${personaBg}${status === 'edited' ? ', 0 0 12px rgba(144,232,168,0.15)' : ''}`,
         backdropFilter: thought.bubbleType === 'cloud' ? 'blur(3px)' : 'none',
         cursor:    mode === 'observe' ? 'pointer' : 'default',
         transition: 'border-color 0.3s, box-shadow 0.3s',
@@ -368,14 +374,13 @@ export default function ThoughtBubble({
         borderRadius: bt.borderRadius,
       }} />
 
-      {/* Top row: label + icon + status + actions */}
+      {/* Top row: label + status + actions (emotion icon removed — emotion is internal, not displayed) */}
       <div className="flex items-center justify-between mb-1.5 relative z-[1]">
         <div className="flex items-center gap-1">
           <span className="font-mono text-[7px] tracking-wider"
             style={{ color: '#e8dcc8', opacity: 0.5 }}>
             内心
           </span>
-          <img src={es.imgSrc} alt="" style={{width:'14px', height:'14px', display:'inline', imageRendering:'pixelated', opacity: 0.7}} />
         </div>
         <div className="flex items-center gap-1.5">
           {hasInteraction && <StatusBadge status={status} />}

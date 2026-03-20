@@ -1038,7 +1038,7 @@ function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) 
     }
   }, [emotionKey, spriteType])
 
-  const charScale = scale * 0.86 * 2.5
+  const charScale = scale * 0.86 * 1.5
 
   const baseStyle = {
     height: `${190 * charScale}px`,

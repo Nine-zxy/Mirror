@@ -7,6 +7,7 @@ import {
   logArchetype, logAppearanceSet, downloadLog,
   logAssumptionConfirm, logAssumptionDispute,
   logAssumptionEdit, logAssumptionClear,
+  setSyncCallback,
 } from './utils/behaviorLog'
 import { useSyncContext } from './sync/SyncContext'
 
@@ -26,14 +27,18 @@ import SyncStatusBadge   from './components/SyncStatusBadge'
 // ─────────────────────────────────────────────────────────────
 //  App — Root state machine  (Version B)
 //
-//  Phase flow:
-//    intro → [lobby] → input → solo_viewing → self_confirm
+//  Phase flow (V2 — pilot-informed):
+//    intro → [lobby] → input → self_confirm → solo_viewing
 //      → [together_viewing] → divergence
 //
-//  solo_viewing:     Watch playback, see only partner's thoughts, can edit them
-//  self_confirm:     Confirm/edit AI's inference about YOUR OWN thoughts
+//  self_confirm:     FIRST — confirm/edit AI's inference about YOUR OWN thoughts (in theater)
+//  solo_viewing:     THEN — see partner's AI-inferred thoughts, edit them (in theater)
 //  together_viewing: (Together mode only) Watch together with edited versions
 //  divergence:       Three-layer comparison cards
+//
+//  Rationale for self_confirm FIRST:
+//  User establishes their own ground truth before editing partner's thoughts.
+//  Both phases happen in the theater view (not separate card screen).
 //
 //  Lobby phase only in Together mode
 //  together_viewing only in Together mode
@@ -104,6 +109,18 @@ export default function App() {
       role: sync.role,
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Forward log events to server in together mode ──────────
+  useEffect(() => {
+    if (sync.mode === 'together') {
+      setSyncCallback((entry) => {
+        sync.send('log:event', { entry })
+      })
+    } else {
+      setSyncCallback(null)
+    }
+    return () => setSyncCallback(null)
+  }, [sync.mode, sync]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Sync: register remote message handlers ────────────────
   useEffect(() => {
@@ -192,14 +209,14 @@ export default function App() {
     // isPausePoint auto-pause removed — disruptive during study
   }, [beatIndex, beats, phase, syncSend])
 
-  const isPlaybackPhase = phase === 'solo_viewing' || phase === 'together_viewing'
+  const isPlaybackPhase = phase === 'solo_viewing' || phase === 'together_viewing' || phase === 'self_confirm'
   useEffect(() => {
     if (!isPlaying || !isPlaybackPhase) return
     timerRef.current = setTimeout(advance, currentBeat?.duration ?? 4000)
     return () => clearTimeout(timerRef.current)
   }, [isPlaying, beatIndex, isPlaybackPhase, currentBeat, advance])
 
-  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby', 'self_confirm', 'divergence'])
+  const BLOCKING_PHASES = new Set(['intro', 'input', 'reflection', 'lobby', 'divergence'])
 
   const handlePlayPause = useCallback(() => {
     if (BLOCKING_PHASES.has(phase)) return
@@ -275,16 +292,17 @@ export default function App() {
       logArchetype(arc.relationshipType, arc.communicationStyle || [], arc.communicationStyle || [])
     }
     setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
-    setPhase('solo_viewing')
-    logPhase('input', 'solo_viewing')
+    // V2: Go to self_confirm FIRST (confirm own thoughts before editing partner's)
+    setPhase('self_confirm')
+    setBubbleVisibility('self')
+    logPhase('input', 'self_confirm')
 
     if (sync.mode === 'together') {
-      // Together: don't auto-play, wait for either person to press play
       setIsPlaying(false)
       sync.send('scenario:generated', { scenario })
-      syncSend('sync:phase', { phase: 'solo_viewing' })
+      syncSend('sync:phase', { phase: 'self_confirm' })
     } else {
-      // Solo: auto-play
+      // Solo: auto-play into self_confirm
       setIsPlaying(true)
       logBeat(0, 'auto')
     }
@@ -300,14 +318,34 @@ export default function App() {
 
   // ── Version B: Phase transition handlers ────────────────────
 
-  // solo_viewing → self_confirm (user clicks "完成标注")
+  // self_confirm → solo_viewing (user clicks "确认完成，开始标注对方")
+  const handleSelfConfirmToSoloViewing = useCallback(() => {
+    setIsPlaying(false)
+    setBeatIndex(0)
+    setPhase('solo_viewing')
+    setBubbleVisibility('partner')
+    logPhase('self_confirm', 'solo_viewing')
+    syncSend('sync:phase', { phase: 'solo_viewing' })
+    log('self_confirm_finished', { selfConfirmCount: Object.keys(selfConfirms).length })
+  }, [selfConfirms, syncSend])
+
+  // solo_viewing → together_viewing or divergence (user clicks "完成标注")
   const handleFinishAnnotation = useCallback(() => {
     setIsPlaying(false)
-    setPhase('self_confirm')
-    logPhase('solo_viewing', 'self_confirm')
-    syncSend('sync:phase', { phase: 'self_confirm' })
     log('annotation_finished', { disputeCount: Object.keys(disputes).length })
-  }, [disputes, syncSend])
+    if (sync.mode === 'together') {
+      sync.send('annotation:self_confirms', { selfConfirms })
+      setBeatIndex(0)
+      setPhase('together_viewing')
+      setBubbleVisibility('both')
+      setIsPlaying(false)
+      logPhase('solo_viewing', 'together_viewing')
+      syncSend('sync:phase', { phase: 'together_viewing' })
+    } else {
+      setPhase('divergence')
+      logPhase('solo_viewing', 'divergence')
+    }
+  }, [disputes, sync, syncSend, selfConfirms])
 
   // SelfConfirmScreen: confirm/edit a single beat
   const handleSelfConfirm = useCallback((role, beatId, data) => {
@@ -316,24 +354,8 @@ export default function App() {
     log('self_confirm', { key, status: data.status, emotionChanged: data.emotion !== data.originalEmotion })
   }, [])
 
-  // self_confirm → together_viewing (together) or divergence (solo)
-  const handleSelfConfirmDone = useCallback(() => {
-    if (sync.mode === 'together') {
-      // Send self-confirms to server for partner reveal later
-      sync.send('annotation:self_confirms', { selfConfirms })
-      // Go to together_viewing — replay with edited versions, show both bubbles
-      setBeatIndex(0)
-      setPhase('together_viewing')
-      setBubbleVisibility('both')  // Together Viewing shows both sides' edited versions
-      setIsPlaying(false)
-      logPhase('self_confirm', 'together_viewing')
-      syncSend('sync:phase', { phase: 'together_viewing' })
-    } else {
-      // Solo mode: skip together_viewing, go straight to divergence
-      setPhase('divergence')
-      logPhase('self_confirm', 'divergence')
-    }
-  }, [sync, syncSend, selfConfirms])
+  // handleSelfConfirmDone is now handled by handleSelfConfirmToSoloViewing above
+  // (self_confirm → solo_viewing, not directly to together_viewing)
 
   const handleMark = useCallback((emoji) => {
     setTags(prev => [...prev, { id: Date.now(), beatIndex, emoji }])
@@ -399,6 +421,11 @@ export default function App() {
   const thoughtVisibility = useMemo(() => {
     if (bubbleVisibility === 'none')    return { A: false, B: false }
     if (bubbleVisibility === 'both')    return { A: true,  B: true }
+    if (bubbleVisibility === 'self') {
+      // self_confirm phase: only show MY OWN thoughts
+      if (myRole === 'A') return { A: true, B: false }
+      else                return { A: false, B: true }
+    }
     // 'partner': only show the OTHER person's thoughts
     if (myRole === 'A') return { A: false, B: true }
     else                return { A: true,  B: false }
@@ -410,6 +437,8 @@ export default function App() {
       setBubbleVisibility('both')
     } else if (phase === 'solo_viewing') {
       setBubbleVisibility('partner')
+    } else if (phase === 'self_confirm') {
+      setBubbleVisibility('self')  // self_confirm: only show MY OWN thoughts
     }
   }, [phase])
 
@@ -448,17 +477,8 @@ export default function App() {
   if (phase === 'input')
     return <ConflictInput onScenarioReady={handleScenarioReady} syncMode={sync.mode} />
 
-  if (phase === 'self_confirm')
-    return (
-      <SelfConfirmScreen
-        beats={beats}
-        personas={personas}
-        myRole={myRole}
-        selfConfirms={selfConfirms}
-        onSelfConfirm={handleSelfConfirm}
-        onDone={handleSelfConfirmDone}
-      />
-    )
+  // self_confirm now happens IN the theater (bubbleVisibility='self')
+  // No separate SelfConfirmScreen routing needed
 
   if (phase === 'divergence')
     return (
@@ -494,8 +514,9 @@ export default function App() {
         </div>
         <span className="font-mono text-[10px] text-white/20 tracking-widest truncate mx-4">
           {liveScenario.title}
-          {phase === 'solo_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· SOLO VIEWING</span>}
-          {phase === 'together_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· TOGETHER</span>}
+          {phase === 'self_confirm' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· 确认自己的内心</span>}
+          {phase === 'solo_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· 标注对方的内心</span>}
+          {phase === 'together_viewing' && <span className="ml-2 text-[8px]" style={{ color: 'rgba(122,176,232,0.35)' }}>· 一起观看</span>}
         </span>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <button onClick={handleBubbleCycle}
@@ -579,7 +600,16 @@ export default function App() {
         tags={tags}
         onPlayPause={handlePlayPause}
         onSelectBeat={handleSelectBeat}
-        onFinishAnnotation={phase === 'solo_viewing' ? handleFinishAnnotation : null}
+        onFinishAnnotation={
+          phase === 'self_confirm' ? handleSelfConfirmToSoloViewing :
+          phase === 'solo_viewing' ? handleFinishAnnotation :
+          null
+        }
+        finishLabel={
+          phase === 'self_confirm' ? '确认完成，标注对方 →' :
+          phase === 'solo_viewing' ? '完成标注 →' :
+          null
+        }
       />
     </div>
   )

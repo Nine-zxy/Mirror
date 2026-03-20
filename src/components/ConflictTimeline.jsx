@@ -18,6 +18,7 @@ export default function ConflictTimeline({
   beats, beatIndex, isPlaying, phase, onPlayPause, onSelectBeat,
   tags = [],
   onFinishAnnotation = null,
+  finishLabel = null,
 }) {
   const svgRef = useRef(null)
   const [svgW, setSvgW] = useState(800)
@@ -166,18 +167,18 @@ export default function ConflictTimeline({
         </span>
       </div>
 
-      {/* Version B: Finish Annotation button */}
-      {onFinishAnnotation && phase === 'solo_viewing' && beatIndex >= beats.length - 1 && !isPlaying && (
+      {/* Phase transition button — shows at last beat when paused */}
+      {onFinishAnnotation && (phase === 'solo_viewing' || phase === 'self_confirm') && !isPlaying && (
         <button
           onClick={onFinishAnnotation}
-          className="font-mono text-[10px] px-4 py-1.5 rounded-lg border transition-all hover:scale-105 flex-shrink-0 anim-fadeIn"
+          className="font-mono text-[11px] px-4 py-1.5 rounded-lg border transition-all hover:scale-105 flex-shrink-0 anim-fadeIn"
           style={{
             color: '#7ab0e8',
             borderColor: 'rgba(122,176,232,0.35)',
             background: 'rgba(122,176,232,0.07)',
           }}
         >
-          完成标注 →
+          {finishLabel || '完成 →'}
         </button>
       )}
     </div>
