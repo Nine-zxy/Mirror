@@ -101,19 +101,19 @@ function ProcessingOverlay({ step, source }) {
                 transition:  'all 0.4s',
               }} />
               <div>
-                <div className="font-mono text-[10px]" style={{
+                <div className="font-mono text-[15px]" style={{
                   color: active ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.4)',
                 }}>
                   {s.label}
                 </div>
-                <div className="font-mono text-[7px] text-white/22">{s.sub}</div>
+                <div className="font-mono text-[11px] text-white/22">{s.sub}</div>
               </div>
             </div>
           )
         })}
       </div>
       {source && (
-        <div className="font-mono text-[8px] px-3 py-1 rounded-full anim-fadeIn" style={{
+        <div className="font-mono text-[12px] px-3 py-1 rounded-full anim-fadeIn" style={{
           background: source === 'ai' ? 'rgba(122,176,232,0.12)' : 'rgba(255,255,255,0.06)',
           border:     `1px solid ${source === 'ai' ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.1)'}`,
           color:      source === 'ai' ? '#7ab0e8' : 'rgba(255,255,255,0.35)',
@@ -137,8 +137,8 @@ function HowToGuide() {
         className="w-full flex items-center justify-between px-4 py-2.5 transition-all"
         style={{ color: 'rgba(255,255,255,0.4)' }}
       >
-        <span className="font-mono text-[9px] tracking-widest">如何导出微信聊天记录？</span>
-        <span className="font-mono text-[10px]" style={{
+        <span className="font-mono text-[14px] tracking-widest">如何导出微信聊天记录？</span>
+        <span className="font-mono text-[15px]" style={{
           transform: open ? 'rotate(180deg)' : 'none',
           transition: 'transform 0.25s',
           display: 'inline-block',
@@ -148,14 +148,14 @@ function HowToGuide() {
         <div className="px-4 pb-4 flex flex-col gap-4 anim-fadeIn">
           {HOW_TO.map((section, si) => (
             <div key={si}>
-              <div className="font-mono text-[9px] mb-1.5" style={{ color: '#7ab0e8' }}>
+              <div className="font-mono text-[14px] mb-1.5" style={{ color: '#7ab0e8' }}>
                 {section.title}
               </div>
               <ol className="flex flex-col gap-1">
                 {section.steps.map((step, i) => (
                   <li key={i} className="flex gap-2">
-                    <span className="font-mono text-[8px] text-white/28 flex-shrink-0 mt-0.5">{i + 1}.</span>
-                    <span className="font-mono text-[9px] text-white/45 leading-snug">{step}</span>
+                    <span className="font-mono text-[12px] text-white/28 flex-shrink-0 mt-0.5">{i + 1}.</span>
+                    <span className="font-mono text-[14px] text-white/45 leading-snug">{step}</span>
                   </li>
                 ))}
               </ol>
@@ -207,10 +207,10 @@ function FileDropZone({ onFile, isDragging, setIsDragging }) {
         {isDragging ? '📂' : '📁'}
       </div>
       <div className="flex flex-col items-center gap-1">
-        <span className="font-mono text-[10px]" style={{ color: isDragging ? '#7ab0e8' : 'rgba(255,255,255,0.4)' }}>
+        <span className="font-mono text-[15px]" style={{ color: isDragging ? '#7ab0e8' : 'rgba(255,255,255,0.4)' }}>
           拖入聊天记录文件
         </span>
-        <span className="font-mono text-[8px] text-white/22">
+        <span className="font-mono text-[12px] text-white/22">
           支持 .html · .htm · .txt（微信导出格式）
         </span>
       </div>
@@ -234,7 +234,7 @@ function RelTypeCard({ type, selected, onSelect }) {
       }}
     >
       <span style={{ fontSize: '18px' }}>{type.icon}</span>
-      <span className="font-mono text-[9px]" style={{
+      <span className="font-mono text-[14px]" style={{
         color: selected ? '#7ab0e8' : 'rgba(255,255,255,0.45)',
       }}>
         {type.label}
@@ -270,10 +270,10 @@ function StyleCheckbox({ style, selected, onToggle, accentColor }) {
         )}
       </div>
       <div className="min-w-0">
-        <div className="text-[11px] font-medium" style={{ color: selected ? '#e8e8e8' : 'rgba(255,255,255,0.55)' }}>
+        <div className="text-[16px] font-medium" style={{ color: selected ? '#e8e8e8' : 'rgba(255,255,255,0.55)' }}>
           {style.label}
         </div>
-        <div className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <div className="text-[15px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
           {style.desc}
         </div>
       </div>
@@ -303,14 +303,14 @@ function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setSt
     }}>
       {/* Section header */}
       <div className="flex items-center gap-2">
-        <span className="font-mono text-[9px] tracking-[0.15em] text-white/30">关系设定 *</span>
+        <span className="font-mono text-[14px] tracking-[0.15em] text-white/30">关系设定 *</span>
         <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
-        <span className="font-mono text-[8px]" style={{ color: 'rgba(255,255,255,0.18)' }}>ARCHETYPE</span>
+        <span className="font-mono text-[12px]" style={{ color: 'rgba(255,255,255,0.18)' }}>ARCHETYPE</span>
       </div>
 
       {/* Relationship type */}
       <div>
-        <p className="font-mono text-[8px] text-white/25 mb-2">你们是：</p>
+        <p className="font-mono text-[12px] text-white/25 mb-2">你们是：</p>
         <div className="flex gap-2">
           {RELATIONSHIP_TYPES.map(type => (
             <RelTypeCard
@@ -325,14 +325,14 @@ function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setSt
 
       {/* Communication styles */}
       <div>
-        <p className="font-mono text-[8px] text-white/25 mb-2">
+        <p className="font-mono text-[12px] text-white/25 mb-2">
           {singleColumn ? '你的沟通风格（选 1-2 个）：' : '沟通风格投票（各选 1-2 个）：'}
         </p>
 
         {singleColumn ? (
           /* Together mode: single column for own style */
           <div>
-            <div className="font-mono text-[8px] mb-2" style={{ color: A_COLOR }}>
+            <div className="font-mono text-[12px] mb-2" style={{ color: A_COLOR }}>
               我更像
             </div>
             <div className="flex flex-col gap-1.5">
@@ -346,7 +346,7 @@ function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setSt
                 />
               ))}
             </div>
-            <p className="font-mono text-[8px] text-white/18 mt-2">
+            <p className="font-mono text-[12px] text-white/18 mt-2">
               * 对方正在另一台设备上选择 TA 自己的风格。
             </p>
           </div>
@@ -355,7 +355,7 @@ function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setSt
           <div className="flex gap-3">
             {/* A column */}
             <div className="flex-1">
-              <div className="font-mono text-[8px] mb-2" style={{ color: A_COLOR }}>
+              <div className="font-mono text-[12px] mb-2" style={{ color: A_COLOR }}>
                 {nameA || 'TA（A）'} 更像
               </div>
               <div className="flex flex-col gap-1.5">
@@ -374,7 +374,7 @@ function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setSt
             <div className="w-px self-stretch" style={{ background: 'rgba(255,255,255,0.05)' }} />
             {/* B column */}
             <div className="flex-1">
-              <div className="font-mono text-[8px] mb-2" style={{ color: B_COLOR }}>
+              <div className="font-mono text-[12px] mb-2" style={{ color: B_COLOR }}>
                 {nameB || 'TA（B）'} 更像
               </div>
               <div className="flex flex-col gap-1.5">
@@ -393,7 +393,7 @@ function ArchetypeSection({ relationshipType, setRelationshipType, styleA, setSt
         )}
 
         {!singleColumn && (
-          <p className="font-mono text-[8px] text-white/18 mt-2">
+          <p className="font-mono text-[12px] text-white/18 mt-2">
             * 这不是性格测试，而是场景重构的角色锚点，也是你对对方的第一次「标注」。
           </p>
         )}
@@ -415,7 +415,7 @@ function WaitingOverlay({ partnerReady, generating, role }) {
               background: '#58c878',
               boxShadow: '0 0 8px rgba(88,200,120,0.5)',
             }} />
-            <span className="font-mono text-[8px] text-white/40">你</span>
+            <span className="font-mono text-[12px] text-white/40">你</span>
           </div>
           <div className="w-8 h-px" style={{
             background: partnerReady
@@ -428,19 +428,19 @@ function WaitingOverlay({ partnerReady, generating, role }) {
               boxShadow: partnerReady ? '0 0 8px rgba(88,200,120,0.5)' : 'none',
               animation: partnerReady ? 'none' : 'pulse 2s ease-in-out infinite',
             }} />
-            <span className="font-mono text-[8px] text-white/40">对方</span>
+            <span className="font-mono text-[12px] text-white/40">对方</span>
           </div>
         </div>
 
         {/* Status text */}
-        <div className="font-mono text-[11px] text-white/60 mt-2">
+        <div className="font-mono text-[16px] text-white/60 mt-2">
           {generating
             ? (role === 'A' ? '正在合并生成场景…' : '对方正在生成场景…')
             : partnerReady
               ? '双方就绪，即将开始…'
               : '等待对方完成输入…'}
         </div>
-        <div className="font-mono text-[8px] text-white/25">
+        <div className="font-mono text-[12px] text-white/25">
           {generating
             ? 'GENERATING SCENARIO'
             : partnerReady
@@ -731,13 +731,13 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
         {/* ── Top area: title + together hint ── */}
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3">
-            <span className="font-pixel text-[8px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>ASIDE</span>
+            <span className="font-pixel text-[12px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>ASIDE</span>
             <div className="w-8 h-px" style={{ background: 'linear-gradient(90deg, rgba(122,176,232,0.5), transparent)' }} />
-            <p className="font-mono text-[10px] text-white/30 tracking-[0.2em]">
+            <p className="font-mono text-[15px] text-white/30 tracking-[0.2em]">
               冲突描述 / CONFLICT INPUT
             </p>
             {isTogether && (
-              <span className="font-mono text-[8px] px-2 py-0.5 rounded-full" style={{
+              <span className="font-mono text-[12px] px-2 py-0.5 rounded-full" style={{
                 background: 'rgba(88,200,120,0.1)',
                 border: '1px solid rgba(88,200,120,0.25)',
                 color: '#58c878',
@@ -746,7 +746,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
               </span>
             )}
           </div>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.38)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+          <p className="text-[21px]" style={{ color: 'rgba(255,255,255,0.38)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
             {isTogether
               ? '粘贴聊天记录，描述你的感受和沟通风格'
               : '粘贴聊天记录，或用自己的话描述冲突经过'}
@@ -759,7 +759,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             background: 'rgba(122,176,232,0.06)',
             border: '1px solid rgba(122,176,232,0.18)',
           }}>
-            <p className="text-[11px] leading-relaxed" style={{
+            <p className="text-[16px] leading-relaxed" style={{
               color: 'rgba(122,176,232,0.75)',
               fontFamily: '"PingFang SC","Inter",sans-serif',
             }}>
@@ -778,11 +778,11 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 background: 'rgba(88,200,120,0.08)',
                 border:     '1px solid rgba(88,200,120,0.2)',
               }}>
-                <span className="text-[10px]">✓</span>
+                <span className="text-[15px]">✓</span>
                 <div className="min-w-0">
-                  <div className="font-mono text-[9px] text-white/60 truncate">{fileName}</div>
+                  <div className="font-mono text-[14px] text-white/60 truncate">{fileName}</div>
                   {detectedFmt && (
-                    <div className="font-mono text-[7px] mt-0.5" style={{ color: fmtColor }}>
+                    <div className="font-mono text-[11px] mt-0.5" style={{ color: fmtColor }}>
                       {FORMAT_LABELS[detectedFmt.format]}
                       {detectedFmt.messageCount > 0 && ` · ${detectedFmt.messageCount} 条消息`}
                     </div>
@@ -790,7 +790,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 </div>
                 <button
                   onClick={() => { setFileName(null); setRawText(''); setParsedText(''); setDetectedFmt(null) }}
-                  className="font-mono text-[10px] text-white/25 hover:text-white/55 ml-auto flex-shrink-0"
+                  className="font-mono text-[15px] text-white/25 hover:text-white/55 ml-auto flex-shrink-0"
                 >✕</button>
               </div>
             )}
@@ -803,11 +803,11 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             {detectedFmt && detectedFmt.format !== 'freetext' && (
               <div className="flex items-center gap-2 mb-1 anim-fadeIn">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ background: fmtColor }} />
-                <span className="font-mono text-[9px]" style={{ color: fmtColor }}>
+                <span className="font-mono text-[14px]" style={{ color: fmtColor }}>
                   {FORMAT_LABELS[detectedFmt.format]}
                 </span>
                 {detectedFmt.messageCount > 0 && (
-                  <span className="font-mono text-[8px] text-white/30">
+                  <span className="font-mono text-[12px] text-white/30">
                     · {detectedFmt.messageCount} 条
                   </span>
                 )}
@@ -817,20 +817,20 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
               value={rawText}
               onChange={e => handleTextChange(e.target.value)}
               placeholder={'粘贴微信聊天记录，或自由描述冲突……\n\n示例：\n小美：你为什么不回我消息？\n小凯：我当时在忙啊\n小美：忙？发一条消息要多少时间？'}
-              className="w-full flex-1 rounded-xl px-4 py-3.5 text-sm resize-none focus:outline-none"
+              className="w-full flex-1 rounded-xl px-4 py-3.5 text-[21px] resize-none focus:outline-none"
               style={{
                 background:  'rgba(255,255,255,0.04)',
                 border:      `1px solid ${rawText.length > 20 ? 'rgba(122,176,232,0.22)' : 'rgba(255,255,255,0.08)'}`,
                 color:       'rgba(255,255,255,0.78)',
                 fontFamily:  '"PingFang SC","JetBrains Mono","Inter",monospace',
-                fontSize:    '13px',
+                fontSize:    '19px',
                 lineHeight:  '1.65',
                 caretColor:  '#7ab0e8',
                 transition:  'border-color 0.2s',
                 minHeight:   '160px',
               }}
             />
-            <div className="absolute bottom-3 right-4 font-mono text-[8px]" style={{
+            <div className="absolute bottom-3 right-4 font-mono text-[12px]" style={{
               color: rawText.length > 20 ? 'rgba(122,176,232,0.45)' : 'rgba(255,255,255,0.15)',
             }}>
               {rawText.length} 字
@@ -844,10 +844,10 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             background: 'rgba(255,255,255,0.02)',
             border:     '1px solid rgba(255,255,255,0.06)',
           }}>
-            <summary className="font-mono text-[9px] text-white/30 px-4 py-2 cursor-pointer select-none">
+            <summary className="font-mono text-[14px] text-white/30 px-4 py-2 cursor-pointer select-none">
               ▶ 已解析内容预览（将用于场景重构）
             </summary>
-            <pre className="px-4 pb-3 font-mono text-[10px] text-white/40 whitespace-pre-wrap leading-relaxed overflow-auto"
+            <pre className="px-4 pb-3 font-mono text-[15px] text-white/40 whitespace-pre-wrap leading-relaxed overflow-auto"
               style={{ maxHeight: '120px' }}>
               {parsedText}
             </pre>
@@ -859,7 +859,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           <div className="flex gap-4 anim-fadeIn">
             {/* Left: concern */}
             <div className="flex-1">
-              <label className="font-mono text-[8px] mb-1 block" style={{ color: '#7ab0e8' }}>
+              <label className="font-mono text-[12px] mb-1 block" style={{ color: '#7ab0e8' }}>
                 你最想让对方理解的是什么？ *
               </label>
               <input
@@ -867,7 +867,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 onChange={e => setConcernA(e.target.value)}
                 maxLength={80}
                 placeholder="例：我不是在无理取闹，我只是需要被回应"
-                className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
+                className="w-full rounded-lg px-3 py-2 text-[18px] text-white/80 placeholder-white/20 focus:outline-none"
                 style={{
                   background: 'rgba(122,176,232,0.06)',
                   border: `1px solid ${concernA ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
@@ -878,7 +878,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             </div>
             {/* Right: feeling */}
             <div className="flex-1">
-              <label className="font-mono text-[8px] mb-1 block" style={{ color: '#7ab0e8' }}>
+              <label className="font-mono text-[12px] mb-1 block" style={{ color: '#7ab0e8' }}>
                 你当时最强烈的感受是什么？ *
               </label>
               <input
@@ -886,7 +886,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 onChange={e => setFeeling(e.target.value)}
                 maxLength={80}
                 placeholder="例：觉得不被重视"
-                className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
+                className="w-full rounded-lg px-3 py-2 text-[18px] text-white/80 placeholder-white/20 focus:outline-none"
                 style={{
                   background: 'rgba(122,176,232,0.06)',
                   border: `1px solid ${feeling ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
@@ -899,14 +899,14 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
         )}
 
         {isTogether && (parsedText || rawText).trim().length > 20 && (
-          <p className="font-mono text-[8px] text-white/18">
+          <p className="font-mono text-[12px] text-white/18">
             对方正在另一台设备上独立描述 TA 的感受。
           </p>
         )}
 
         {/* Background — single input, full width */}
         <div className="flex flex-col gap-1">
-          <p className="font-mono text-[8px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="font-mono text-[12px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
             背景信息 · 一句话背景 *
           </p>
           <input
@@ -914,7 +914,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             onChange={e => setContext(e.target.value)}
             maxLength={100}
             placeholder="例：异地恋半年，最近沟通越来越少"
-            className="w-full rounded-lg px-3 py-2 text-[12px] text-white/70 placeholder-white/18 focus:outline-none"
+            className="w-full rounded-lg px-3 py-2 text-[18px] text-white/70 placeholder-white/18 focus:outline-none"
             style={{
               background: 'rgba(255,255,255,0.03)',
               border: `1px solid ${context.trim() ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.07)'}`,
@@ -927,7 +927,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
         {/* Role selection — full width */}
         {(parsedText || rawText).trim().length > 20 && (
           <div className="flex flex-col gap-2 anim-fadeIn">
-            <p className="font-mono text-[9px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            <p className="font-mono text-[14px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
               你是对话中的哪一位？ *
             </p>
             <div className="flex gap-3">
@@ -938,7 +938,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 <button
                   key={opt.key}
                   onClick={() => setUserRole(opt.key)}
-                  className="flex-1 py-2.5 px-4 rounded-lg font-mono text-[12px] transition-all"
+                  className="flex-1 py-2.5 px-4 rounded-lg font-mono text-[18px] transition-all"
                   style={{
                     background: userRole === opt.key ? 'rgba(122,176,232,0.15)' : 'rgba(255,255,255,0.03)',
                     border: `1.5px solid ${userRole === opt.key ? 'rgba(122,176,232,0.5)' : 'rgba(255,255,255,0.08)'}`,
@@ -968,7 +968,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
 
         {/* Error */}
         {error && (
-          <div className="font-mono text-[10px] text-center py-2 rounded-lg anim-fadeIn" style={{
+          <div className="font-mono text-[15px] text-center py-2 rounded-lg anim-fadeIn" style={{
             color:      '#e87a7a',
             background: 'rgba(232,122,122,0.08)',
             border:     '1px solid rgba(232,122,122,0.18)',
@@ -986,14 +986,14 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             background: API_KEY_AVAILABLE ? '#7ab0e8' : '#444',
             boxShadow:  API_KEY_AVAILABLE ? '0 0 5px #7ab0e8' : 'none',
           }} />
-          <span className="font-mono text-[8px]" style={{ color: API_KEY_AVAILABLE ? '#7ab0e8' : 'rgba(255,255,255,0.22)' }}>
+          <span className="font-mono text-[12px]" style={{ color: API_KEY_AVAILABLE ? '#7ab0e8' : 'rgba(255,255,255,0.22)' }}>
             {API_KEY_AVAILABLE ? '引擎就绪' : '离线模式 · 配置 .env.local'}
           </span>
         </div>
 
         {/* Submit */}
         <div className="flex items-center justify-between pb-4">
-          <span className="font-mono text-[8px] text-white/18">
+          <span className="font-mono text-[12px] text-white/18">
             {isTogether
               ? '至少 20 字 + 角色 + 感受 + 背景 + 关系设定'
               : '至少 20 字 + 角色 + 感受 + 背景 + 关系设定 · 内容仅在本地处理'}
@@ -1001,7 +1001,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           <button
             onClick={handleSubmit}
             disabled={!canSubmit || processing || submitted}
-            className="font-mono text-[12px] tracking-[0.15em] px-8 py-3 rounded-xl border transition-all duration-300"
+            className="font-mono text-[18px] tracking-[0.15em] px-8 py-3 rounded-xl border transition-all duration-300"
             style={{
               color:       (canSubmit && !submitted) ? '#7ab0e8' : 'rgba(255,255,255,0.2)',
               borderColor: (canSubmit && !submitted) ? 'rgba(122,176,232,0.4)' : 'rgba(255,255,255,0.07)',

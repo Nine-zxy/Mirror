@@ -28,7 +28,7 @@ function EmotionTag({ emotion, color }) {
   // Use the persona's color for the tag
   const c = color || '#7ab0e8'
   return (
-    <span className="font-mono text-[8px] px-1.5 py-0.5 rounded inline-block mt-1"
+    <span className="font-mono text-[12px] px-1.5 py-0.5 rounded inline-block mt-1"
       style={{ background: `${c}18`, color: c, border: `1px solid ${c}40` }}>
       {label}
     </span>
@@ -89,7 +89,7 @@ function GapBar({ level }) {
             style={{ background: i <= clampedLevel ? colors[clampedLevel] : 'rgba(255,255,255,0.06)' }} />
         ))}
       </div>
-      <span className="font-mono text-[8px]" style={{ color: colors[clampedLevel] }}>
+      <span className="font-mono text-[12px]" style={{ color: colors[clampedLevel] }}>
         {labels[clampedLevel]}
       </span>
     </div>
@@ -122,10 +122,10 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
 
       {/* Header */}
       <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-        <span className="font-mono text-[11px]" style={{ color: '#7ab0e8' }}>#{index + 1}</span>
-        <span className="font-mono text-[9px] text-white/30">第 {beat.id + 1} 幕</span>
+        <span className="font-mono text-[16px]" style={{ color: '#7ab0e8' }}>#{index + 1}</span>
+        <span className="font-mono text-[14px] text-white/30">第 {beat.id + 1} 幕</span>
         <div className="w-1.5 h-1.5 rounded-full ml-1" style={{ background: persona?.color }} />
-        <span className="font-mono text-[9px]" style={{ color: persona?.color }}>
+        <span className="font-mono text-[14px]" style={{ color: persona?.color }}>
           {persona?.name} 的内心
         </span>
         <div className="flex-1" />
@@ -137,11 +137,11 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
         <div className="px-4 py-2 border-b" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
           <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full" style={{ background: personas[beat.dialogue.speaker]?.color }} />
-            <span className="font-mono text-[9px]" style={{ color: personas[beat.dialogue.speaker]?.color }}>
+            <span className="font-mono text-[14px]" style={{ color: personas[beat.dialogue.speaker]?.color }}>
               {personas[beat.dialogue.speaker]?.name}
             </span>
           </div>
-          <p className="text-[12px] text-white/40 mt-1 leading-relaxed"
+          <p className="text-[18px] text-white/40 mt-1 leading-relaxed"
             style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
             "{beat.dialogue.text}"
           </p>
@@ -157,10 +157,10 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
             background: `${selfColor}10`,
             border: `1px solid ${selfColor}33`,
           }}>
-            <p className="font-mono text-[8px] tracking-wider mb-1.5" style={{ color: selfColor }}>
+            <p className="font-mono text-[12px] tracking-wider mb-1.5" style={{ color: selfColor }}>
               {selfLabel}
             </p>
-            <p className="text-[13px] leading-relaxed"
+            <p className="text-[19px] leading-relaxed"
               style={{ color: `${selfColor}dd`, fontFamily: '"PingFang SC","Inter",sans-serif' }}>
               {selfText}
             </p>
@@ -170,7 +170,7 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
           {/* VS divider */}
           <div className="flex items-center gap-2 px-2">
             <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
-            <span className="font-mono text-[9px] text-white/20">VS</span>
+            <span className="font-mono text-[14px] text-white/20">VS</span>
             <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
           </div>
 
@@ -179,10 +179,10 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
             background: `${editorColor}10`,
             border: `1px solid ${editorColor}33`,
           }}>
-            <p className="font-mono text-[8px] tracking-wider mb-1.5" style={{ color: editorColor }}>
+            <p className="font-mono text-[12px] tracking-wider mb-1.5" style={{ color: editorColor }}>
               {partnerLabel}
             </p>
-            <p className="text-[13px] leading-relaxed"
+            <p className="text-[19px] leading-relaxed"
               style={{ color: `${editorColor}dd`, fontFamily: '"PingFang SC","Inter",sans-serif' }}>
               {partnerText}
             </p>
@@ -193,7 +193,7 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
 
       {/* Discussion prompt */}
       <div className="px-4 py-2">
-        <p className="font-mono text-[9px] text-center" style={{ color: 'rgba(122,176,232,0.4)' }}>
+        <p className="font-mono text-[14px] text-center" style={{ color: 'rgba(122,176,232,0.4)' }}>
           想聊聊这个时刻吗？
         </p>
       </div>
@@ -236,11 +236,11 @@ export default function DivergenceCards({
 
         {/* Header */}
         <div className="text-center flex flex-col items-center gap-2">
-          <span className="font-pixel text-[11px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>
+          <span className="font-pixel text-[16px] tracking-[0.35em]" style={{ color: '#7ab0e8' }}>
             DIVERGENCE
           </span>
           <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #7ab0e8, transparent)' }} />
-          <p className="text-[14px] text-white/50 leading-relaxed mt-1"
+          <p className="text-[21px] text-white/50 leading-relaxed mt-1"
             style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
             {viewPerspective === 'mine'
               ? '对方眼中的你 vs 真实的你'
@@ -252,7 +252,7 @@ export default function DivergenceCards({
         <div className="flex justify-center gap-2">
           <button
             onClick={() => setViewPerspective('mine')}
-            className="font-mono text-[11px] px-4 py-1.5 rounded-lg border transition-all"
+            className="font-mono text-[16px] px-4 py-1.5 rounded-lg border transition-all"
             style={{
               color: viewPerspective === 'mine' ? '#90e8a8' : 'rgba(255,255,255,0.3)',
               borderColor: viewPerspective === 'mine' ? 'rgba(144,232,168,0.4)' : 'rgba(255,255,255,0.08)',
@@ -262,7 +262,7 @@ export default function DivergenceCards({
           </button>
           <button
             onClick={() => setViewPerspective('partner')}
-            className="font-mono text-[11px] px-4 py-1.5 rounded-lg border transition-all"
+            className="font-mono text-[16px] px-4 py-1.5 rounded-lg border transition-all"
             style={{
               color: viewPerspective === 'partner' ? '#e8a87a' : 'rgba(255,255,255,0.3)',
               borderColor: viewPerspective === 'partner' ? 'rgba(232,168,122,0.4)' : 'rgba(255,255,255,0.08)',
@@ -273,7 +273,7 @@ export default function DivergenceCards({
         </div>
 
         {/* Perspective explanation */}
-        <p className="text-[11px] text-center text-white/25 leading-relaxed"
+        <p className="text-[16px] text-center text-white/25 leading-relaxed"
           style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
           {viewPerspective === 'mine'
             ? `看看 ${personas[partnerId]?.name || '对方'} 认为你在想什么，和你自己确认的真实想法有什么不同`
@@ -303,7 +303,7 @@ export default function DivergenceCards({
           </div>
         ) : (
           <div className="text-center py-8">
-            <p className="text-[14px] text-white/30" style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            <p className="text-[21px] text-white/30" style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
               {viewPerspective === 'mine'
                 ? '对方对你的理解和你自己的感受很一致。'
                 : '你对对方的理解和 TA 的真实感受很一致。'}
@@ -316,13 +316,13 @@ export default function DivergenceCards({
           background: 'rgba(122,176,232,0.05)',
           border: '1px solid rgba(122,176,232,0.15)',
         }}>
-          <p className="text-[14px] leading-relaxed" style={{
+          <p className="text-[21px] leading-relaxed" style={{
             color: 'rgba(122,176,232,0.7)',
             fontFamily: '"PingFang SC","Inter",sans-serif',
           }}>
             {allDivergences.length > 0
               ? <>发现 {allDivergences.length} 处理解差异。<br />
-                <span className="text-[12px]" style={{ color: 'rgba(122,176,232,0.4)' }}>
+                <span className="text-[18px]" style={{ color: 'rgba(122,176,232,0.4)' }}>
                   差异不是问题——发现差异才是对话的起点。
                 </span></>
               : <>你们对彼此的理解非常一致。</>
@@ -334,24 +334,24 @@ export default function DivergenceCards({
         <div className="flex flex-col items-center gap-4 py-2">
           <div className="w-full flex items-center gap-3">
             <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(122,176,232,0.25))' }} />
-            <span style={{ color: '#7ab0e8', fontSize: '6px', opacity: 0.4 }}>&#9670;</span>
+            <span style={{ color: '#7ab0e8', fontSize: '9px', opacity: 0.4 }}>&#9670;</span>
             <div className="flex-1 h-px" style={{ background: 'linear-gradient(-90deg, transparent, rgba(122,176,232,0.25))' }} />
           </div>
           <div className="w-full max-w-lg px-4">
-            <p className="text-[12px] leading-relaxed mb-3" style={{
+            <p className="text-[18px] leading-relaxed mb-3" style={{
               color: 'rgba(122,176,232,0.55)',
               fontFamily: '"Noto Serif SC", "Source Han Serif CN", "PingFang SC", serif',
             }}>
               在你们进一步讨论之前，可以想想：
             </p>
             <div className="flex flex-col gap-2.5 pl-1">
-              <p className="text-[12px] leading-relaxed" style={{
+              <p className="text-[18px] leading-relaxed" style={{
                 color: 'rgba(122,176,232,0.45)',
                 fontFamily: '"Noto Serif SC", "Source Han Serif CN", "PingFang SC", serif',
               }}>
                 1. &ldquo;在这个过程中，有没有某个时刻让你对对方有了新的认识？&rdquo;
               </p>
-              <p className="text-[12px] leading-relaxed" style={{
+              <p className="text-[18px] leading-relaxed" style={{
                 color: 'rgba(122,176,232,0.45)',
                 fontFamily: '"Noto Serif SC", "Source Han Serif CN", "PingFang SC", serif',
               }}>
@@ -377,10 +377,10 @@ export default function DivergenceCards({
 function Stat({ label, value, color }) {
   return (
     <div className="flex flex-col items-center gap-0.5">
-      <span className="font-mono text-[18px]" style={{ color: color || 'rgba(255,255,255,0.7)' }}>
+      <span className="font-mono text-[27px]" style={{ color: color || 'rgba(255,255,255,0.7)' }}>
         {value}
       </span>
-      <span className="font-mono text-[9px] tracking-widest" style={{ color: color ? `${color}88` : 'rgba(255,255,255,0.28)' }}>
+      <span className="font-mono text-[14px] tracking-widest" style={{ color: color ? `${color}88` : 'rgba(255,255,255,0.28)' }}>
         {label}
       </span>
     </div>
@@ -397,7 +397,7 @@ function ActionBtn({ onClick, label, accent = false, highlight = false }) {
   return (
     <button
       onClick={onClick}
-      className="font-mono text-xs px-6 py-2.5 rounded-lg border transition-all hover:opacity-80"
+      className="font-mono text-[18px] px-6 py-2.5 rounded-lg border transition-all hover:opacity-80"
       style={base}
     >
       {label}
