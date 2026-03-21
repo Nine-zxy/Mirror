@@ -230,6 +230,7 @@ YOUR TASK:
 4. dialogue.text MUST be COPIED EXACTLY from the original conversation — do NOT rewrite, summarize, paraphrase, or translate.
 5. Generate inner thoughts for BOTH A and B on EVERY dialogue beat. Thoughts should reveal the gap between what was said and what was felt.
 6. narrator field: Use ONLY for Beat 0 (scene-setting: time, place). All other beats: narrator should be null. Do NOT use narrator for emotional commentary or interpretation.
+7. CRITICAL — TONE CONTROL: Inner thoughts must match the tone and intensity of the original conversation. Do NOT dramatize, exaggerate, or add emotional weight that isn't present in the original messages. If the original tone is casual and mild, the inner thoughts should also be casual and mild. Avoid literary or poetic language — use natural, conversational Chinese that sounds like real inner monologue, not a novel.
 
 MESSAGE SELECTION PRIORITIES (which messages to KEEP):
 ✓ Emotion escalation moments (where tone shifts)

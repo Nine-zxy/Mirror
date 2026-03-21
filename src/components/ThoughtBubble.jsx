@@ -133,14 +133,13 @@ function QuickReactBar({ onConfirm, onDispute, onEdit, onEmotionTag, onClose, cu
           return (
             <button key={emo} onClick={() => onEmotionTag(emo)}
               className="rounded transition-all hover:scale-110"
-              title={es.label}
               style={{
                 padding: '2px',
                 background: active ? `${es.bg}` : 'transparent',
                 border: `1px solid ${active ? es.border + '60' : 'transparent'}`,
                 opacity: active ? 1 : 0.55,
               }}>
-              <img src={es.imgSrc} alt={es.label}
+              <img src={es.imgSrc} alt=""
                 style={{width:'18px', height:'18px', imageRendering:'pixelated'}} />
             </button>
           )
@@ -201,13 +200,15 @@ function EditPanel({ original, current, originalEmotion, currentEmotion, onSave,
               const active = emotion === emo
               return (
                 <button key={emo} onClick={() => setEmotion(emo)}
-                  className="font-mono text-[8px] px-1.5 py-0.5 rounded transition-all"
+                  className="rounded transition-all hover:scale-110"
                   style={{
-                    color: active ? es.text : 'rgba(255,255,255,0.25)',
-                    background: active ? es.bg : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${active ? es.border + '60' : 'rgba(255,255,255,0.06)'}`,
+                    padding: '2px',
+                    background: active ? es.bg : 'transparent',
+                    border: `1px solid ${active ? es.border + '60' : 'transparent'}`,
+                    opacity: active ? 1 : 0.55,
                   }}>
-                  {es.icon} {es.label}
+                  <img src={es.imgSrc} alt=""
+                    style={{width:'18px', height:'18px', imageRendering:'pixelated'}} />
                 </button>
               )
             })}
