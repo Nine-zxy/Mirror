@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-//  Pre-built scenario: 咩咩 (A, 男) × 对方 (B, 女)
+//  Pre-built scenario: 咩咩 (A, 女) × 巧克力 (B, 男)
 //  Source: 通话后微信争论
 //  Conflict: 通话中A与别人打招呼 → B觉得A"谄媚" → 实质是安全感问题
 // ─────────────────────────────────────────────────────────────
@@ -21,22 +21,22 @@ export const scenario_p3 = {
       glowColor: 'rgba(122,176,232,0.55)',
       thoughtBg: 'rgba(80,130,210,0.13)',
       thoughtBorder: '#5882d0',
-      spriteType: 'male',
-      hairStyle: 'short',
+      spriteType: 'female',
+      hairStyle: 'long',
       outfitStyle: 'casual',
       accessory: 'none',
     },
     B: {
       id: 'B',
-      name: '对方',
+      name: '巧克力',
       label: 'PARTNER B',
       color: '#e87a7a',
       darkColor: '#b84a4a',
       glowColor: 'rgba(232,122,122,0.55)',
       thoughtBg: 'rgba(210,80,80,0.13)',
       thoughtBorder: '#c85050',
-      spriteType: 'female',
-      hairStyle: 'long',
+      spriteType: 'male',
+      hairStyle: 'short',
       outfitStyle: 'casual',
       accessory: 'none',
     },
