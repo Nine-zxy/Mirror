@@ -1,0 +1,1100 @@
+{
+  "sessionId": "asd_1774090615184_x8p4",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "A",
+  "startedAt": "2026-03-21T10:56:55.184Z",
+  "exportedAt": "2026-03-21T11:08:18.976Z",
+  "durationMs": 683792,
+  "eventCount": 121,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "phase_change": 8,
+      "playback_play": 5,
+      "bubble_visibility_toggle": 2,
+      "playback_pause": 3,
+      "study_input_submitted": 1,
+      "beat_advance": 8,
+      "beat_seek": 48,
+      "assumption_confirm": 16,
+      "thought_dispute": 20,
+      "self_confirm_finished": 1,
+      "assumption_dispute": 4,
+      "annotation_finished": 2,
+      "session_upload": 2
+    },
+    "totalTags": 0,
+    "totalDisputes": 20,
+    "manualSeeks": 48,
+    "phaseFlow": "study_input → self_confirm → solo_viewing → together_viewing → divergence → solo_viewing → together_viewing → divergence",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [
+      "A-beat0",
+      "A-beat1",
+      "A-beat2",
+      "A-beat3",
+      "A-beat4",
+      "A-beat5",
+      "A-beat6",
+      "A-beat7",
+      "A-beat8",
+      "A-beat9",
+      "B-beat0",
+      "B-beat1",
+      "B-beat2",
+      "B-beat3",
+      "B-beat4",
+      "B-beat5",
+      "B-beat6",
+      "B-beat7",
+      "B-beat8",
+      "B-beat9"
+    ],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 16,
+      "disputed": 4,
+      "edited": 0,
+      "cleared": 0,
+      "emotionChanges": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774090615184,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "A"
+    },
+    {
+      "seq": 1,
+      "t": 1774090620681,
+      "elapsed": 5497,
+      "type": "phase_change",
+      "from": "study_intro",
+      "to": "study_input"
+    },
+    {
+      "seq": 2,
+      "t": 1774090643144,
+      "elapsed": 27960,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 3,
+      "t": 1774090644215,
+      "elapsed": 29031,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 4,
+      "t": 1774090645013,
+      "elapsed": 29829,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 5,
+      "t": 1774090648797,
+      "elapsed": 33613,
+      "type": "bubble_visibility_toggle",
+      "visible": "both"
+    },
+    {
+      "seq": 6,
+      "t": 1774090650601,
+      "elapsed": 35417,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 7,
+      "t": 1774090654628,
+      "elapsed": 39444,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 8,
+      "t": 1774090658129,
+      "elapsed": 42945,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 9,
+      "t": 1774090659898,
+      "elapsed": 44714,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 10,
+      "t": 1774090663209,
+      "elapsed": 48025,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 11,
+      "t": 1774090664112,
+      "elapsed": 48928,
+      "type": "study_input_submitted",
+      "inputLength": 0,
+      "scenario": "p4"
+    },
+    {
+      "seq": 12,
+      "t": 1774090664112,
+      "elapsed": 48928,
+      "type": "phase_change",
+      "from": "study_input",
+      "to": "self_confirm"
+    },
+    {
+      "seq": 13,
+      "t": 1774090664112,
+      "elapsed": 48928,
+      "type": "beat_advance",
+      "beatIndex": 0,
+      "trigger": "auto"
+    },
+    {
+      "seq": 14,
+      "t": 1774090668130,
+      "elapsed": 52946,
+      "type": "beat_advance",
+      "beatIndex": 1,
+      "trigger": "auto"
+    },
+    {
+      "seq": 15,
+      "t": 1774090672137,
+      "elapsed": 56953,
+      "type": "beat_advance",
+      "beatIndex": 2,
+      "trigger": "auto"
+    },
+    {
+      "seq": 16,
+      "t": 1774090676141,
+      "elapsed": 60957,
+      "type": "beat_advance",
+      "beatIndex": 3,
+      "trigger": "auto"
+    },
+    {
+      "seq": 17,
+      "t": 1774090680145,
+      "elapsed": 64961,
+      "type": "beat_advance",
+      "beatIndex": 4,
+      "trigger": "auto"
+    },
+    {
+      "seq": 18,
+      "t": 1774090684153,
+      "elapsed": 68969,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 19,
+      "t": 1774090688156,
+      "elapsed": 72972,
+      "type": "beat_advance",
+      "beatIndex": 6,
+      "trigger": "auto"
+    },
+    {
+      "seq": 20,
+      "t": 1774090689464,
+      "elapsed": 74280,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 21,
+      "t": 1774090691008,
+      "elapsed": 75824,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 22,
+      "t": 1774090708216,
+      "elapsed": 93032,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 23,
+      "t": 1774090713221,
+      "elapsed": 98037,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 24,
+      "t": 1774090716075,
+      "elapsed": 100891,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 25,
+      "t": 1774090721920,
+      "elapsed": 106736,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 26,
+      "t": 1774090726249,
+      "elapsed": 111065,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 27,
+      "t": 1774090734184,
+      "elapsed": 119000,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 0,
+      "originalText": "怎么了，我看综艺有什么问题吗？他语气怪怪的。",
+      "emotion": "defensive"
+    },
+    {
+      "seq": 28,
+      "t": 1774090734184,
+      "elapsed": 119000,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 0,
+      "originalText": "怎么了，我看综艺有什么问题吗？他语气怪怪的。",
+      "editedText": "怎么了，我看综艺有什么问题吗？他语气怪怪的。",
+      "originalLength": 22,
+      "editedLength": 22
+    },
+    {
+      "seq": 29,
+      "t": 1774090740667,
+      "elapsed": 125483,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 30,
+      "t": 1774090745883,
+      "elapsed": 130699,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 1,
+      "originalText": "他凭什么这么说？爱看综艺跟性别有什么关系？",
+      "emotion": "angry"
+    },
+    {
+      "seq": 31,
+      "t": 1774090745883,
+      "elapsed": 130699,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 1,
+      "originalText": "他凭什么这么说？爱看综艺跟性别有什么关系？",
+      "editedText": "他凭什么这么说？爱看综艺跟性别有什么关系？",
+      "originalLength": 21,
+      "editedLength": 21
+    },
+    {
+      "seq": 32,
+      "t": 1774090747577,
+      "elapsed": 132393,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 33,
+      "t": 1774090750937,
+      "elapsed": 135753,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 2,
+      "originalText": "我不想跟他说话了。他说的那个词让我很不舒服。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 34,
+      "t": 1774090750938,
+      "elapsed": 135754,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalText": "我不想跟他说话了。他说的那个词让我很不舒服。",
+      "editedText": "我不想跟他说话了。他说的那个词让我很不舒服。",
+      "originalLength": 22,
+      "editedLength": 22
+    },
+    {
+      "seq": 35,
+      "t": 1774090752522,
+      "elapsed": 137338,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 36,
+      "t": 1774090758916,
+      "elapsed": 143732,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 3,
+      "originalText": "他用那个词的时候根本没考虑过我的感受。这不是开玩笑，这是不尊重。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 37,
+      "t": 1774090758916,
+      "elapsed": 143732,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 3,
+      "originalText": "他用那个词的时候根本没考虑过我的感受。这不是开玩笑，这是不尊重。",
+      "editedText": "他用那个词的时候根本没考虑过我的感受。这不是开玩笑，这是不尊重。",
+      "originalLength": 32,
+      "editedLength": 32
+    },
+    {
+      "seq": 38,
+      "t": 1774090760945,
+      "elapsed": 145761,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 39,
+      "t": 1774090767177,
+      "elapsed": 151993,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 4,
+      "originalText": "他居然反过来说我看不起人？明明是他先用这个词来贬低看综艺的人。",
+      "emotion": "angry"
+    },
+    {
+      "seq": 40,
+      "t": 1774090767177,
+      "elapsed": 151993,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 4,
+      "originalText": "他居然反过来说我看不起人？明明是他先用这个词来贬低看综艺的人。",
+      "editedText": "他居然反过来说我看不起人？明明是他先用这个词来贬低看综艺的人。",
+      "originalLength": 31,
+      "editedLength": 31
+    },
+    {
+      "seq": 41,
+      "t": 1774090769832,
+      "elapsed": 154648,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 42,
+      "t": 1774090793112,
+      "elapsed": 177928,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 5,
+      "originalText": "每次涉及我喜欢的东西，他都带着一种轻蔑。这不是第一次了。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 43,
+      "t": 1774090793112,
+      "elapsed": 177928,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 5,
+      "originalText": "每次涉及我喜欢的东西，他都带着一种轻蔑。这不是第一次了。",
+      "editedText": "每次涉及我喜欢的东西，他都带着一种轻蔑。这不是第一次了。",
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 44,
+      "t": 1774090850121,
+      "elapsed": 234937,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 45,
+      "t": 1774090854042,
+      "elapsed": 238858,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 6,
+      "originalText": "他根本不是在道歉，他在找各种理由证明自己没错。",
+      "emotion": "angry"
+    },
+    {
+      "seq": 46,
+      "t": 1774090854042,
+      "elapsed": 238858,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 6,
+      "originalText": "他根本不是在道歉，他在找各种理由证明自己没错。",
+      "editedText": "他根本不是在道歉，他在找各种理由证明自己没错。",
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 47,
+      "t": 1774090856041,
+      "elapsed": 240857,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 48,
+      "t": 1774090860576,
+      "elapsed": 245392,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 7,
+      "originalText": "我知道不该说这个字。但我太生气了，我想让他知道我有多认真。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 49,
+      "t": 1774090860576,
+      "elapsed": 245392,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 7,
+      "originalText": "我知道不该说这个字。但我太生气了，我想让他知道我有多认真。",
+      "editedText": "我知道不该说这个字。但我太生气了，我想让他知道我有多认真。",
+      "originalLength": 29,
+      "editedLength": 29
+    },
+    {
+      "seq": 50,
+      "t": 1774090862170,
+      "elapsed": 246986,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 51,
+      "t": 1774090870016,
+      "elapsed": 254832,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 8,
+      "originalText": "他终于肯正面回应了。但他真的理解我为什么生气吗？",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 52,
+      "t": 1774090870016,
+      "elapsed": 254832,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 8,
+      "originalText": "他终于肯正面回应了。但他真的理解我为什么生气吗？",
+      "editedText": "他终于肯正面回应了。但他真的理解我为什么生气吗？",
+      "originalLength": 24,
+      "editedLength": 24
+    },
+    {
+      "seq": 53,
+      "t": 1774090871904,
+      "elapsed": 256720,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 54,
+      "t": 1774090876513,
+      "elapsed": 261329,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 9,
+      "originalText": "我不是太敏感。但我不想再吵了。说\"太敏感\"是我给自己找的台阶。",
+      "emotion": "withdrawn"
+    },
+    {
+      "seq": 55,
+      "t": 1774090876513,
+      "elapsed": 261329,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 9,
+      "originalText": "我不是太敏感。但我不想再吵了。说\"太敏感\"是我给自己找的台阶。",
+      "editedText": "我不是太敏感。但我不想再吵了。说\"太敏感\"是我给自己找的台阶。",
+      "originalLength": 31,
+      "editedLength": 31
+    },
+    {
+      "seq": 56,
+      "t": 1774090878185,
+      "elapsed": 263001,
+      "type": "phase_change",
+      "from": "self_confirm",
+      "to": "solo_viewing"
+    },
+    {
+      "seq": 57,
+      "t": 1774090878185,
+      "elapsed": 263001,
+      "type": "self_confirm_finished",
+      "selfConfirmCount": 0
+    },
+    {
+      "seq": 58,
+      "t": 1774090881769,
+      "elapsed": 266585,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "随口说说而已，又没什么恶意。",
+      "emotion": "neutral"
+    },
+    {
+      "seq": 59,
+      "t": 1774090881769,
+      "elapsed": 266585,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "随口说说而已，又没什么恶意。",
+      "editedText": "随口说说而已，又没什么恶意。",
+      "originalLength": 14,
+      "editedLength": 14
+    },
+    {
+      "seq": 60,
+      "t": 1774090886170,
+      "elapsed": 270986,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 61,
+      "t": 1774090901762,
+      "elapsed": 286578,
+      "type": "assumption_dispute",
+      "personaId": "B",
+      "beatId": 1,
+      "originalText": "我就开个玩笑，她怎么这么认真？",
+      "emotion": "surprised"
+    },
+    {
+      "seq": 62,
+      "t": 1774090901762,
+      "elapsed": 286578,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 1,
+      "originalText": "我就开个玩笑，她怎么这么认真？",
+      "editedText": "我就开个玩笑，她怎么这么认真？",
+      "originalLength": 15,
+      "editedLength": 15
+    },
+    {
+      "seq": 63,
+      "t": 1774090908840,
+      "elapsed": 293656,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 64,
+      "t": 1774090916569,
+      "elapsed": 301385,
+      "type": "assumption_dispute",
+      "personaId": "B",
+      "beatId": 2,
+      "originalText": "她怎么突然不说话了？我说错什么了吗？",
+      "emotion": "anxious"
+    },
+    {
+      "seq": 65,
+      "t": 1774090916569,
+      "elapsed": 301385,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 2,
+      "originalText": "她怎么突然不说话了？我说错什么了吗？",
+      "editedText": "她怎么突然不说话了？我说错什么了吗？",
+      "originalLength": 18,
+      "editedLength": 18
+    },
+    {
+      "seq": 66,
+      "t": 1774090918843,
+      "elapsed": 303659,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 67,
+      "t": 1774090924297,
+      "elapsed": 309113,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 3,
+      "originalText": "至于吗？我真的只是随口一说，她为什么反应这么大？",
+      "emotion": "defensive"
+    },
+    {
+      "seq": 68,
+      "t": 1774090924297,
+      "elapsed": 309113,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 3,
+      "originalText": "至于吗？我真的只是随口一说，她为什么反应这么大？",
+      "editedText": "至于吗？我真的只是随口一说，她为什么反应这么大？",
+      "originalLength": 24,
+      "editedLength": 24
+    },
+    {
+      "seq": 69,
+      "t": 1774090926122,
+      "elapsed": 310938,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 70,
+      "t": 1774090935409,
+      "elapsed": 320225,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 4,
+      "originalText": "我真的觉得这就是个中性词。她为什么非要往侮辱的方向理解？",
+      "emotion": "defensive"
+    },
+    {
+      "seq": 71,
+      "t": 1774090935409,
+      "elapsed": 320225,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 4,
+      "originalText": "我真的觉得这就是个中性词。她为什么非要往侮辱的方向理解？",
+      "editedText": "我真的觉得这就是个中性词。她为什么非要往侮辱的方向理解？",
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 72,
+      "t": 1774090937241,
+      "elapsed": 322057,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 73,
+      "t": 1774090940929,
+      "elapsed": 325745,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 5,
+      "originalText": "我什么时候不尊重她了？我陪她看了那么多综艺，她怎么全忘了？",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 74,
+      "t": 1774090940929,
+      "elapsed": 325745,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 5,
+      "originalText": "我什么时候不尊重她了？我陪她看了那么多综艺，她怎么全忘了？",
+      "editedText": "我什么时候不尊重她了？我陪她看了那么多综艺，她怎么全忘了？",
+      "originalLength": 29,
+      "editedLength": 29
+    },
+    {
+      "seq": 75,
+      "t": 1774090943209,
+      "elapsed": 328025,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 76,
+      "t": 1774090953721,
+      "elapsed": 338537,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 6,
+      "originalText": "我在试着解释，她却说我在狡辩。我怎么说都是错的。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 77,
+      "t": 1774090953721,
+      "elapsed": 338537,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 6,
+      "originalText": "我在试着解释，她却说我在狡辩。我怎么说都是错的。",
+      "editedText": "我在试着解释，她却说我在狡辩。我怎么说都是错的。",
+      "originalLength": 24,
+      "editedLength": 24
+    },
+    {
+      "seq": 78,
+      "t": 1774090955504,
+      "elapsed": 340320,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 79,
+      "t": 1774090979218,
+      "elapsed": 364034,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "又来了。分手对她来说就这么容易说出口吗？我之前做的一切都不算数？",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 80,
+      "t": 1774090979218,
+      "elapsed": 364034,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "又来了。分手对她来说就这么容易说出口吗？我之前做的一切都不算数？",
+      "editedText": "又来了。分手对她来说就这么容易说出口吗？我之前做的一切都不算数？",
+      "originalLength": 32,
+      "editedLength": 32
+    },
+    {
+      "seq": 81,
+      "t": 1774090980689,
+      "elapsed": 365505,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 82,
+      "t": 1774090986737,
+      "elapsed": 371553,
+      "type": "assumption_dispute",
+      "personaId": "B",
+      "beatId": 8,
+      "originalText": "我真的没有恶意。我只是嘴笨，不会说话。我不想因为这个失去她。",
+      "emotion": "warm"
+    },
+    {
+      "seq": 83,
+      "t": 1774090986737,
+      "elapsed": 371553,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 8,
+      "originalText": "我真的没有恶意。我只是嘴笨，不会说话。我不想因为这个失去她。",
+      "editedText": "我真的没有恶意。我只是嘴笨，不会说话。我不想因为这个失去她。",
+      "originalLength": 30,
+      "editedLength": 30
+    },
+    {
+      "seq": 84,
+      "t": 1774090989105,
+      "elapsed": 373921,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 85,
+      "t": 1774090995744,
+      "elapsed": 380560,
+      "type": "assumption_dispute",
+      "personaId": "B",
+      "beatId": 9,
+      "originalText": "她说太敏感了...但她真的释怀了吗？我以后真的要注意说话方式。",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 86,
+      "t": 1774090995744,
+      "elapsed": 380560,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 9,
+      "originalText": "她说太敏感了...但她真的释怀了吗？我以后真的要注意说话方式。",
+      "editedText": "她说太敏感了...但她真的释怀了吗？我以后真的要注意说话方式。",
+      "originalLength": 31,
+      "editedLength": 31
+    },
+    {
+      "seq": 87,
+      "t": 1774091000793,
+      "elapsed": 385609,
+      "type": "annotation_finished",
+      "disputeCount": 20
+    },
+    {
+      "seq": 88,
+      "t": 1774091000793,
+      "elapsed": 385609,
+      "type": "phase_change",
+      "from": "solo_viewing",
+      "to": "together_viewing"
+    },
+    {
+      "seq": 89,
+      "t": 1774091036881,
+      "elapsed": 421697,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 90,
+      "t": 1774091068594,
+      "elapsed": 453410,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 91,
+      "t": 1774091078994,
+      "elapsed": 463810,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 92,
+      "t": 1774091082417,
+      "elapsed": 467233,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 93,
+      "t": 1774091098417,
+      "elapsed": 483233,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 94,
+      "t": 1774091107915,
+      "elapsed": 492731,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 95,
+      "t": 1774091112455,
+      "elapsed": 497271,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 96,
+      "t": 1774091121921,
+      "elapsed": 506737,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 97,
+      "t": 1774091126737,
+      "elapsed": 511553,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 98,
+      "t": 1774091134697,
+      "elapsed": 519513,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 99,
+      "t": 1774091145290,
+      "elapsed": 530106,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 100,
+      "t": 1774091182868,
+      "elapsed": 567684,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 101,
+      "t": 1774091188161,
+      "elapsed": 572977,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 102,
+      "t": 1774091195409,
+      "elapsed": 580225,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 103,
+      "t": 1774091197481,
+      "elapsed": 582297,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 104,
+      "t": 1774091201483,
+      "elapsed": 586299,
+      "type": "beat_advance",
+      "beatIndex": 1,
+      "trigger": "auto"
+    },
+    {
+      "seq": 105,
+      "t": 1774091204757,
+      "elapsed": 589573,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 106,
+      "t": 1774091206537,
+      "elapsed": 591353,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 107,
+      "t": 1774091221744,
+      "elapsed": 606560,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 108,
+      "t": 1774091230892,
+      "elapsed": 615708,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 109,
+      "t": 1774091233473,
+      "elapsed": 618289,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 110,
+      "t": 1774091235115,
+      "elapsed": 619931,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 111,
+      "t": 1774091236433,
+      "elapsed": 621249,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 112,
+      "t": 1774091246428,
+      "elapsed": 631244,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 113,
+      "t": 1774091259249,
+      "elapsed": 644065,
+      "type": "phase_change",
+      "from": "together_viewing",
+      "to": "divergence"
+    },
+    {
+      "seq": 114,
+      "t": 1774091259250,
+      "elapsed": 644066,
+      "type": "session_upload",
+      "eventCount": 114
+    },
+    {
+      "seq": 115,
+      "t": 1774091283776,
+      "elapsed": 668592,
+      "type": "phase_change",
+      "from": "divergence",
+      "to": "solo_viewing"
+    },
+    {
+      "seq": 116,
+      "t": 1774091287363,
+      "elapsed": 672179,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 117,
+      "t": 1774091289043,
+      "elapsed": 673859,
+      "type": "annotation_finished",
+      "disputeCount": 0
+    },
+    {
+      "seq": 118,
+      "t": 1774091289043,
+      "elapsed": 673859,
+      "type": "phase_change",
+      "from": "solo_viewing",
+      "to": "together_viewing"
+    },
+    {
+      "seq": 119,
+      "t": 1774091290801,
+      "elapsed": 675617,
+      "type": "phase_change",
+      "from": "together_viewing",
+      "to": "divergence"
+    },
+    {
+      "seq": 120,
+      "t": 1774091290802,
+      "elapsed": 675618,
+      "type": "session_upload",
+      "eventCount": 120
+    },
+    {
+      "seq": 121,
+      "t": 1774091298976,
+      "elapsed": 683792,
+      "type": "session_export",
+      "eventCount": 121
+    }
+  ]
+}
