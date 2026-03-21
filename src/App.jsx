@@ -643,13 +643,11 @@ export default function App() {
             今晚，你将以观众的身份<br/>重新目睹那段对话。
           </p>
 
-          {/* Enter button */}
+          {/* Enter button — go to input page first (fill concerns, then use preloaded scenario) */}
           <button
             onClick={() => {
-              setPhase('self_confirm')
-              setBubbleVisibility('self')
-              setIsPlaying(false)
-              setBeatIndex(0)
+              setPhase('study_input')
+              logPhase('study_intro', 'study_input')
             }}
             className="mt-4 px-10 py-3 rounded-lg border transition-all hover:scale-105"
             style={{
@@ -675,6 +673,27 @@ export default function App() {
 
   if (phase === 'input')
     return <ConflictInput onScenarioReady={handleScenarioReady} syncMode={sync.mode} />
+
+  // Study input: show ConflictInput for concerns/feelings, but skip API — use preloaded scenario
+  if (phase === 'study_input')
+    return <ConflictInput
+      onScenarioReady={(_, rawInput) => {
+        // Log the input but use preloaded scenario
+        log('study_input_submitted', { inputLength: rawInput?.length || 0, scenario: DIRECT_SCENARIO })
+        // Use the preloaded scenario directly
+        const scenario = directScenarioData || initScenario
+        setLiveScenario(scenario)
+        setPersonas(scenario.personas)
+        setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
+        setPhase('self_confirm')
+        setBubbleVisibility('self')
+        setIsPlaying(true)
+        logPhase('study_input', 'self_confirm')
+        logBeat(0, 'auto')
+      }}
+      syncMode={sync.mode}
+      skipGeneration={true}
+    />
 
   // self_confirm now happens IN the theater (bubbleVisibility='self')
   // No separate SelfConfirmScreen routing needed

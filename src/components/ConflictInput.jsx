@@ -468,7 +468,7 @@ function WaitingOverlay({ partnerReady, generating, role }) {
 // ─────────────────────────────────────────────────────────────
 //  Main export
 // ─────────────────────────────────────────────────────────────
-export default function ConflictInput({ onScenarioReady, syncMode }) {
+export default function ConflictInput({ onScenarioReady, syncMode, skipGeneration = false }) {
   const sync = useSyncContext()
   const isTogether = syncMode === 'together'
   const [rawText,     setRawText]     = useState('')
@@ -610,6 +610,12 @@ export default function ConflictInput({ onScenarioReady, syncMode }) {
     if (!canSubmit || processing || submitted) return
 
     const chatLog = parsedText.trim() || rawText.trim()
+
+    // ── Skip generation mode: collect input data but don't call API ──
+    if (skipGeneration) {
+      onScenarioReady(null, chatLog)
+      return
+    }
 
     // ── Together mode: submit own input to server ──────────
     if (isTogether) {
