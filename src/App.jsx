@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { scenario as BASE_SCENARIO }                from './data/scenario'
 import { scenario_liuhaoze }                        from './data/scenario_liuhaoze'
+import { scenario_zuoguan }                         from './data/scenario_zuoguan'
 
 // Available pre-built scenarios for study mode
 const STUDY_SCENARIOS = {
   default: BASE_SCENARIO,
   liuhaoze: scenario_liuhaoze,
+  zuoguan: scenario_zuoguan,
 }
 // SCENE_PRESETS used in Theater.jsx; PersonaEditor removed from App
 import {

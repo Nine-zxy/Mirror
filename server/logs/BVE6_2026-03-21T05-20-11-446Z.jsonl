@@ -1,0 +1,4 @@
+{"timestamp":"2026-03-21T05:20:27.063Z","role":"A","event":"phase_change","data":{"seq":3,"t":1774070426501,"elapsed":23546,"type":"phase_change","from":"lobby","to":"input"},"phase":null,"scenarioId":"BVE6"}
+{"timestamp":"2026-03-21T05:20:28.042Z","role":"B","event":"phase_change","data":{"seq":3,"t":1774070427455,"elapsed":20133,"type":"phase_change","from":"lobby","to":"input"},"phase":null,"scenarioId":"BVE6"}
+{"timestamp":"2026-03-21T05:20:53.859Z","role":"B","event":"bubble_visibility_toggle","data":{"seq":4,"t":1774070453302,"elapsed":45980,"type":"bubble_visibility_toggle","visible":"both"},"phase":null,"scenarioId":"BVE6"}
+{"timestamp":"2026-03-21T05:20:58.689Z","role":"A","event":"bubble_visibility_toggle","data":{"seq":4,"t":1774070458134,"elapsed":55179,"type":"bubble_visibility_toggle","visible":"both"},"phase":null,"scenarioId":"BVE6"}

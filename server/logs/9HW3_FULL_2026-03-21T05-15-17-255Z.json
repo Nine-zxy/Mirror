@@ -1,0 +1,82 @@
+{
+  "roomCode": "9HW3",
+  "mode": "together",
+  "proximity": "remote",
+  "createdAt": "2026-03-21T05:00:05.254Z",
+  "exportedAt": "2026-03-21T05:15:17.255Z",
+  "eventCount": 5,
+  "logs": [
+    {
+      "timestamp": "2026-03-21T05:02:17.577Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 3,
+        "t": 1774069336997,
+        "elapsed": 19421,
+        "type": "phase_change",
+        "from": "lobby",
+        "to": "input"
+      },
+      "phase": null,
+      "scenarioId": "9HW3"
+    },
+    {
+      "timestamp": "2026-03-21T05:02:19.123Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 3,
+        "t": 1774069338538,
+        "elapsed": 142603,
+        "type": "phase_change",
+        "from": "lobby",
+        "to": "input"
+      },
+      "phase": null,
+      "scenarioId": "9HW3"
+    },
+    {
+      "timestamp": "2026-03-21T05:03:20.679Z",
+      "role": "B",
+      "event": "bubble_visibility_toggle",
+      "data": {
+        "seq": 4,
+        "t": 1774069400110,
+        "elapsed": 82534,
+        "type": "bubble_visibility_toggle",
+        "visible": "both"
+      },
+      "phase": null,
+      "scenarioId": "9HW3"
+    },
+    {
+      "timestamp": "2026-03-21T05:05:09.695Z",
+      "role": "A",
+      "event": "bubble_visibility_toggle",
+      "data": {
+        "seq": 4,
+        "t": 1774069509132,
+        "elapsed": 313197,
+        "type": "bubble_visibility_toggle",
+        "visible": "both"
+      },
+      "phase": null,
+      "scenarioId": "9HW3"
+    },
+    {
+      "timestamp": "2026-03-21T05:05:11.938Z",
+      "role": "A",
+      "event": "bubble_visibility_toggle",
+      "data": {
+        "seq": 5,
+        "t": 1774069511366,
+        "elapsed": 315431,
+        "type": "bubble_visibility_toggle",
+        "visible": "none"
+      },
+      "phase": null,
+      "scenarioId": "9HW3"
+    }
+  ]
+}
