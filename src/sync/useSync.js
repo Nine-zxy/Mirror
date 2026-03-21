@@ -128,9 +128,11 @@ export default function useSync(mode = 'solo') {
   }, [])
 
   // ── Room actions ─────────────────────────────────────────
-  const createRoom = useCallback((prox = 'colocated') => {
+  const createRoom = useCallback((prox = 'colocated', roomCodeOverride = null) => {
     setProximity(prox)
-    send('room:create', { mode: 'together', proximity: prox })
+    const payload = { mode: 'together', proximity: prox }
+    if (roomCodeOverride) payload.code = roomCodeOverride
+    send('room:create', payload)
   }, [send])
 
   const joinRoom = useCallback((code) => {

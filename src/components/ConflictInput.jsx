@@ -714,7 +714,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
   const fmtColor = detectedFmt ? (FORMAT_COLORS[detectedFmt.format] ?? '#888') : null
 
   return (
-    <div className="relative flex flex-col min-h-screen overflow-hidden" style={{ background: '#060810' }}>
+    <div className="relative flex flex-col min-h-screen overflow-y-auto" style={{ background: '#060810' }}>
 
       {/* Subtle grid */}
       <div className="fixed inset-0 pointer-events-none" style={{

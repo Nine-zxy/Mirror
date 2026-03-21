@@ -2,12 +2,14 @@ import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { scenario as BASE_SCENARIO }                from './data/scenario'
 import { scenario_liuhaoze }                        from './data/scenario_liuhaoze'
 import { scenario_zuoguan }                         from './data/scenario_zuoguan'
+import { scenario_p3 }                              from './data/scenario_p3'
 
 // Available pre-built scenarios for study mode
 const STUDY_SCENARIOS = {
   default: BASE_SCENARIO,
   liuhaoze: scenario_liuhaoze,
   zuoguan: scenario_zuoguan,
+  p3: scenario_p3,
 }
 // SCENE_PRESETS used in Theater.jsx; PersonaEditor removed from App
 import {
@@ -181,6 +183,27 @@ export default function App() {
       setStudyError(err.message || '加载场景失败')
     })
   }, [STUDY_ID, phase, sync.connected]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Preloaded scenario auto-sync: connect WS and join room ──
+  const scenarioRoomJoined = useRef(false)
+
+  useEffect(() => {
+    if (!DIRECT_SCENARIO || STUDY_ID) return
+    // Switch to together mode so WS connects
+    if (sync.mode !== 'together') {
+      sync.setMode('together')
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!DIRECT_SCENARIO || STUDY_ID) return
+    if (!sync.connected || scenarioRoomJoined.current) return
+    // Use scenario ID as room code — A creates (or joins if room exists), B does the same
+    scenarioRoomJoined.current = true
+    const roomCode = DIRECT_SCENARIO.toUpperCase()
+    sync.createRoom('colocated', roomCode)
+    console.log(`[Scenario] Auto-joining room "${roomCode}" as ${DIRECT_ROLE || 'A'}`)
+  }, [sync.connected]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     initSession({

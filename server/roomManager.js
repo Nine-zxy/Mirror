@@ -41,8 +41,17 @@ export class RoomManager {
 
   // ── Room creation ────────────────────────────────────────
   createRoom(ws, payload = {}) {
+    // Allow specifying a room code (e.g., for preloaded scenario auto-join)
     let code
-    do { code = generateCode() } while (this.rooms.has(code))
+    if (payload.code) {
+      code = payload.code.toUpperCase().trim()
+      // If room already exists with this code, join it instead
+      if (this.rooms.has(code)) {
+        return this.joinRoom(ws, { code })
+      }
+    } else {
+      do { code = generateCode() } while (this.rooms.has(code))
+    }
 
     const room = {
       code,

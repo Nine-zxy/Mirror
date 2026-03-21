@@ -1,0 +1,1163 @@
+{
+  "sessionId": "asd_1774063370746_13pt",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "B",
+  "startedAt": "2026-03-21T03:22:50.746Z",
+  "exportedAt": "2026-03-21T03:28:55.924Z",
+  "durationMs": 365178,
+  "eventCount": 117,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "beat_seek": 28,
+      "assumption_edit": 21,
+      "thought_dispute": 41,
+      "assumption_confirm": 16,
+      "assumption_dispute": 4,
+      "phase_change": 3,
+      "self_confirm_finished": 1,
+      "annotation_finished": 1,
+      "session_upload": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 41,
+    "manualSeeks": 28,
+    "phaseFlow": "solo_viewing → together_viewing → divergence",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat1",
+      "B-beat2",
+      "B-beat3",
+      "B-beat4",
+      "B-beat5",
+      "B-beat6",
+      "B-beat7",
+      "B-beat7",
+      "B-beat7",
+      "B-beat8",
+      "B-beat8",
+      "B-beat9",
+      "A-beat0",
+      "A-beat1",
+      "A-beat1",
+      "A-beat1",
+      "A-beat2",
+      "A-beat2",
+      "A-beat2",
+      "A-beat2",
+      "A-beat3",
+      "A-beat4",
+      "A-beat5",
+      "A-beat6",
+      "A-beat6",
+      "A-beat7",
+      "A-beat8",
+      "A-beat9"
+    ],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 16,
+      "disputed": 4,
+      "edited": 21,
+      "cleared": 0,
+      "emotionChanges": 15
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774063370746,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "B"
+    },
+    {
+      "seq": 1,
+      "t": 1774063387413,
+      "elapsed": 16667,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 2,
+      "t": 1774063388262,
+      "elapsed": 17516,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 3,
+      "t": 1774063389331,
+      "elapsed": 18585,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 4,
+      "t": 1774063389404,
+      "elapsed": 18658,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 5,
+      "t": 1774063432161,
+      "elapsed": 61415,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "defensive"
+    },
+    {
+      "seq": 6,
+      "t": 1774063432161,
+      "elapsed": 61415,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 7,
+      "t": 1774063447904,
+      "elapsed": 77158,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "anxious"
+    },
+    {
+      "seq": 8,
+      "t": 1774063447904,
+      "elapsed": 77158,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 9,
+      "t": 1774063462933,
+      "elapsed": 92187,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "reflective"
+    },
+    {
+      "seq": 10,
+      "t": 1774063462933,
+      "elapsed": 92187,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 11,
+      "t": 1774063466867,
+      "elapsed": 96121,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": false,
+      "newEmotion": "neutral"
+    },
+    {
+      "seq": 12,
+      "t": 1774063466867,
+      "elapsed": 96121,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 13,
+      "t": 1774063468666,
+      "elapsed": 97920,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "withdrawn"
+    },
+    {
+      "seq": 14,
+      "t": 1774063468666,
+      "elapsed": 97920,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 15,
+      "t": 1774063481498,
+      "elapsed": 110752,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 0
+    },
+    {
+      "seq": 16,
+      "t": 1774063481498,
+      "elapsed": 110752,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 17,
+      "t": 1774063487135,
+      "elapsed": 116389,
+      "type": "assumption_dispute",
+      "personaId": "B",
+      "beatId": 0
+    },
+    {
+      "seq": 18,
+      "t": 1774063487135,
+      "elapsed": 116389,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 19,
+      "t": 1774063488036,
+      "elapsed": 117290,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "warm"
+    },
+    {
+      "seq": 20,
+      "t": 1774063488036,
+      "elapsed": 117290,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 21,
+      "t": 1774063491406,
+      "elapsed": 120660,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 0
+    },
+    {
+      "seq": 22,
+      "t": 1774063491406,
+      "elapsed": 120660,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 23,
+      "t": 1774063503653,
+      "elapsed": 132907,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 24,
+      "t": 1774063507862,
+      "elapsed": 137116,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 25,
+      "t": 1774063507926,
+      "elapsed": 137180,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 26,
+      "t": 1774063515448,
+      "elapsed": 144702,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "anxious"
+    },
+    {
+      "seq": 27,
+      "t": 1774063515448,
+      "elapsed": 144702,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 28,
+      "t": 1774063517980,
+      "elapsed": 147234,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "defensive"
+    },
+    {
+      "seq": 29,
+      "t": 1774063517980,
+      "elapsed": 147234,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 30,
+      "t": 1774063524124,
+      "elapsed": 153378,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "anxious"
+    },
+    {
+      "seq": 31,
+      "t": 1774063524124,
+      "elapsed": 153378,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 32,
+      "t": 1774063527975,
+      "elapsed": 157229,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "anxious"
+    },
+    {
+      "seq": 33,
+      "t": 1774063527975,
+      "elapsed": 157229,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 34,
+      "t": 1774063530754,
+      "elapsed": 160008,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 35,
+      "t": 1774063549082,
+      "elapsed": 178336,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 1,
+      "originalLen": 39,
+      "editedLen": 39,
+      "emotionChanged": true,
+      "newEmotion": "reflective"
+    },
+    {
+      "seq": 36,
+      "t": 1774063549082,
+      "elapsed": 178336,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 1,
+      "originalLength": 39,
+      "editedLength": 39
+    },
+    {
+      "seq": 37,
+      "t": 1774063551341,
+      "elapsed": 180595,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 38,
+      "t": 1774063555996,
+      "elapsed": 185250,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 2
+    },
+    {
+      "seq": 39,
+      "t": 1774063555996,
+      "elapsed": 185250,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 2,
+      "originalLength": 37,
+      "editedLength": 37
+    },
+    {
+      "seq": 40,
+      "t": 1774063557475,
+      "elapsed": 186729,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 41,
+      "t": 1774063564546,
+      "elapsed": 193800,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 3
+    },
+    {
+      "seq": 42,
+      "t": 1774063564546,
+      "elapsed": 193800,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 3,
+      "originalLength": 42,
+      "editedLength": 42
+    },
+    {
+      "seq": 43,
+      "t": 1774063565852,
+      "elapsed": 195106,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 44,
+      "t": 1774063573499,
+      "elapsed": 202753,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 4,
+      "originalLen": 33,
+      "editedLen": 33,
+      "emotionChanged": true,
+      "newEmotion": "hurt"
+    },
+    {
+      "seq": 45,
+      "t": 1774063573499,
+      "elapsed": 202753,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 4,
+      "originalLength": 33,
+      "editedLength": 33
+    },
+    {
+      "seq": 46,
+      "t": 1774063575470,
+      "elapsed": 204724,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 47,
+      "t": 1774063575535,
+      "elapsed": 204789,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 48,
+      "t": 1774063575580,
+      "elapsed": 204834,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 49,
+      "t": 1774063580884,
+      "elapsed": 210138,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 5,
+      "originalLen": 36,
+      "editedLen": 36,
+      "emotionChanged": false,
+      "newEmotion": "hurt"
+    },
+    {
+      "seq": 50,
+      "t": 1774063580884,
+      "elapsed": 210138,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 5,
+      "originalLength": 36,
+      "editedLength": 36
+    },
+    {
+      "seq": 51,
+      "t": 1774063582177,
+      "elapsed": 211431,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 52,
+      "t": 1774063587413,
+      "elapsed": 216667,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 6
+    },
+    {
+      "seq": 53,
+      "t": 1774063587413,
+      "elapsed": 216667,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 6,
+      "originalLength": 46,
+      "editedLength": 46
+    },
+    {
+      "seq": 54,
+      "t": 1774063588646,
+      "elapsed": 217900,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 55,
+      "t": 1774063595814,
+      "elapsed": 225068,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 56,
+      "t": 1774063595814,
+      "elapsed": 225068,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 44,
+      "editedLength": 44
+    },
+    {
+      "seq": 57,
+      "t": 1774063597335,
+      "elapsed": 226589,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 58,
+      "t": 1774063597335,
+      "elapsed": 226589,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 44,
+      "editedLength": 44
+    },
+    {
+      "seq": 59,
+      "t": 1774063598100,
+      "elapsed": 227354,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 60,
+      "t": 1774063598100,
+      "elapsed": 227354,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 44,
+      "editedLength": 44
+    },
+    {
+      "seq": 61,
+      "t": 1774063599585,
+      "elapsed": 228839,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 62,
+      "t": 1774063599675,
+      "elapsed": 228929,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 63,
+      "t": 1774063606135,
+      "elapsed": 235389,
+      "type": "assumption_dispute",
+      "personaId": "B",
+      "beatId": 8
+    },
+    {
+      "seq": 64,
+      "t": 1774063606135,
+      "elapsed": 235389,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 8,
+      "originalLength": 45,
+      "editedLength": 45
+    },
+    {
+      "seq": 65,
+      "t": 1774063608109,
+      "elapsed": 237363,
+      "type": "assumption_dispute",
+      "personaId": "B",
+      "beatId": 8
+    },
+    {
+      "seq": 66,
+      "t": 1774063608109,
+      "elapsed": 237363,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 8,
+      "originalLength": 45,
+      "editedLength": 45
+    },
+    {
+      "seq": 67,
+      "t": 1774063610342,
+      "elapsed": 239596,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 68,
+      "t": 1774063614309,
+      "elapsed": 243563,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 9
+    },
+    {
+      "seq": 69,
+      "t": 1774063614309,
+      "elapsed": 243563,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 9,
+      "originalLength": 54,
+      "editedLength": 54
+    },
+    {
+      "seq": 70,
+      "t": 1774063622299,
+      "elapsed": 251553,
+      "type": "phase_change",
+      "from": "self_confirm",
+      "to": "solo_viewing"
+    },
+    {
+      "seq": 71,
+      "t": 1774063622299,
+      "elapsed": 251553,
+      "type": "self_confirm_finished",
+      "selfConfirmCount": 0
+    },
+    {
+      "seq": 72,
+      "t": 1774063640014,
+      "elapsed": 269268,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 0
+    },
+    {
+      "seq": 73,
+      "t": 1774063640014,
+      "elapsed": 269268,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 0,
+      "originalLength": 42,
+      "editedLength": 42
+    },
+    {
+      "seq": 74,
+      "t": 1774063641812,
+      "elapsed": 271066,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 75,
+      "t": 1774063652983,
+      "elapsed": 282237,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 1,
+      "originalLen": 37,
+      "editedLen": 37,
+      "emotionChanged": false,
+      "newEmotion": "defensive"
+    },
+    {
+      "seq": 76,
+      "t": 1774063652983,
+      "elapsed": 282237,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 1,
+      "originalLength": 37,
+      "editedLength": 37
+    },
+    {
+      "seq": 77,
+      "t": 1774063653830,
+      "elapsed": 283084,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 1
+    },
+    {
+      "seq": 78,
+      "t": 1774063653830,
+      "elapsed": 283084,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 1,
+      "originalLength": 37,
+      "editedLength": 37
+    },
+    {
+      "seq": 79,
+      "t": 1774063654817,
+      "elapsed": 284071,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 1
+    },
+    {
+      "seq": 80,
+      "t": 1774063654817,
+      "elapsed": 284071,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 1,
+      "originalLength": 37,
+      "editedLength": 37
+    },
+    {
+      "seq": 81,
+      "t": 1774063656026,
+      "elapsed": 285280,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 82,
+      "t": 1774063660648,
+      "elapsed": 289902,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLen": 36,
+      "editedLen": 36,
+      "emotionChanged": true,
+      "newEmotion": "hurt"
+    },
+    {
+      "seq": 83,
+      "t": 1774063660648,
+      "elapsed": 289902,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLength": 36,
+      "editedLength": 36
+    },
+    {
+      "seq": 84,
+      "t": 1774063662014,
+      "elapsed": 291268,
+      "type": "assumption_dispute",
+      "personaId": "A",
+      "beatId": 2
+    },
+    {
+      "seq": 85,
+      "t": 1774063662014,
+      "elapsed": 291268,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLength": 36,
+      "editedLength": 36
+    },
+    {
+      "seq": 86,
+      "t": 1774063664084,
+      "elapsed": 293338,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLen": 36,
+      "editedLen": 36,
+      "emotionChanged": false,
+      "newEmotion": "angry"
+    },
+    {
+      "seq": 87,
+      "t": 1774063664084,
+      "elapsed": 293338,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLength": 36,
+      "editedLength": 36
+    },
+    {
+      "seq": 88,
+      "t": 1774063666723,
+      "elapsed": 295977,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 2
+    },
+    {
+      "seq": 89,
+      "t": 1774063666723,
+      "elapsed": 295977,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLength": 36,
+      "editedLength": 36
+    },
+    {
+      "seq": 90,
+      "t": 1774063667988,
+      "elapsed": 297242,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 91,
+      "t": 1774063674064,
+      "elapsed": 303318,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 3,
+      "originalLen": 29,
+      "editedLen": 29,
+      "emotionChanged": false,
+      "newEmotion": "angry"
+    },
+    {
+      "seq": 92,
+      "t": 1774063674064,
+      "elapsed": 303318,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 3,
+      "originalLength": 29,
+      "editedLength": 29
+    },
+    {
+      "seq": 93,
+      "t": 1774063676047,
+      "elapsed": 305301,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 94,
+      "t": 1774063684166,
+      "elapsed": 313420,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 4,
+      "originalLen": 27,
+      "editedLen": 27,
+      "emotionChanged": true,
+      "newEmotion": "hurt"
+    },
+    {
+      "seq": 95,
+      "t": 1774063684166,
+      "elapsed": 313420,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 4,
+      "originalLength": 27,
+      "editedLength": 27
+    },
+    {
+      "seq": 96,
+      "t": 1774063685829,
+      "elapsed": 315083,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 97,
+      "t": 1774063694853,
+      "elapsed": 324107,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 5,
+      "originalLen": 40,
+      "editedLen": 40,
+      "emotionChanged": true,
+      "newEmotion": "defensive"
+    },
+    {
+      "seq": 98,
+      "t": 1774063694853,
+      "elapsed": 324107,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 5,
+      "originalLength": 40,
+      "editedLength": 40
+    },
+    {
+      "seq": 99,
+      "t": 1774063696364,
+      "elapsed": 325618,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 100,
+      "t": 1774063700921,
+      "elapsed": 330175,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 6,
+      "originalLen": 39,
+      "editedLen": 39,
+      "emotionChanged": true,
+      "newEmotion": "angry"
+    },
+    {
+      "seq": 101,
+      "t": 1774063700921,
+      "elapsed": 330175,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 6,
+      "originalLength": 39,
+      "editedLength": 39
+    },
+    {
+      "seq": 102,
+      "t": 1774063702678,
+      "elapsed": 331932,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 6,
+      "originalLen": 39,
+      "editedLen": 39,
+      "emotionChanged": false,
+      "newEmotion": "hurt"
+    },
+    {
+      "seq": 103,
+      "t": 1774063702678,
+      "elapsed": 331932,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 6,
+      "originalLength": 39,
+      "editedLength": 39
+    },
+    {
+      "seq": 104,
+      "t": 1774063704689,
+      "elapsed": 333943,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 105,
+      "t": 1774063711453,
+      "elapsed": 340707,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 7
+    },
+    {
+      "seq": 106,
+      "t": 1774063711453,
+      "elapsed": 340707,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 7,
+      "originalLength": 38,
+      "editedLength": 38
+    },
+    {
+      "seq": 107,
+      "t": 1774063714377,
+      "elapsed": 343631,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 108,
+      "t": 1774063721001,
+      "elapsed": 350255,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 8
+    },
+    {
+      "seq": 109,
+      "t": 1774063721001,
+      "elapsed": 350255,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 8,
+      "originalLength": 44,
+      "editedLength": 44
+    },
+    {
+      "seq": 110,
+      "t": 1774063722301,
+      "elapsed": 351555,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 111,
+      "t": 1774063728629,
+      "elapsed": 357883,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 9
+    },
+    {
+      "seq": 112,
+      "t": 1774063728629,
+      "elapsed": 357883,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 9,
+      "originalLength": 48,
+      "editedLength": 48
+    },
+    {
+      "seq": 113,
+      "t": 1774063730227,
+      "elapsed": 359481,
+      "type": "annotation_finished",
+      "disputeCount": 20
+    },
+    {
+      "seq": 114,
+      "t": 1774063730228,
+      "elapsed": 359482,
+      "type": "phase_change",
+      "from": "solo_viewing",
+      "to": "together_viewing"
+    },
+    {
+      "seq": 115,
+      "t": 1774063735921,
+      "elapsed": 365175,
+      "type": "phase_change",
+      "from": "together_viewing",
+      "to": "divergence"
+    },
+    {
+      "seq": 116,
+      "t": 1774063735922,
+      "elapsed": 365176,
+      "type": "session_upload",
+      "eventCount": 116
+    },
+    {
+      "seq": 117,
+      "t": 1774063735924,
+      "elapsed": 365178,
+      "type": "session_export",
+      "eventCount": 117
+    }
+  ]
+}
