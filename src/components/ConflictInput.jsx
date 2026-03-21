@@ -588,23 +588,27 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
   }
 
   // ── Submit: step 1 — calibration ────────────────────────
-  // Both modes need: chat log + role identification + concern + feeling + context + archetype
-  const canSubmit = isTogether
-    ? (parsedText || rawText).trim().length > 20
-      && userRole !== null
-      && concernA.trim().length > 0
+  // skipGeneration mode: only need concern + feeling (scenario is preloaded)
+  // Normal mode: need full input (chat log + role + concern + feeling + context + archetype)
+  const canSubmit = skipGeneration
+    ? concernA.trim().length > 0
       && feeling.trim().length > 0
-      && context.trim().length > 0
-      && relationshipType !== null
-      && styleA.length > 0
-    : (parsedText || rawText).trim().length > 20
-      && userRole !== null
-      && concernA.trim().length > 0
-      && feeling.trim().length > 0
-      && context.trim().length > 0
-      && relationshipType !== null
-      && styleA.length > 0
-      && styleB.length > 0
+    : isTogether
+      ? (parsedText || rawText).trim().length > 20
+        && userRole !== null
+        && concernA.trim().length > 0
+        && feeling.trim().length > 0
+        && context.trim().length > 0
+        && relationshipType !== null
+        && styleA.length > 0
+      : (parsedText || rawText).trim().length > 20
+        && userRole !== null
+        && concernA.trim().length > 0
+        && feeling.trim().length > 0
+        && context.trim().length > 0
+        && relationshipType !== null
+        && styleA.length > 0
+        && styleB.length > 0
 
   const handleSubmit = async () => {
     if (!canSubmit || processing || submitted) return
