@@ -5,6 +5,7 @@ import { scenario_zuoguan }                         from './data/scenario_zuogua
 import { scenario_p3 }                              from './data/scenario_p3'
 import { scenario_p4 }                              from './data/scenario_p4'
 import { scenario_p5 }                              from './data/scenario_p5'
+import { scenario_p6 }                              from './data/scenario_p6'
 
 // Available pre-built scenarios for study mode
 const STUDY_SCENARIOS = {
@@ -14,6 +15,7 @@ const STUDY_SCENARIOS = {
   p3: scenario_p3,
   p4: scenario_p4,
   p5: scenario_p5,
+  p6: scenario_p6,
 }
 // SCENE_PRESETS used in Theater.jsx; PersonaEditor removed from App
 import {
