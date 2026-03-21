@@ -714,7 +714,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
   const fmtColor = detectedFmt ? (FORMAT_COLORS[detectedFmt.format] ?? '#888') : null
 
   return (
-    <div className="relative flex flex-col min-h-screen overflow-y-auto" style={{ background: '#060810' }}>
+    <div className="absolute inset-0 overflow-y-auto" style={{ background: '#060810' }}>
 
       {/* Subtle grid */}
       <div className="fixed inset-0 pointer-events-none" style={{
@@ -726,7 +726,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
       }} />
 
       {/* ── Single panel ── */}
-      <div className="relative flex flex-col flex-1 px-8 py-6 gap-4 anim-fadeIn overflow-y-auto max-w-4xl mx-auto w-full">
+      <div className="relative px-8 py-6 gap-4 anim-fadeIn max-w-4xl mx-auto w-full flex flex-col" style={{ paddingBottom: '80px' }}>
 
         {/* ── Top area: title + together hint ── */}
         <div className="flex flex-col gap-1">
