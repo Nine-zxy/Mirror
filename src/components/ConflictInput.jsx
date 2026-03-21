@@ -742,7 +742,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 border: '1px solid rgba(88,200,120,0.25)',
                 color: '#58c878',
               }}>
-                TOGETHER · {sync.role === 'A' ? '你是 A' : '你是 B'}
+                TOGETHER · 你是 {sync.role || new URLSearchParams(window.location.search).get('role')?.toUpperCase() || 'A'}
               </span>
             )}
           </div>
