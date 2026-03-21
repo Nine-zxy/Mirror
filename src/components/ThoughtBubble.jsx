@@ -113,19 +113,19 @@ function QuickReactBar({ onConfirm, onDispute, onEdit, onEmotionTag, onClose, cu
       <div className="flex items-center gap-1">
         <span className="font-mono text-[7px] text-white/25 mr-1">像TA吗？</span>
         <button onClick={onConfirm}
-          className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+          className="font-mono text-[11px] px-2 py-1 rounded transition-all hover:scale-105"
           style={{ background: 'rgba(96,200,128,0.12)', color: '#60c880', border: '1px solid rgba(96,200,128,0.25)' }}>
-          <img src="/assets/ui/icons/yes.png" alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> 像
+          ✅ 像
         </button>
         <button onClick={onDispute}
-          className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+          className="font-mono text-[11px] px-2 py-1 rounded transition-all hover:scale-105"
           style={{ background: 'rgba(232,122,122,0.12)', color: '#e87a7a', border: '1px solid rgba(232,122,122,0.25)' }}>
-          <img src="/assets/ui/icons/no.png" alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> 不像
+          ❌ 不像
         </button>
         <button onClick={onEdit}
-          className="font-mono text-[9px] px-2 py-1 rounded transition-all hover:scale-105"
+          className="font-mono text-[11px] px-2 py-1 rounded transition-all hover:scale-105"
           style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <img src="/assets/ui/icons/edit.png" alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> 改
+          ✏️ 改
         </button>
         <button onClick={onClose}
           className="ml-auto font-mono text-[8px] text-white/20 hover:text-white/40 px-1">
