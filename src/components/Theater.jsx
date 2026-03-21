@@ -1090,7 +1090,9 @@ function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) 
 
 // ── Character layer ───────────────────────────────────────────
 function CharacterLayer({ beat, personas, thoughtVisibility, disputes, onDispute, scene }) {
-  const { spatial, thoughts, dialogue } = beat
+  // Support both 'spatial' and 'characters' field names, with sensible defaults
+  const spatial = beat.spatial || beat.characters || { A: { x: 30, facing: 'right', pose: 'neutral' }, B: { x: 70, facing: 'left', pose: 'neutral' } }
+  const { thoughts, dialogue } = beat
   const speakerId = dialogue?.speaker || null   // which persona is speaking this beat
   // Per-scene character scale from SCENE_PRESETS (e.g. car=0.60, park=0.68, bedroom=0.78)
   const scenePreset = SCENE_PRESETS[scene] || SCENE_PRESETS.bedroom_night

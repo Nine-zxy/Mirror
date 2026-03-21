@@ -751,9 +751,11 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             )}
           </div>
           <p className="text-[21px]" style={{ color: 'rgba(255,255,255,0.38)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
-            {isTogether
-              ? '粘贴聊天记录，描述你的感受和沟通风格'
-              : '粘贴聊天记录，或用自己的话描述冲突经过'}
+            {skipGeneration
+              ? '在观看之前，先描述一下你在这次冲突中的感受'
+              : isTogether
+                ? '粘贴聊天记录，描述你的感受和沟通风格'
+                : '粘贴聊天记录，或用自己的话描述冲突经过'}
           </p>
         </div>
 
@@ -772,8 +774,8 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           </div>
         )}
 
-        {/* ── Upload + Paste row: side by side ── */}
-        <div className="flex gap-4" style={{ minHeight: '180px' }}>
+        {/* ── Upload + Paste row: side by side (hidden in skipGeneration mode) ── */}
+        {!skipGeneration && <div className="flex gap-4" style={{ minHeight: '180px' }}>
           {/* Left half: file drag-drop zone */}
           <div className="flex-1 flex flex-col gap-2">
             <FileDropZone onFile={handleFile} isDragging={isDragging} setIsDragging={setIsDragging} />
@@ -842,8 +844,10 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           </div>
         </div>
 
+        }
+
         {/* Parsed preview */}
-        {parsedText && parsedText !== rawText && parsedText.trim().length > 0 && (
+        {!skipGeneration && parsedText && parsedText !== rawText && parsedText.trim().length > 0 && (
           <details className="rounded-xl overflow-hidden" style={{
             background: 'rgba(255,255,255,0.02)',
             border:     '1px solid rgba(255,255,255,0.06)',
@@ -859,7 +863,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
         )}
 
         {/* ── Concerns row: side by side ── */}
-        {(parsedText || rawText).trim().length > 20 && (
+        {(skipGeneration || (parsedText || rawText).trim().length > 20) && (
           <div className="flex gap-4 anim-fadeIn">
             {/* Left: concern */}
             <div className="flex-1">
@@ -908,8 +912,8 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           </p>
         )}
 
-        {/* Background — single input, full width */}
-        <div className="flex flex-col gap-1">
+        {/* Background — single input, full width (hidden in skipGeneration) */}
+        {!skipGeneration && <div className="flex flex-col gap-1">
           <p className="font-mono text-[12px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
             背景信息 · 一句话背景 *
           </p>
@@ -926,10 +930,10 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
               transition: 'border-color 0.2s',
             }}
           />
-        </div>
+        </div>}
 
-        {/* Role selection — full width */}
-        {(parsedText || rawText).trim().length > 20 && (
+        {/* Role selection — full width (hidden in skipGeneration) */}
+        {!skipGeneration && (parsedText || rawText).trim().length > 20 && (
           <div className="flex flex-col gap-2 anim-fadeIn">
             <p className="font-mono text-[14px] tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
               你是对话中的哪一位？ *
@@ -957,8 +961,8 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           </div>
         )}
 
-        {/* ── Archetype section ── */}
-        <ArchetypeSection
+        {/* ── Archetype section (hidden in skipGeneration) ── */}
+        {!skipGeneration && <ArchetypeSection
           relationshipType={relationshipType}
           setRelationshipType={setRelationshipType}
           styleA={styleA}
@@ -968,7 +972,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           nameA={nameA !== 'A' ? nameA : ''}
           nameB={nameB !== 'B' ? nameB : ''}
           singleColumn={isTogether}
-        />
+        />}
 
         {/* Error */}
         {error && (
@@ -981,8 +985,8 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           </div>
         )}
 
-        {/* Engine status */}
-        <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg" style={{
+        {/* Engine status (hidden in skipGeneration) */}
+        {!skipGeneration && <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg" style={{
           background: API_KEY_AVAILABLE ? 'rgba(122,176,232,0.07)' : 'rgba(255,255,255,0.03)',
           border:     `1px solid ${API_KEY_AVAILABLE ? 'rgba(122,176,232,0.2)' : 'rgba(255,255,255,0.07)'}`,
         }}>
@@ -993,14 +997,16 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           <span className="font-mono text-[12px]" style={{ color: API_KEY_AVAILABLE ? '#7ab0e8' : 'rgba(255,255,255,0.22)' }}>
             {API_KEY_AVAILABLE ? '引擎就绪' : '离线模式 · 配置 .env.local'}
           </span>
-        </div>
+        </div>}
 
         {/* Submit */}
         <div className="flex items-center justify-between pb-4">
           <span className="font-mono text-[12px] text-white/18">
-            {isTogether
-              ? '至少 20 字 + 角色 + 感受 + 背景 + 关系设定'
-              : '至少 20 字 + 角色 + 感受 + 背景 + 关系设定 · 内容仅在本地处理'}
+            {skipGeneration
+              ? '填写你的感受后即可开始'
+              : isTogether
+                ? '至少 20 字 + 角色 + 感受 + 背景 + 关系设定'
+                : '至少 20 字 + 角色 + 感受 + 背景 + 关系设定 · 内容仅在本地处理'}
           </span>
           <button
             onClick={handleSubmit}
