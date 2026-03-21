@@ -135,6 +135,10 @@ export default function App() {
   const [proximity, setProximity]               = useState(null)
   const [partnerDisputes, setPartnerDisputes]   = useState(null)
 
+  // Phase gate state (Bug 3: synchronized phase transitions)
+  const [waitingForPhase, setWaitingForPhase]   = useState(null) // target phase we're waiting on
+  const [partnerPhaseReady, setPartnerPhaseReady] = useState(null)
+
   const beats       = liveScenario.beats
   const currentBeat = beats[beatIndex]
   const timerRef    = useRef(null)
@@ -250,9 +254,17 @@ export default function App() {
     }))
 
     unsubs.push(sync.onMessage('sync:phase', (msg) => {
-      isRemote.current = true
-      setPhase(msg.phase)
-      isRemote.current = false
+      // Bug 2 fix: Do NOT auto-change phase during editing phases (self_confirm, solo_viewing).
+      // Phase transitions in these phases should ONLY happen via explicit user button click
+      // or via the sync:phase_ready gate mechanism.
+      setPhase(currentPhase => {
+        const editingPhases = ['self_confirm', 'solo_viewing']
+        if (editingPhases.includes(currentPhase)) {
+          console.log(`[Sync] Blocked remote phase change from ${currentPhase} to ${msg.phase} — user is editing`)
+          return currentPhase  // stay in current phase
+        }
+        return msg.phase
+      })
     }))
 
     // Scenario from partner (role B receives this)
@@ -282,6 +294,32 @@ export default function App() {
       const newElements = SCENE_ELEMENTS_MAP[msg.sceneKey] || liveScenario.sceneElements
       setLiveScenario(prev => ({ ...prev, scene: msg.sceneKey, sceneElements: newElements }))
       isRemote.current = false
+    }))
+
+    // Phase gate: partner is ready for a phase transition
+    unsubs.push(sync.onMessage('sync:phase_partner_ready', (msg) => {
+      setPartnerPhaseReady(msg.phase)
+      console.log(`[Sync] Partner ready for phase: ${msg.phase}`)
+    }))
+
+    // Phase gate: server says both ready — transition now!
+    unsubs.push(sync.onMessage('sync:phase_go', (msg) => {
+      console.log(`[Sync] Phase gate GO → ${msg.phase}`)
+      setWaitingForPhase(null)
+      setPartnerPhaseReady(null)
+      if (msg.phase === 'solo_viewing') {
+        setBeatIndex(0)
+        setPhase('solo_viewing')
+        setBubbleVisibility('partner')
+        setIsPlaying(false)
+        logPhase('self_confirm', 'solo_viewing')
+      } else if (msg.phase === 'together_viewing') {
+        setBeatIndex(0)
+        setPhase('together_viewing')
+        setBubbleVisibility('both')
+        setIsPlaying(false)
+        logPhase('solo_viewing', 'together_viewing')
+      }
     }))
 
     // Partner annotations reveal — merge partner's edits into local disputes
@@ -332,7 +370,7 @@ export default function App() {
     // isPausePoint auto-pause removed — disruptive during study
   }, [beatIndex, beats, phase, syncSend])
 
-  const isPlaybackPhase = phase === 'solo_viewing' || phase === 'together_viewing' || phase === 'self_confirm'
+  const isPlaybackPhase = phase === 'together_viewing'
   useEffect(() => {
     if (!isPlaying || !isPlaybackPhase) return
     timerRef.current = setTimeout(advance, currentBeat?.duration ?? 4000)
@@ -378,6 +416,27 @@ export default function App() {
     logSeek(idx)
     syncSend('sync:beat', { beatIndex: idx, isPlaying: false })
   }, [phase, syncSend])
+
+  // Manual beat navigation for editing phases (self_confirm, solo_viewing)
+  const handlePrevBeat = useCallback(() => {
+    if (beatIndex <= 0) return
+    const prev = beatIndex - 1
+    clearTimeout(timerRef.current)
+    setBeatIndex(prev)
+    setIsPlaying(false)
+    logSeek(prev)
+    syncSend('sync:beat', { beatIndex: prev, isPlaying: false })
+  }, [beatIndex, syncSend])
+
+  const handleNextBeat = useCallback(() => {
+    if (beatIndex >= beats.length - 1) return
+    const next = beatIndex + 1
+    clearTimeout(timerRef.current)
+    setBeatIndex(next)
+    setIsPlaying(false)
+    logSeek(next)
+    syncSend('sync:beat', { beatIndex: next, isPlaying: false })
+  }, [beatIndex, beats.length, syncSend])
 
   // ── Intro → mode selection ────────────────────────────────
   const handleBegin = useCallback((mode, prox) => {
@@ -425,9 +484,8 @@ export default function App() {
       sync.send('scenario:generated', { scenario })
       syncSend('sync:phase', { phase: 'self_confirm' })
     } else {
-      // Solo: auto-play into self_confirm
-      setIsPlaying(true)
-      logBeat(0, 'auto')
+      // Solo: no auto-play in editing phases — user navigates manually
+      setIsPlaying(false)
     }
   }, [sync, syncSend])
 
@@ -444,13 +502,20 @@ export default function App() {
   // self_confirm → solo_viewing (confirm own first, then edit partner)
   const handleSelfConfirmToSoloViewing = useCallback(() => {
     setIsPlaying(false)
-    setBeatIndex(0)
-    setPhase('solo_viewing')
-    setBubbleVisibility('partner')
-    logPhase('self_confirm', 'solo_viewing')
-    syncSend('sync:phase', { phase: 'solo_viewing' })
     log('self_confirm_finished', { selfConfirmCount: Object.keys(selfConfirms).length })
-  }, [selfConfirms, syncSend])
+    if (sync.mode === 'together' && sync.connected) {
+      // Phase gate: send ready signal, wait for partner
+      setWaitingForPhase('solo_viewing')
+      sync.send('sync:phase_ready', { phase: 'solo_viewing' })
+      console.log('[Sync] Sent phase_ready for solo_viewing, waiting for partner...')
+    } else {
+      // Solo mode: transition immediately
+      setBeatIndex(0)
+      setPhase('solo_viewing')
+      setBubbleVisibility('partner')
+      logPhase('self_confirm', 'solo_viewing')
+    }
+  }, [selfConfirms, sync])
 
   // solo_viewing → together_viewing (always, both solo and together mode)
   // Together Viewing shows BOTH people's thoughts (edited versions) side by side
@@ -460,13 +525,18 @@ export default function App() {
     if (sync.mode === 'together' && sync.connected) {
       // Send BOTH disputes and selfConfirms to partner
       sync.send('annotation:reveal', { partnerDisputes: disputes, partnerSelfConfirms: selfConfirms })
-      syncSend('sync:phase', { phase: 'together_viewing' })
+      // Phase gate: send ready signal, wait for partner
+      setWaitingForPhase('together_viewing')
+      sync.send('sync:phase_ready', { phase: 'together_viewing' })
+      console.log('[Sync] Sent phase_ready for together_viewing, waiting for partner...')
+    } else {
+      // Solo mode: transition immediately
+      setBeatIndex(0)
+      setPhase('together_viewing')
+      setBubbleVisibility('both')
+      logPhase('solo_viewing', 'together_viewing')
     }
-    setBeatIndex(0)
-    setPhase('together_viewing')
-    setBubbleVisibility('both')
-    logPhase('solo_viewing', 'together_viewing')
-  }, [disputes, sync, syncSend, selfConfirms])
+  }, [disputes, sync, selfConfirms])
 
   // SelfConfirmScreen: confirm/edit a single beat
   const handleSelfConfirm = useCallback((role, beatId, data) => {
@@ -744,9 +814,8 @@ export default function App() {
         setBeatIndex(0); setAnnotation(''); setTags([]); setDisputes({}); setSelfConfirms({})
         setPhase('self_confirm')
         setBubbleVisibility('self')
-        setIsPlaying(true)
+        setIsPlaying(false)  // No auto-play in editing phases — user navigates manually
         logPhase('study_input', 'self_confirm')
-        logBeat(0, 'auto')
       }}
       syncMode={sync.mode}
       skipGeneration={true}
@@ -824,6 +893,29 @@ export default function App() {
             onMark={handleMark}
           />
 
+          {/* Waiting for partner overlay (phase gate) */}
+          {waitingForPhase && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center"
+              style={{ background: 'rgba(6,8,16,0.85)' }}>
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex gap-2">
+                  {[0, 1, 2].map(i => (
+                    <div key={i} style={{
+                      width: '8px', height: '8px', borderRadius: '50%', background: '#7ab0e8',
+                      animation: `blink 1.2s ${i * 0.3}s ease-in-out infinite`,
+                    }} />
+                  ))}
+                </div>
+                <p className="font-mono text-[13px] tracking-wider" style={{ color: '#7ab0e8' }}>
+                  {waitingForPhase === 'solo_viewing' ? '等待对方完成确认...' : '等待对方完成标注...'}
+                </p>
+                <p className="font-mono text-[9px] text-white/25">
+                  对方完成后将一起进入下一阶段
+                </p>
+              </div>
+            </div>
+          )}
+
           {phase === 'reflection' && (
             <ReflectionOverlay
               beat={currentBeat}
@@ -875,6 +967,8 @@ export default function App() {
         tags={tags}
         onPlayPause={handlePlayPause}
         onSelectBeat={handleSelectBeat}
+        onPrevBeat={handlePrevBeat}
+        onNextBeat={handleNextBeat}
         onFinishAnnotation={
           phase === 'self_confirm' ? handleSelfConfirmToSoloViewing :
           phase === 'solo_viewing' ? handleFinishAnnotation :

@@ -65,6 +65,8 @@ export class RoomManager {
       scenario: null,
       playReadyA: false,
       playReadyB: false,
+      phaseReadyA: null,  // target phase that A is ready for (e.g. 'solo_viewing')
+      phaseReadyB: null,  // target phase that B is ready for
       logs: [],           // per-room behavior log events from both clients
       createdAt: Date.now(),
     }
@@ -225,6 +227,27 @@ export class RoomManager {
       if (role === 'A') room.playReadyA = false
       else              room.playReadyB = false
       this.broadcastToOther(room, ws, { type: MSG.SYNC_PLAY_CANCEL, role })
+      return
+    }
+
+    // ── Phase-ready gate (synchronized phase transitions) ────
+    if (msg.type === MSG.SYNC_PHASE_READY) {
+      const targetPhase = msg.phase
+      if (role === 'A') room.phaseReadyA = targetPhase
+      else              room.phaseReadyB = targetPhase
+
+      // Notify partner that this side is ready
+      this.broadcastToOther(room, ws, { type: MSG.SYNC_PHASE_PARTNER_READY, role, phase: targetPhase })
+
+      // If both ready for the SAME phase → broadcast GO to both, then reset
+      if (room.phaseReadyA && room.phaseReadyB && room.phaseReadyA === room.phaseReadyB) {
+        for (const [, clientWs] of room.clients) {
+          this.send(clientWs, { type: MSG.SYNC_PHASE_GO, phase: targetPhase })
+        }
+        room.phaseReadyA = null
+        room.phaseReadyB = null
+        console.log(`[Room] ${ctx.code}: both ready → phase ${targetPhase}!`)
+      }
       return
     }
 

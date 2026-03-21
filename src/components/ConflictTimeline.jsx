@@ -19,6 +19,8 @@ export default function ConflictTimeline({
   tags = [],
   onFinishAnnotation = null,
   finishLabel = null,
+  onPrevBeat = null,
+  onNextBeat = null,
 }) {
   const svgRef = useRef(null)
   const [svgW, setSvgW] = useState(800)
@@ -48,32 +50,70 @@ export default function ConflictTimeline({
     tagsByBeat[t.beatIndex].push(t)
   })
 
-  const disabled = phase === 'reflection' || phase === 'intro' || phase === 'self_confirm' || phase === 'divergence'
+  const disabled = phase === 'reflection' || phase === 'intro' || phase === 'divergence'
+  const isEditingPhase = phase === 'self_confirm' || phase === 'solo_viewing'
 
   return (
     <div
       className="flex items-center gap-3 px-4 border-t border-white/5 flex-shrink-0"
       style={{ background: '#060810', height: '68px' }}
     >
-      {/* Play/Pause */}
-      <div className="flex flex-col items-center flex-shrink-0" style={{ minWidth: '36px' }}>
-        <button
-          onClick={onPlayPause}
-          disabled={disabled}
-          className="w-9 h-9 flex items-center justify-center rounded transition-all"
-          style={{
-            color: disabled ? '#333' : '#7ab0e8',
-            opacity: disabled ? 0.4 : 1,
-          }}
-        >
-          {isPlaying ? (
-            <img src="/assets/ui/icons/pause.png" alt="pause"
-              style={{width:'16px',height:'16px',imageRendering:'pixelated'}} />
-          ) : (
-            <img src="/assets/ui/icons/play.png" alt="play"
-              style={{width:'16px',height:'16px',imageRendering:'pixelated'}} />
-          )}
-        </button>
+      {/* Navigation controls */}
+      <div className="flex items-center gap-1 flex-shrink-0">
+        {/* Prev beat button — shown in editing phases */}
+        {isEditingPhase && onPrevBeat && (
+          <button
+            onClick={onPrevBeat}
+            disabled={beatIndex <= 0}
+            className="w-8 h-8 flex items-center justify-center rounded transition-all"
+            style={{
+              color: beatIndex <= 0 ? '#333' : '#7ab0e8',
+              opacity: beatIndex <= 0 ? 0.4 : 1,
+              fontSize: '14px',
+            }}
+            title="上一幕"
+          >
+            ◀
+          </button>
+        )}
+
+        {/* Play/Pause — hidden in editing phases (no auto-play) */}
+        {!isEditingPhase && (
+          <button
+            onClick={onPlayPause}
+            disabled={disabled}
+            className="w-9 h-9 flex items-center justify-center rounded transition-all"
+            style={{
+              color: disabled ? '#333' : '#7ab0e8',
+              opacity: disabled ? 0.4 : 1,
+            }}
+          >
+            {isPlaying ? (
+              <img src="/assets/ui/icons/pause.png" alt="pause"
+                style={{width:'16px',height:'16px',imageRendering:'pixelated'}} />
+            ) : (
+              <img src="/assets/ui/icons/play.png" alt="play"
+                style={{width:'16px',height:'16px',imageRendering:'pixelated'}} />
+            )}
+          </button>
+        )}
+
+        {/* Next beat button — shown in editing phases */}
+        {isEditingPhase && onNextBeat && (
+          <button
+            onClick={onNextBeat}
+            disabled={beatIndex >= beats.length - 1}
+            className="w-8 h-8 flex items-center justify-center rounded transition-all"
+            style={{
+              color: beatIndex >= beats.length - 1 ? '#333' : '#7ab0e8',
+              opacity: beatIndex >= beats.length - 1 ? 0.4 : 1,
+              fontSize: '14px',
+            }}
+            title="下一幕"
+          >
+            ▶
+          </button>
+        )}
       </div>
 
       {/* SVG timeline — flat bar */}

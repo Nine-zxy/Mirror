@@ -1,0 +1,1846 @@
+{
+  "sessionId": "asd_1774095120045_jmie",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "B",
+  "startedAt": "2026-03-21T12:12:00.045Z",
+  "exportedAt": "2026-03-21T12:42:35.646Z",
+  "durationMs": 1835601,
+  "eventCount": 212,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "phase_change": 5,
+      "playback_play": 40,
+      "playback_pause": 30,
+      "bubble_visibility_toggle": 9,
+      "study_input_submitted": 1,
+      "beat_advance": 27,
+      "beat_seek": 42,
+      "assumption_confirm": 20,
+      "thought_dispute": 27,
+      "assumption_edit": 7,
+      "self_confirm_finished": 1,
+      "annotation_finished": 1,
+      "session_upload": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 27,
+    "manualSeeks": 42,
+    "phaseFlow": "study_input → self_confirm → solo_viewing → together_viewing → divergence",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat0",
+      "B-beat1",
+      "B-beat1",
+      "B-beat2",
+      "B-beat3",
+      "B-beat4",
+      "B-beat4",
+      "B-beat5",
+      "B-beat6",
+      "B-beat7",
+      "B-beat7",
+      "B-beat7",
+      "B-beat7",
+      "B-beat8",
+      "B-beat9",
+      "A-beat0",
+      "A-beat1",
+      "A-beat2",
+      "A-beat4",
+      "A-beat5",
+      "A-beat6",
+      "A-beat7",
+      "A-beat8",
+      "A-beat9"
+    ],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 20,
+      "disputed": 0,
+      "edited": 7,
+      "cleared": 0,
+      "emotionChanges": 7
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774095120045,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "B"
+    },
+    {
+      "seq": 1,
+      "t": 1774095574183,
+      "elapsed": 454138,
+      "type": "phase_change",
+      "from": "study_intro",
+      "to": "study_input"
+    },
+    {
+      "seq": 2,
+      "t": 1774095715688,
+      "elapsed": 595643,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 3,
+      "t": 1774095727570,
+      "elapsed": 607525,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 4,
+      "t": 1774095729775,
+      "elapsed": 609730,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 5,
+      "t": 1774095732580,
+      "elapsed": 612535,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 6,
+      "t": 1774095735883,
+      "elapsed": 615838,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 7,
+      "t": 1774095736310,
+      "elapsed": 616265,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 8,
+      "t": 1774095737456,
+      "elapsed": 617411,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 9,
+      "t": 1774095738871,
+      "elapsed": 618826,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 10,
+      "t": 1774095741004,
+      "elapsed": 620959,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 11,
+      "t": 1774095742500,
+      "elapsed": 622455,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 12,
+      "t": 1774095744718,
+      "elapsed": 624673,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 13,
+      "t": 1774095746140,
+      "elapsed": 626095,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 14,
+      "t": 1774095747231,
+      "elapsed": 627186,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 15,
+      "t": 1774095749164,
+      "elapsed": 629119,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 16,
+      "t": 1774095752405,
+      "elapsed": 632360,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 17,
+      "t": 1774095754722,
+      "elapsed": 634677,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 18,
+      "t": 1774095762185,
+      "elapsed": 642140,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 19,
+      "t": 1774095765987,
+      "elapsed": 645942,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 20,
+      "t": 1774095768052,
+      "elapsed": 648007,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 21,
+      "t": 1774095771389,
+      "elapsed": 651344,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 22,
+      "t": 1774095778888,
+      "elapsed": 658843,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 23,
+      "t": 1774095783032,
+      "elapsed": 662987,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 24,
+      "t": 1774095785168,
+      "elapsed": 665123,
+      "type": "playback_pause",
+      "beatIndex": 0
+    },
+    {
+      "seq": 25,
+      "t": 1774095786996,
+      "elapsed": 666951,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 26,
+      "t": 1774095789866,
+      "elapsed": 669821,
+      "type": "study_input_submitted",
+      "inputLength": 0,
+      "scenario": "p5"
+    },
+    {
+      "seq": 27,
+      "t": 1774095789866,
+      "elapsed": 669821,
+      "type": "phase_change",
+      "from": "study_input",
+      "to": "self_confirm"
+    },
+    {
+      "seq": 28,
+      "t": 1774095789866,
+      "elapsed": 669821,
+      "type": "beat_advance",
+      "beatIndex": 0,
+      "trigger": "auto"
+    },
+    {
+      "seq": 29,
+      "t": 1774095793878,
+      "elapsed": 673833,
+      "type": "beat_advance",
+      "beatIndex": 1,
+      "trigger": "auto"
+    },
+    {
+      "seq": 30,
+      "t": 1774095797883,
+      "elapsed": 677838,
+      "type": "beat_advance",
+      "beatIndex": 2,
+      "trigger": "auto"
+    },
+    {
+      "seq": 31,
+      "t": 1774095801890,
+      "elapsed": 681845,
+      "type": "beat_advance",
+      "beatIndex": 3,
+      "trigger": "auto"
+    },
+    {
+      "seq": 32,
+      "t": 1774095805895,
+      "elapsed": 685850,
+      "type": "beat_advance",
+      "beatIndex": 4,
+      "trigger": "auto"
+    },
+    {
+      "seq": 33,
+      "t": 1774095809900,
+      "elapsed": 689855,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 34,
+      "t": 1774095813816,
+      "elapsed": 693771,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 35,
+      "t": 1774095882301,
+      "elapsed": 762256,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "emotion": "anxious"
+    },
+    {
+      "seq": 36,
+      "t": 1774095882301,
+      "elapsed": 762256,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "editedText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "originalLength": 26,
+      "editedLength": 26
+    },
+    {
+      "seq": 37,
+      "t": 1774095890483,
+      "elapsed": 770438,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "editedText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "originalLen": 26,
+      "editedLen": 26,
+      "emotionChanged": true,
+      "newEmotion": "warm",
+      "originalEmotion": "anxious"
+    },
+    {
+      "seq": 38,
+      "t": 1774095890483,
+      "elapsed": 770438,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "editedText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "originalLength": 26,
+      "editedLength": 26
+    },
+    {
+      "seq": 39,
+      "t": 1774095914500,
+      "elapsed": 794455,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "emotion": "anxious"
+    },
+    {
+      "seq": 40,
+      "t": 1774095914500,
+      "elapsed": 794455,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "editedText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "originalLength": 26,
+      "editedLength": 26
+    },
+    {
+      "seq": 41,
+      "t": 1774095974516,
+      "elapsed": 854471,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "emotion": "anxious"
+    },
+    {
+      "seq": 42,
+      "t": 1774095974516,
+      "elapsed": 854471,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 0,
+      "originalText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "editedText": "我知道我错了。但我不知道怎么解释。说什么都像在狡辩。",
+      "originalLength": 26,
+      "editedLength": 26
+    },
+    {
+      "seq": 43,
+      "t": 1774095986566,
+      "elapsed": 866521,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 44,
+      "t": 1774095994299,
+      "elapsed": 874254,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 1,
+      "originalText": "他说得对，不是第一次了。我为什么总是做这种让他失望的事？",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 45,
+      "t": 1774095994299,
+      "elapsed": 874254,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 1,
+      "originalText": "他说得对，不是第一次了。我为什么总是做这种让他失望的事？",
+      "editedText": "他说得对，不是第一次了。我为什么总是做这种让他失望的事？",
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 46,
+      "t": 1774096000033,
+      "elapsed": 879988,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 1,
+      "originalText": "他说得对，不是第一次了。我为什么总是做这种让他失望的事？",
+      "editedText": "他说得对，不是第一次了。我为什么总是做这种让他失望的事？",
+      "originalLen": 28,
+      "editedLen": 28,
+      "emotionChanged": true,
+      "newEmotion": "defensive",
+      "originalEmotion": "reflective"
+    },
+    {
+      "seq": 47,
+      "t": 1774096000033,
+      "elapsed": 879988,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 1,
+      "originalText": "他说得对，不是第一次了。我为什么总是做这种让他失望的事？",
+      "editedText": "他说得对，不是第一次了。我为什么总是做这种让他失望的事？",
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 48,
+      "t": 1774096002983,
+      "elapsed": 882938,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 49,
+      "t": 1774096026616,
+      "elapsed": 906571,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 2,
+      "originalText": "我第一次把这些话说出来。我不知道说完之后会怎样，但我不想再藏着了。",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 50,
+      "t": 1774096026616,
+      "elapsed": 906571,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 2,
+      "originalText": "我第一次把这些话说出来。我不知道说完之后会怎样，但我不想再藏着了。",
+      "editedText": "我第一次把这些话说出来。我不知道说完之后会怎样，但我不想再藏着了。",
+      "originalLength": 33,
+      "editedLength": 33
+    },
+    {
+      "seq": 51,
+      "t": 1774096034249,
+      "elapsed": 914204,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 52,
+      "t": 1774096050649,
+      "elapsed": 930604,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 3,
+      "originalText": "说出来了。这是我一直不敢面对的东西。我不知道他能不能接受这样的我。",
+      "emotion": "withdrawn"
+    },
+    {
+      "seq": 53,
+      "t": 1774096050649,
+      "elapsed": 930604,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 3,
+      "originalText": "说出来了。这是我一直不敢面对的东西。我不知道他能不能接受这样的我。",
+      "editedText": "说出来了。这是我一直不敢面对的东西。我不知道他能不能接受这样的我。",
+      "originalLength": 33,
+      "editedLength": 33
+    },
+    {
+      "seq": 54,
+      "t": 1774096053317,
+      "elapsed": 933272,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 55,
+      "t": 1774096063767,
+      "elapsed": 943722,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 4,
+      "originalText": "我说的是真话。见面的时候我是真的喜欢他，但分开之后我就会回到自己的世界。我控制不了。",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 56,
+      "t": 1774096063767,
+      "elapsed": 943722,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 4,
+      "originalText": "我说的是真话。见面的时候我是真的喜欢他，但分开之后我就会回到自己的世界。我控制不了。",
+      "editedText": "我说的是真话。见面的时候我是真的喜欢他，但分开之后我就会回到自己的世界。我控制不了。",
+      "originalLength": 42,
+      "editedLength": 42
+    },
+    {
+      "seq": 57,
+      "t": 1774096087765,
+      "elapsed": 967720,
+      "type": "playback_play",
+      "beatIndex": 4
+    },
+    {
+      "seq": 58,
+      "t": 1774096091767,
+      "elapsed": 971722,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 59,
+      "t": 1774096095633,
+      "elapsed": 975588,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 60,
+      "t": 1774096111509,
+      "elapsed": 991464,
+      "type": "playback_play",
+      "beatIndex": 4
+    },
+    {
+      "seq": 61,
+      "t": 1774096113074,
+      "elapsed": 993029,
+      "type": "playback_pause",
+      "beatIndex": 4
+    },
+    {
+      "seq": 62,
+      "t": 1774096115553,
+      "elapsed": 995508,
+      "type": "playback_play",
+      "beatIndex": 4
+    },
+    {
+      "seq": 63,
+      "t": 1774096119557,
+      "elapsed": 999512,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 64,
+      "t": 1774096123561,
+      "elapsed": 1003516,
+      "type": "beat_advance",
+      "beatIndex": 6,
+      "trigger": "auto"
+    },
+    {
+      "seq": 65,
+      "t": 1774096123568,
+      "elapsed": 1003523,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 66,
+      "t": 1774096136026,
+      "elapsed": 1015981,
+      "type": "playback_play",
+      "beatIndex": 4
+    },
+    {
+      "seq": 67,
+      "t": 1774096138318,
+      "elapsed": 1018273,
+      "type": "playback_pause",
+      "beatIndex": 4
+    },
+    {
+      "seq": 68,
+      "t": 1774096140221,
+      "elapsed": 1020176,
+      "type": "playback_play",
+      "beatIndex": 4
+    },
+    {
+      "seq": 69,
+      "t": 1774096143328,
+      "elapsed": 1023283,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 70,
+      "t": 1774096144223,
+      "elapsed": 1024178,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 71,
+      "t": 1774096146416,
+      "elapsed": 1026371,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 72,
+      "t": 1774096158599,
+      "elapsed": 1038554,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 73,
+      "t": 1774096161250,
+      "elapsed": 1041205,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 74,
+      "t": 1774096170865,
+      "elapsed": 1050820,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 75,
+      "t": 1774096175415,
+      "elapsed": 1055370,
+      "type": "bubble_visibility_toggle",
+      "visible": "both"
+    },
+    {
+      "seq": 76,
+      "t": 1774096179449,
+      "elapsed": 1059404,
+      "type": "bubble_visibility_toggle",
+      "visible": "none"
+    },
+    {
+      "seq": 77,
+      "t": 1774096181731,
+      "elapsed": 1061686,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 78,
+      "t": 1774096198832,
+      "elapsed": 1078787,
+      "type": "bubble_visibility_toggle",
+      "visible": "both"
+    },
+    {
+      "seq": 79,
+      "t": 1774096200216,
+      "elapsed": 1080171,
+      "type": "bubble_visibility_toggle",
+      "visible": "none"
+    },
+    {
+      "seq": 80,
+      "t": 1774096201465,
+      "elapsed": 1081420,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 81,
+      "t": 1774096203532,
+      "elapsed": 1083487,
+      "type": "bubble_visibility_toggle",
+      "visible": "both"
+    },
+    {
+      "seq": 82,
+      "t": 1774096207565,
+      "elapsed": 1087520,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 83,
+      "t": 1774096223006,
+      "elapsed": 1102961,
+      "type": "playback_play",
+      "beatIndex": 4
+    },
+    {
+      "seq": 84,
+      "t": 1774096224319,
+      "elapsed": 1104274,
+      "type": "playback_pause",
+      "beatIndex": 4
+    },
+    {
+      "seq": 85,
+      "t": 1774096226975,
+      "elapsed": 1106930,
+      "type": "playback_play",
+      "beatIndex": 4
+    },
+    {
+      "seq": 86,
+      "t": 1774096228536,
+      "elapsed": 1108491,
+      "type": "playback_pause",
+      "beatIndex": 4
+    },
+    {
+      "seq": 87,
+      "t": 1774096232381,
+      "elapsed": 1112336,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 4,
+      "originalText": "我说的是真话。见面的时候我是真的喜欢他，但分开之后我就会回到自己的世界。我控制不了。",
+      "editedText": "我说的是真话。见面的时候我是真的喜欢他，但分开之后我就会回到自己的世界。我控制不了。我习惯了自己一个人。",
+      "originalLen": 42,
+      "editedLen": 52,
+      "emotionChanged": true,
+      "newEmotion": "reflective"
+    },
+    {
+      "seq": 88,
+      "t": 1774096232381,
+      "elapsed": 1112336,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 4,
+      "originalText": "我说的是真话。见面的时候我是真的喜欢他，但分开之后我就会回到自己的世界。我控制不了。",
+      "editedText": "我说的是真话。见面的时候我是真的喜欢他，但分开之后我就会回到自己的世界。我控制不了。我习惯了自己一个人。",
+      "originalLength": 42,
+      "editedLength": 52
+    },
+    {
+      "seq": 89,
+      "t": 1774096235265,
+      "elapsed": 1115220,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 90,
+      "t": 1774096247216,
+      "elapsed": 1127171,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 5,
+      "originalText": "我伤害了他。这就是我一直害怕的结果——我的缺陷最终会伤害到在乎我的人。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 91,
+      "t": 1774096247216,
+      "elapsed": 1127171,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 5,
+      "originalText": "我伤害了他。这就是我一直害怕的结果——我的缺陷最终会伤害到在乎我的人。",
+      "editedText": "我伤害了他。这就是我一直害怕的结果——我的缺陷最终会伤害到在乎我的人。",
+      "originalLength": 35,
+      "editedLength": 35
+    },
+    {
+      "seq": 92,
+      "t": 1774096249949,
+      "elapsed": 1129904,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 93,
+      "t": 1774096260849,
+      "elapsed": 1140804,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 6,
+      "originalText": "他说得对。一直都是他在付出，我在接受。我不是不知道，我是不知道怎么回应。",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 94,
+      "t": 1774096260849,
+      "elapsed": 1140804,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 6,
+      "originalText": "他说得对。一直都是他在付出，我在接受。我不是不知道，我是不知道怎么回应。",
+      "editedText": "他说得对。一直都是他在付出，我在接受。我不是不知道，我是不知道怎么回应。",
+      "originalLength": 36,
+      "editedLength": 36
+    },
+    {
+      "seq": 95,
+      "t": 1774096264049,
+      "elapsed": 1144004,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 96,
+      "t": 1774096276232,
+      "elapsed": 1156187,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 97,
+      "t": 1774096276232,
+      "elapsed": 1156187,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "editedText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "originalLength": 42,
+      "editedLength": 42
+    },
+    {
+      "seq": 98,
+      "t": 1774096284925,
+      "elapsed": 1164880,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 99,
+      "t": 1774096288927,
+      "elapsed": 1168882,
+      "type": "beat_advance",
+      "beatIndex": 8,
+      "trigger": "auto"
+    },
+    {
+      "seq": 100,
+      "t": 1774096289218,
+      "elapsed": 1169173,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 101,
+      "t": 1774096294131,
+      "elapsed": 1174086,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 102,
+      "t": 1774096305862,
+      "elapsed": 1185817,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 103,
+      "t": 1774096308520,
+      "elapsed": 1188475,
+      "type": "playback_pause",
+      "beatIndex": 7
+    },
+    {
+      "seq": 104,
+      "t": 1774096313220,
+      "elapsed": 1193175,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 105,
+      "t": 1774096314736,
+      "elapsed": 1194691,
+      "type": "playback_pause",
+      "beatIndex": 7
+    },
+    {
+      "seq": 106,
+      "t": 1774096315353,
+      "elapsed": 1195308,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 107,
+      "t": 1774096317440,
+      "elapsed": 1197395,
+      "type": "playback_pause",
+      "beatIndex": 7
+    },
+    {
+      "seq": 108,
+      "t": 1774096318892,
+      "elapsed": 1198847,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 109,
+      "t": 1774096322894,
+      "elapsed": 1202849,
+      "type": "beat_advance",
+      "beatIndex": 8,
+      "trigger": "auto"
+    },
+    {
+      "seq": 110,
+      "t": 1774096322994,
+      "elapsed": 1202949,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 111,
+      "t": 1774096327215,
+      "elapsed": 1207170,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 112,
+      "t": 1774096338735,
+      "elapsed": 1218690,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 113,
+      "t": 1774096342737,
+      "elapsed": 1222692,
+      "type": "beat_advance",
+      "beatIndex": 8,
+      "trigger": "auto"
+    },
+    {
+      "seq": 114,
+      "t": 1774096346740,
+      "elapsed": 1226695,
+      "type": "beat_advance",
+      "beatIndex": 9,
+      "trigger": "auto"
+    },
+    {
+      "seq": 115,
+      "t": 1774096350448,
+      "elapsed": 1230403,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 116,
+      "t": 1774096360327,
+      "elapsed": 1240282,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 117,
+      "t": 1774096362358,
+      "elapsed": 1242313,
+      "type": "playback_pause",
+      "beatIndex": 7
+    },
+    {
+      "seq": 118,
+      "t": 1774096364648,
+      "elapsed": 1244603,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "editedText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？毕竟上",
+      "originalLen": 42,
+      "editedLen": 45,
+      "emotionChanged": true,
+      "newEmotion": "reflective"
+    },
+    {
+      "seq": 119,
+      "t": 1774096364648,
+      "elapsed": 1244603,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "editedText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？毕竟上",
+      "originalLength": 42,
+      "editedLength": 45
+    },
+    {
+      "seq": 120,
+      "t": 1774096375791,
+      "elapsed": 1255746,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 121,
+      "t": 1774096377157,
+      "elapsed": 1257112,
+      "type": "playback_pause",
+      "beatIndex": 7
+    },
+    {
+      "seq": 122,
+      "t": 1774096378552,
+      "elapsed": 1258507,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 123,
+      "t": 1774096379186,
+      "elapsed": 1259141,
+      "type": "playback_pause",
+      "beatIndex": 7
+    },
+    {
+      "seq": 124,
+      "t": 1774096380435,
+      "elapsed": 1260390,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 125,
+      "t": 1774096381797,
+      "elapsed": 1261752,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "editedText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？毕竟上一段感情结束的时候",
+      "originalLen": 42,
+      "editedLen": 54,
+      "emotionChanged": true,
+      "newEmotion": "reflective"
+    },
+    {
+      "seq": 126,
+      "t": 1774096381797,
+      "elapsed": 1261752,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "editedText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？毕竟上一段感情结束的时候",
+      "originalLength": 42,
+      "editedLength": 54
+    },
+    {
+      "seq": 127,
+      "t": 1774096384437,
+      "elapsed": 1264392,
+      "type": "beat_advance",
+      "beatIndex": 8,
+      "trigger": "auto"
+    },
+    {
+      "seq": 128,
+      "t": 1774096387215,
+      "elapsed": 1267170,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 129,
+      "t": 1774096391082,
+      "elapsed": 1271037,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 130,
+      "t": 1774096399603,
+      "elapsed": 1279558,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 131,
+      "t": 1774096403606,
+      "elapsed": 1283561,
+      "type": "beat_advance",
+      "beatIndex": 8,
+      "trigger": "auto"
+    },
+    {
+      "seq": 132,
+      "t": 1774096406848,
+      "elapsed": 1286803,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 133,
+      "t": 1774096414503,
+      "elapsed": 1294458,
+      "type": "playback_play",
+      "beatIndex": 7
+    },
+    {
+      "seq": 134,
+      "t": 1774096416786,
+      "elapsed": 1296741,
+      "type": "playback_pause",
+      "beatIndex": 7
+    },
+    {
+      "seq": 135,
+      "t": 1774096419281,
+      "elapsed": 1299236,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "editedText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？毕竟上一段感情结束的时候我也毫无反应。",
+      "originalLen": 42,
+      "editedLen": 61,
+      "emotionChanged": true,
+      "newEmotion": "reflective"
+    },
+    {
+      "seq": 136,
+      "t": 1774096419281,
+      "elapsed": 1299236,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？",
+      "editedText": "他这么想我也没办法反驳。因为我自己都不确定我会不会难过。这是不是就说明我真的有问题？毕竟上一段感情结束的时候我也毫无反应。",
+      "originalLength": 42,
+      "editedLength": 61
+    },
+    {
+      "seq": 137,
+      "t": 1774096422914,
+      "elapsed": 1302869,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 138,
+      "t": 1774096475697,
+      "elapsed": 1355652,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 139,
+      "t": 1774096476768,
+      "elapsed": 1356723,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 140,
+      "t": 1774096480520,
+      "elapsed": 1360475,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 141,
+      "t": 1774096481930,
+      "elapsed": 1361885,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 142,
+      "t": 1774096492618,
+      "elapsed": 1372573,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 143,
+      "t": 1774096496621,
+      "elapsed": 1376576,
+      "type": "beat_advance",
+      "beatIndex": 9,
+      "trigger": "auto"
+    },
+    {
+      "seq": 144,
+      "t": 1774096500331,
+      "elapsed": 1380286,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 145,
+      "t": 1774096510067,
+      "elapsed": 1390022,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 146,
+      "t": 1774096511039,
+      "elapsed": 1390994,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 147,
+      "t": 1774096512527,
+      "elapsed": 1392482,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 148,
+      "t": 1774096514319,
+      "elapsed": 1394274,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 149,
+      "t": 1774096515728,
+      "elapsed": 1395683,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 150,
+      "t": 1774096516158,
+      "elapsed": 1396113,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 151,
+      "t": 1774096517518,
+      "elapsed": 1397473,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 152,
+      "t": 1774096519728,
+      "elapsed": 1399683,
+      "type": "playback_pause",
+      "beatIndex": 8
+    },
+    {
+      "seq": 153,
+      "t": 1774096524423,
+      "elapsed": 1404378,
+      "type": "playback_play",
+      "beatIndex": 8
+    },
+    {
+      "seq": 154,
+      "t": 1774096525697,
+      "elapsed": 1405652,
+      "type": "assumption_edit",
+      "personaId": "B",
+      "beatId": 8,
+      "originalText": "这就是我能给出的最多了。我希望他能理解，但我知道这可能不够。",
+      "editedText": "这就是我能给出的最多了。我希望他能理解，但我知道这可能不够。我也希望能变成你想要的样子。",
+      "originalLen": 30,
+      "editedLen": 44,
+      "emotionChanged": true,
+      "newEmotion": "reflective"
+    },
+    {
+      "seq": 155,
+      "t": 1774096525697,
+      "elapsed": 1405652,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 8,
+      "originalText": "这就是我能给出的最多了。我希望他能理解，但我知道这可能不够。",
+      "editedText": "这就是我能给出的最多了。我希望他能理解，但我知道这可能不够。我也希望能变成你想要的样子。",
+      "originalLength": 30,
+      "editedLength": 44
+    },
+    {
+      "seq": 156,
+      "t": 1774096528425,
+      "elapsed": 1408380,
+      "type": "beat_advance",
+      "beatIndex": 9,
+      "trigger": "auto"
+    },
+    {
+      "seq": 157,
+      "t": 1774096539714,
+      "elapsed": 1419669,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 9,
+      "originalText": "他还愿意留下来。我不知道自己配不配得上这份坚持。",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 158,
+      "t": 1774096539714,
+      "elapsed": 1419669,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 9,
+      "originalText": "他还愿意留下来。我不知道自己配不配得上这份坚持。",
+      "editedText": "他还愿意留下来。我不知道自己配不配得上这份坚持。",
+      "originalLength": 24,
+      "editedLength": 24
+    },
+    {
+      "seq": 159,
+      "t": 1774096544131,
+      "elapsed": 1424086,
+      "type": "phase_change",
+      "from": "self_confirm",
+      "to": "solo_viewing"
+    },
+    {
+      "seq": 160,
+      "t": 1774096544131,
+      "elapsed": 1424086,
+      "type": "self_confirm_finished",
+      "selfConfirmCount": 0
+    },
+    {
+      "seq": 161,
+      "t": 1774096579614,
+      "elapsed": 1459569,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 0,
+      "originalText": "为什么要瞒着我？如果真的没什么，为什么不说？越想越觉得不对劲。",
+      "emotion": "angry"
+    },
+    {
+      "seq": 162,
+      "t": 1774096579614,
+      "elapsed": 1459569,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 0,
+      "originalText": "为什么要瞒着我？如果真的没什么，为什么不说？越想越觉得不对劲。",
+      "editedText": "为什么要瞒着我？如果真的没什么，为什么不说？越想越觉得不对劲。",
+      "originalLength": 31,
+      "editedLength": 31
+    },
+    {
+      "seq": 163,
+      "t": 1774096585764,
+      "elapsed": 1465719,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 164,
+      "t": 1774096591380,
+      "elapsed": 1471335,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 1,
+      "originalText": "他每次都是这样，先沉默，再道歉，然后下次还是一样。我到底在坚持什么？",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 165,
+      "t": 1774096591380,
+      "elapsed": 1471335,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 1,
+      "originalText": "他每次都是这样，先沉默，再道歉，然后下次还是一样。我到底在坚持什么？",
+      "editedText": "他每次都是这样，先沉默，再道歉，然后下次还是一样。我到底在坚持什么？",
+      "originalLength": 34,
+      "editedLength": 34
+    },
+    {
+      "seq": 166,
+      "t": 1774096593214,
+      "elapsed": 1473169,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 167,
+      "t": 1774096640114,
+      "elapsed": 1520069,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 2,
+      "originalText": "他终于愿意说了。但这些话...每一句都让我的心往下沉。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 168,
+      "t": 1774096640114,
+      "elapsed": 1520069,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalText": "他终于愿意说了。但这些话...每一句都让我的心往下沉。",
+      "editedText": "他终于愿意说了。但这些话...每一句都让我的心往下沉。",
+      "originalLength": 27,
+      "editedLength": 27
+    },
+    {
+      "seq": 169,
+      "t": 1774096642314,
+      "elapsed": 1522269,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 170,
+      "t": 1774096651530,
+      "elapsed": 1531485,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 171,
+      "t": 1774096659031,
+      "elapsed": 1538986,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 4,
+      "originalText": "他说看着我的时候觉得爱。那不看着我的时候呢？我算什么？",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 172,
+      "t": 1774096659031,
+      "elapsed": 1538986,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 4,
+      "originalText": "他说看着我的时候觉得爱。那不看着我的时候呢？我算什么？",
+      "editedText": "他说看着我的时候觉得爱。那不看着我的时候呢？我算什么？",
+      "originalLength": 27,
+      "editedLength": 27
+    },
+    {
+      "seq": 173,
+      "t": 1774096660880,
+      "elapsed": 1540835,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 174,
+      "t": 1774096665814,
+      "elapsed": 1545769,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 5,
+      "originalText": "我一直在说服自己相信他，但这次我真的撑不住了。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 175,
+      "t": 1774096665814,
+      "elapsed": 1545769,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 5,
+      "originalText": "我一直在说服自己相信他，但这次我真的撑不住了。",
+      "editedText": "我一直在说服自己相信他，但这次我真的撑不住了。",
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 176,
+      "t": 1774096668080,
+      "elapsed": 1548035,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 177,
+      "t": 1774096675031,
+      "elapsed": 1554986,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 6,
+      "originalText": "我不知道还能坚持多久。每次都是我在努力，他在旁观。",
+      "emotion": "hurt"
+    },
+    {
+      "seq": 178,
+      "t": 1774096675031,
+      "elapsed": 1554986,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 6,
+      "originalText": "我不知道还能坚持多久。每次都是我在努力，他在旁观。",
+      "editedText": "我不知道还能坚持多久。每次都是我在努力，他在旁观。",
+      "originalLength": 25,
+      "editedLength": 25
+    },
+    {
+      "seq": 179,
+      "t": 1774096677580,
+      "elapsed": 1557535,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 180,
+      "t": 1774096690080,
+      "elapsed": 1570035,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 7,
+      "originalText": "我想试探他。但我又怕他真的说\"嗯，可能吧\"。",
+      "emotion": "anxious"
+    },
+    {
+      "seq": 181,
+      "t": 1774096690080,
+      "elapsed": 1570035,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 7,
+      "originalText": "我想试探他。但我又怕他真的说\"嗯，可能吧\"。",
+      "editedText": "我想试探他。但我又怕他真的说\"嗯，可能吧\"。",
+      "originalLength": 22,
+      "editedLength": 22
+    },
+    {
+      "seq": 182,
+      "t": 1774096692747,
+      "elapsed": 1572702,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 183,
+      "t": 1774096700514,
+      "elapsed": 1580469,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 8,
+      "originalText": "淡淡的亲密关系...但我需要的不是淡淡的。我需要确定感。",
+      "emotion": "reflective"
+    },
+    {
+      "seq": 184,
+      "t": 1774096700514,
+      "elapsed": 1580469,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 8,
+      "originalText": "淡淡的亲密关系...但我需要的不是淡淡的。我需要确定感。",
+      "editedText": "淡淡的亲密关系...但我需要的不是淡淡的。我需要确定感。",
+      "originalLength": 28,
+      "editedLength": 28
+    },
+    {
+      "seq": 185,
+      "t": 1774096703280,
+      "elapsed": 1583235,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 186,
+      "t": 1774096714714,
+      "elapsed": 1594669,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 9,
+      "originalText": "我知道他有他的问题。但我还没准备好放弃。哪怕每次都是我在哄自己。",
+      "emotion": "warm"
+    },
+    {
+      "seq": 187,
+      "t": 1774096714714,
+      "elapsed": 1594669,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 9,
+      "originalText": "我知道他有他的问题。但我还没准备好放弃。哪怕每次都是我在哄自己。",
+      "editedText": "我知道他有他的问题。但我还没准备好放弃。哪怕每次都是我在哄自己。",
+      "originalLength": 32,
+      "editedLength": 32
+    },
+    {
+      "seq": 188,
+      "t": 1774096717797,
+      "elapsed": 1597752,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 189,
+      "t": 1774096721680,
+      "elapsed": 1601635,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 190,
+      "t": 1774096727630,
+      "elapsed": 1607585,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 191,
+      "t": 1774096731380,
+      "elapsed": 1611335,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 192,
+      "t": 1774096737847,
+      "elapsed": 1617802,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 193,
+      "t": 1774096742696,
+      "elapsed": 1622651,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 194,
+      "t": 1774096750980,
+      "elapsed": 1630935,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 195,
+      "t": 1774096754496,
+      "elapsed": 1634451,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 196,
+      "t": 1774096758880,
+      "elapsed": 1638835,
+      "type": "beat_seek",
+      "beatIndex": 8
+    },
+    {
+      "seq": 197,
+      "t": 1774096761847,
+      "elapsed": 1641802,
+      "type": "beat_seek",
+      "beatIndex": 9
+    },
+    {
+      "seq": 198,
+      "t": 1774096831797,
+      "elapsed": 1711752,
+      "type": "annotation_finished",
+      "disputeCount": 19
+    },
+    {
+      "seq": 199,
+      "t": 1774096831797,
+      "elapsed": 1711752,
+      "type": "phase_change",
+      "from": "solo_viewing",
+      "to": "together_viewing"
+    },
+    {
+      "seq": 200,
+      "t": 1774096841280,
+      "elapsed": 1721235,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 201,
+      "t": 1774096845282,
+      "elapsed": 1725237,
+      "type": "beat_advance",
+      "beatIndex": 1,
+      "trigger": "auto"
+    },
+    {
+      "seq": 202,
+      "t": 1774096849285,
+      "elapsed": 1729240,
+      "type": "beat_advance",
+      "beatIndex": 2,
+      "trigger": "auto"
+    },
+    {
+      "seq": 203,
+      "t": 1774096853289,
+      "elapsed": 1733244,
+      "type": "beat_advance",
+      "beatIndex": 3,
+      "trigger": "auto"
+    },
+    {
+      "seq": 204,
+      "t": 1774096857291,
+      "elapsed": 1737246,
+      "type": "beat_advance",
+      "beatIndex": 4,
+      "trigger": "auto"
+    },
+    {
+      "seq": 205,
+      "t": 1774096861296,
+      "elapsed": 1741251,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 206,
+      "t": 1774096865298,
+      "elapsed": 1745253,
+      "type": "beat_advance",
+      "beatIndex": 6,
+      "trigger": "auto"
+    },
+    {
+      "seq": 207,
+      "t": 1774096869301,
+      "elapsed": 1749256,
+      "type": "beat_advance",
+      "beatIndex": 7,
+      "trigger": "auto"
+    },
+    {
+      "seq": 208,
+      "t": 1774096873304,
+      "elapsed": 1753259,
+      "type": "beat_advance",
+      "beatIndex": 8,
+      "trigger": "auto"
+    },
+    {
+      "seq": 209,
+      "t": 1774096877306,
+      "elapsed": 1757261,
+      "type": "beat_advance",
+      "beatIndex": 9,
+      "trigger": "auto"
+    },
+    {
+      "seq": 210,
+      "t": 1774096882509,
+      "elapsed": 1762464,
+      "type": "phase_change",
+      "from": "together_viewing",
+      "to": "divergence"
+    },
+    {
+      "seq": 211,
+      "t": 1774096882510,
+      "elapsed": 1762465,
+      "type": "session_upload",
+      "eventCount": 211
+    },
+    {
+      "seq": 212,
+      "t": 1774096955647,
+      "elapsed": 1835602,
+      "type": "session_export",
+      "eventCount": 212
+    }
+  ]
+}

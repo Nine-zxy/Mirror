@@ -33,6 +33,11 @@ export const MSG = {
   SYNC_PLAY_PARTNER_READY:  'sync:play_partner_ready', // server → client: partner is ready
   SYNC_PLAY_GO:             'sync:play_go',        // server → both: start now!
 
+  // Phase-ready gate (both must finish before transitioning together)
+  SYNC_PHASE_READY:         'sync:phase_ready',          // client → server: "I'm ready for next phase"
+  SYNC_PHASE_PARTNER_READY: 'sync:phase_partner_ready',  // server → client: partner is ready
+  SYNC_PHASE_GO:            'sync:phase_go',              // server → both: transition now!
+
   // Annotations (private until reveal)
   ANNOTATION_UPDATE:        'annotation:update',
   ANNOTATION_SELF_CONFIRMS: 'annotation:self_confirms',
