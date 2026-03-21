@@ -53,3 +53,8 @@
 {"timestamp":"2026-03-21T14:33:11.454Z","role":"A","event":"session_upload","data":{"seq":45,"t":1774103591432,"elapsed":327454,"type":"session_upload","eventCount":45},"phase":null,"scenarioId":"P6"}
 {"timestamp":"2026-03-21T14:35:00.046Z","role":"A","event":"phase_change","data":{"seq":46,"t":1774103700029,"elapsed":436051,"type":"phase_change","from":"divergence","to":"solo_viewing"},"phase":null,"scenarioId":"P6"}
 {"timestamp":"2026-03-21T14:35:05.927Z","role":"A","event":"beat_seek","data":{"seq":47,"t":1774103705907,"elapsed":441929,"type":"beat_seek","beatIndex":1},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-21T14:37:23.706Z","role":"A","event":"beat_seek","data":{"seq":48,"t":1774103843689,"elapsed":579711,"type":"beat_seek","beatIndex":4},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-21T14:37:27.294Z","role":"A","event":"beat_seek","data":{"seq":49,"t":1774103847275,"elapsed":583297,"type":"beat_seek","beatIndex":5},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-21T14:37:28.807Z","role":"A","event":"beat_seek","data":{"seq":50,"t":1774103848790,"elapsed":584812,"type":"beat_seek","beatIndex":6},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-21T14:37:30.091Z","role":"A","event":"beat_seek","data":{"seq":51,"t":1774103850070,"elapsed":586092,"type":"beat_seek","beatIndex":7},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-21T14:37:31.086Z","role":"A","event":"beat_seek","data":{"seq":52,"t":1774103851051,"elapsed":587073,"type":"beat_seek","beatIndex":8},"phase":null,"scenarioId":"P6"}

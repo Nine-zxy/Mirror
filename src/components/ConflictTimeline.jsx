@@ -88,13 +88,7 @@ export default function ConflictTimeline({
               opacity: disabled ? 0.4 : 1,
             }}
           >
-            {isPlaying ? (
-              <img src="/assets/ui/icons/pause.png" alt="pause"
-                style={{width:'16px',height:'16px',imageRendering:'pixelated'}} />
-            ) : (
-              <img src="/assets/ui/icons/play.png" alt="play"
-                style={{width:'16px',height:'16px',imageRendering:'pixelated'}} />
-            )}
+            {isPlaying ? '⏸️' : '▶️'}
           </button>
         )}
 

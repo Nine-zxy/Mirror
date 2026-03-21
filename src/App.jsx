@@ -124,6 +124,7 @@ export default function App() {
   // together_viewing: 'both'
   const [bubbleVisibility, setBubbleVisibility] = useState(directScenarioData ? 'self' : 'partner')
   const [showScript, setShowScript]     = useState(false)
+  const [showSceneSelector, setShowSceneSelector] = useState(false)
   const [annotation, setAnnotation]     = useState('')
 
   const [liveScenario, setLiveScenario] = useState(initScenario)
@@ -874,7 +875,12 @@ export default function App() {
           <button onClick={() => setShowScript(p => !p)}
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
             style={hBtn(showScript, '#7ab0e8')} title="剧本面板 (S)">
-            <img src="/assets/ui/icons/script.svg" alt="" className="inline w-3.5 h-3.5" style={{imageRendering:'auto'}} />
+            📜
+          </button>
+          <button onClick={() => setShowSceneSelector(p => !p)}
+            className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"
+            style={hBtn(showSceneSelector, '#90c878')} title="切换场景">
+            🎬 场景
           </button>
         </div>
       </header>
@@ -958,6 +964,39 @@ export default function App() {
             disputes={disputes}
             onSeek={handleSelectBeat}
           />
+        )}
+
+        {/* Scene selector panel */}
+        {showSceneSelector && (
+          <div className="absolute top-0 right-0 z-50 anim-fadeIn"
+            style={{ width: '220px', maxHeight: '100%', background: 'rgba(6,8,16,0.97)', border: '1px solid rgba(122,176,232,0.15)', borderTop: 'none', borderRight: 'none', backdropFilter: 'blur(14px)' }}>
+            <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: 'rgba(122,176,232,0.1)' }}>
+              <span className="font-mono text-[10px] text-white/50">选择场景</span>
+              <button onClick={() => setShowSceneSelector(false)} className="text-[10px] text-white/20 hover:text-white/50">✕</button>
+            </div>
+            <div className="overflow-y-auto p-2 grid grid-cols-2 gap-1.5" style={{ maxHeight: 'calc(100vh - 80px)', scrollbarWidth: 'thin' }}>
+              {Object.entries(SCENE_PRESETS).map(([key, preset]) => {
+                const active = (liveScenario.scene || 'bedroom_night') === key
+                return (
+                  <button key={key} onClick={() => { handleSceneChange(key); setShowSceneSelector(false) }}
+                    className="relative rounded overflow-hidden transition-all text-left"
+                    style={{
+                      border: `1.5px solid ${active ? (preset.ambientColor || '#7ab0e8') : 'rgba(255,255,255,0.07)'}`,
+                      boxShadow: active ? `0 0 8px ${preset.ambientColor || '#7ab0e8'}40` : 'none',
+                      aspectRatio: '16/9',
+                    }}>
+                    <div style={{ position: 'absolute', inset: 0, background: preset.fallbackGradient, opacity: active ? 0.9 : 0.5 }} />
+                    <div className="absolute inset-0 flex items-end justify-center pb-1">
+                      <span className="font-mono text-[8px]"
+                        style={{ color: active ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.45)' }}>
+                        {preset.label}
+                      </span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
         )}
       </div>
 
