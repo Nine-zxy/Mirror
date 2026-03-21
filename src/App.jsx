@@ -11,7 +11,7 @@ const STUDY_SCENARIOS = {
 import {
   initSession, log, logPhase, logBeat, logSeek,
   logTag, logDispute, logToggle, logReflect,
-  logArchetype, logAppearanceSet, downloadLog,
+  logArchetype, logAppearanceSet, downloadLog, uploadLog,
   logAssumptionConfirm, logAssumptionDispute,
   logAssumptionEdit, logAssumptionClear,
   setSyncCallback,
@@ -275,6 +275,7 @@ export default function App() {
         setTimeout(() => {
           setPhase('divergence')
           logPhase('together_viewing', 'divergence')
+          uploadLog()  // Auto-save log to server when reaching divergence
           syncSend('sync:phase', { phase: 'divergence' })
         }, 1200)
       }
@@ -408,22 +409,19 @@ export default function App() {
     log('self_confirm_finished', { selfConfirmCount: Object.keys(selfConfirms).length })
   }, [selfConfirms, syncSend])
 
-  // solo_viewing → together_viewing or divergence (user clicks "完成标注")
+  // solo_viewing → together_viewing (always, both solo and together mode)
+  // Together Viewing shows BOTH people's thoughts (edited versions) side by side
   const handleFinishAnnotation = useCallback(() => {
     setIsPlaying(false)
     log('annotation_finished', { disputeCount: Object.keys(disputes).length })
-    if (sync.mode === 'together') {
+    if (sync.mode === 'together' && sync.connected) {
       sync.send('annotation:self_confirms', { selfConfirms })
-      setBeatIndex(0)
-      setPhase('together_viewing')
-      setBubbleVisibility('both')
-      setIsPlaying(false)
-      logPhase('solo_viewing', 'together_viewing')
       syncSend('sync:phase', { phase: 'together_viewing' })
-    } else {
-      setPhase('divergence')
-      logPhase('solo_viewing', 'divergence')
     }
+    setBeatIndex(0)
+    setPhase('together_viewing')
+    setBubbleVisibility('both')
+    logPhase('solo_viewing', 'together_viewing')
   }, [disputes, sync, syncSend, selfConfirms])
 
   // SelfConfirmScreen: confirm/edit a single beat
@@ -802,11 +800,13 @@ export default function App() {
         onFinishAnnotation={
           phase === 'self_confirm' ? handleSelfConfirmToSoloViewing :
           phase === 'solo_viewing' ? handleFinishAnnotation :
+          phase === 'together_viewing' ? (() => { setPhase('divergence'); logPhase('together_viewing', 'divergence'); uploadLog() }) :
           null
         }
         finishLabel={
           phase === 'self_confirm' ? '确认完成，标注对方 →' :
           phase === 'solo_viewing' ? '完成标注 →' :
+          phase === 'together_viewing' ? '查看分歧 →' :
           null
         }
       />

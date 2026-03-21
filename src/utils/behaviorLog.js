@@ -153,6 +153,66 @@ export function downloadLog() {
   return payload
 }
 
+// ── Auto-upload log to server ──────────────────────────────────
+// Sends log data to the sync server's /logs endpoint for researcher collection
+export function uploadLog() {
+  const payload = buildLog()
+  log('session_upload', { eventCount: payload.eventCount })
+
+  const roleSuffix = state.meta.role ? `-${state.meta.role}` : ''
+  const filename = `aside-${state.sessionId}${roleSuffix}.json`
+
+  // Always save to localStorage as backup first
+  try {
+    localStorage.setItem(`aside-log-${filename}`, JSON.stringify(payload))
+    console.log('[Log] Saved to localStorage as backup:', filename)
+  } catch(e) { /* ignore */ }
+
+  // Try sending to the server (same origin or WS server)
+  // First try relative URL (works with cpolar/same host)
+  const serverUrl = window.location.port === '3001'
+    ? '/logs'
+    : `${window.location.protocol}//${window.location.hostname}:3001/logs`
+
+  fetch(serverUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename, data: payload }),
+  }).then(() => {
+    console.log('[Log] Uploaded to server:', filename)
+  }).catch((err) => {
+    console.warn('[Log] Server upload failed, localStorage backup exists:', err.message)
+  })
+
+  return payload
+}
+
+// ── Auto-upload on page unload ──────────────────────────────────
+// Uses sendBeacon for reliability during page close
+function uploadLogBeacon() {
+  if (!state.sessionId || state.events.length === 0) return
+  const payload = buildLog()
+  const roleSuffix = state.meta.role ? `-${state.meta.role}` : ''
+  const filename = `aside-${state.sessionId}${roleSuffix}.json`
+
+  // Save to localStorage (sync, always works)
+  try {
+    localStorage.setItem(`aside-log-${filename}`, JSON.stringify(payload))
+  } catch(e) { /* ignore */ }
+
+  // Use sendBeacon for reliable upload during unload
+  const serverUrl = window.location.port === '3001'
+    ? '/logs'
+    : `${window.location.protocol}//${window.location.hostname}:3001/logs`
+  try {
+    navigator.sendBeacon(serverUrl, JSON.stringify({ filename, data: payload }))
+  } catch(e) { /* ignore */ }
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', uploadLogBeacon)
+}
+
 // ── Convenience wrappers ──────────────────────────────────────
 export const logPhase     = (from, to)  => log('phase_change', { from, to })
 export const logBeat      = (i, trigger) => log('beat_advance', { beatIndex: i, trigger })

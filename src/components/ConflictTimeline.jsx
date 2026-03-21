@@ -168,7 +168,7 @@ export default function ConflictTimeline({
       </div>
 
       {/* Phase transition button — shows at last beat when paused */}
-      {onFinishAnnotation && (phase === 'solo_viewing' || phase === 'self_confirm') && !isPlaying && (
+      {onFinishAnnotation && (phase === 'solo_viewing' || phase === 'self_confirm' || phase === 'together_viewing') && !isPlaying && (
         <button
           onClick={onFinishAnnotation}
           className="font-mono text-[11px] px-4 py-1.5 rounded-lg border transition-all hover:scale-105 flex-shrink-0 anim-fadeIn"

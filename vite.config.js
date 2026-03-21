@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
       target: ['es2015', 'safari12'],  // iPad compatibility
     },
     server: {
+      allowedHosts: true,  // Allow all hosts (cpolar, any tunnel domain)
       // Use --host flag when running dev:together for LAN access
       // e.g. vite --host
       proxy: {

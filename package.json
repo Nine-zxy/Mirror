@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "start": "node server/index.js",
     "server": "node server/index.js",
-    "dev:together": "concurrently \"vite --host\" \"npm run server\""
+    "dev:together": "concurrently \"vite --host\" \"npm run server\"",
+    "serve": "npx serve dist -l 5174 -s",
+    "build:serve": "vite build && npx serve dist -l 5174 -s"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",

@@ -12,8 +12,13 @@
 import { createServer } from 'http'
 import { WebSocketServer } from 'ws'
 import { networkInterfaces } from 'os'
-import { createReadStream } from 'fs'
+import { createReadStream, existsSync, mkdirSync, writeFileSync } from 'fs'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 import { RoomManager } from './roomManager.js'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const LOG_DIR = join(__dirname, '..', 'study-logs')
 
 const PORT = parseInt(process.argv[2] || process.env.PORT || process.env.ASIDE_WS_PORT || '3001', 10)
 const manager = new RoomManager()
@@ -58,6 +63,28 @@ const httpServer = createServer((req, res) => {
       'Content-Disposition': `attachment; filename="${filename}"`,
     })
     createReadStream(filepath).pipe(res)
+    return
+  }
+
+  // POST /logs — receive log upload from participant browser
+  if (req.method === 'POST' && pathname === '/logs') {
+    let body = ''
+    req.on('data', chunk => { body += chunk })
+    req.on('end', () => {
+      try {
+        const { filename, data } = JSON.parse(body)
+        const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_')
+        if (!existsSync(LOG_DIR)) mkdirSync(LOG_DIR, { recursive: true })
+        writeFileSync(join(LOG_DIR, safeName), JSON.stringify(data, null, 2))
+        console.log(`[Log] Saved: ${safeName}`)
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ ok: true, file: safeName }))
+      } catch(e) {
+        console.error('[Log] Save error:', e.message)
+        res.writeHead(500, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: e.message }))
+      }
+    })
     return
   }
 
