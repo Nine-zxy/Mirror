@@ -1,0 +1,3 @@
+{"timestamp":"2026-03-21T14:44:29.726Z","role":"A","event":"phase_change","data":{"seq":1,"t":1774104269704,"elapsed":1338,"type":"phase_change","from":"study_intro","to":"study_input"},"phase":null,"scenarioId":"P4"}
+{"timestamp":"2026-03-21T14:44:33.333Z","role":"A","event":"study_input_submitted","data":{"seq":2,"t":1774104273310,"elapsed":4944,"type":"study_input_submitted","inputLength":0,"scenario":"p4"},"phase":null,"scenarioId":"P4"}
+{"timestamp":"2026-03-21T14:44:33.334Z","role":"A","event":"phase_change","data":{"seq":3,"t":1774104273311,"elapsed":4945,"type":"phase_change","from":"study_input","to":"self_confirm"},"phase":null,"scenarioId":"P4"}

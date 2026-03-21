@@ -17,7 +17,7 @@ const STUDY_SCENARIOS = {
   p5: scenario_p5,
   p6: scenario_p6,
 }
-// SCENE_PRESETS used in Theater.jsx; PersonaEditor removed from App
+import { SCENE_PRESETS }                           from './data/dramaElements'
 import {
   initSession, log, logPhase, logBeat, logSeek,
   logTag, logDispute, logToggle, logReflect,

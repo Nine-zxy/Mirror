@@ -1,0 +1,907 @@
+{
+  "roomCode": "P6",
+  "mode": "together",
+  "proximity": "colocated",
+  "createdAt": "2026-03-21T14:27:44.200Z",
+  "exportedAt": "2026-03-21T14:42:24.516Z",
+  "eventCount": 63,
+  "logs": [
+    {
+      "timestamp": "2026-03-21T14:27:51.113Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 1,
+        "t": 1774103271086,
+        "elapsed": 7108,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:28:02.525Z",
+      "role": "A",
+      "event": "study_input_submitted",
+      "data": {
+        "seq": 2,
+        "t": 1774103282507,
+        "elapsed": 18529,
+        "type": "study_input_submitted",
+        "inputLength": 0,
+        "scenario": "p6"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:28:02.526Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 3,
+        "t": 1774103282507,
+        "elapsed": 18529,
+        "type": "phase_change",
+        "from": "study_input",
+        "to": "self_confirm"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:28:18.525Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 4,
+        "t": 1774103298507,
+        "elapsed": 34529,
+        "type": "beat_seek",
+        "beatIndex": 1
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:28:26.583Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 5,
+        "t": 1774103306566,
+        "elapsed": 42588,
+        "type": "beat_seek",
+        "beatIndex": 2
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:28:31.179Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 6,
+        "t": 1774103311148,
+        "elapsed": 47170,
+        "type": "beat_seek",
+        "beatIndex": 3
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:28:47.588Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 7,
+        "t": 1774103327572,
+        "elapsed": 63594,
+        "type": "beat_seek",
+        "beatIndex": 4
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:28:57.786Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 8,
+        "t": 1774103337761,
+        "elapsed": 73783,
+        "type": "beat_seek",
+        "beatIndex": 5
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:02.630Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 9,
+        "t": 1774103342612,
+        "elapsed": 78634,
+        "type": "beat_seek",
+        "beatIndex": 6
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:04.845Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 10,
+        "t": 1774103344827,
+        "elapsed": 80849,
+        "type": "beat_seek",
+        "beatIndex": 7
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:06.619Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 11,
+        "t": 1774103346603,
+        "elapsed": 82625,
+        "type": "beat_seek",
+        "beatIndex": 8
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:07.944Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 12,
+        "t": 1774103347927,
+        "elapsed": 83949,
+        "type": "beat_seek",
+        "beatIndex": 9
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:14.088Z",
+      "role": "A",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 13,
+        "t": 1774103354070,
+        "elapsed": 90092,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:23.585Z",
+      "role": "A",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 14,
+        "t": 1774103363567,
+        "elapsed": 99589,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:26.018Z",
+      "role": "A",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 15,
+        "t": 1774103366001,
+        "elapsed": 102023,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:27.194Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 16,
+        "t": 1774103367177,
+        "elapsed": 103199,
+        "type": "beat_seek",
+        "beatIndex": 9
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:39.691Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 1,
+        "t": 1774103379660,
+        "elapsed": 3338,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:43.542Z",
+      "role": "B",
+      "event": "study_input_submitted",
+      "data": {
+        "seq": 2,
+        "t": 1774103383525,
+        "elapsed": 7203,
+        "type": "study_input_submitted",
+        "inputLength": 0,
+        "scenario": "p6"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:43.542Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 3,
+        "t": 1774103383525,
+        "elapsed": 7203,
+        "type": "phase_change",
+        "from": "study_input",
+        "to": "self_confirm"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:47.087Z",
+      "role": "B",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 4,
+        "t": 1774103387066,
+        "elapsed": 10744,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:47.174Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 5,
+        "t": 1774103387129,
+        "elapsed": 10807,
+        "type": "phase_change",
+        "from": "self_confirm",
+        "to": "solo_viewing"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:47.229Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 17,
+        "t": 1774103387186,
+        "elapsed": 123208,
+        "type": "phase_change",
+        "from": "self_confirm",
+        "to": "solo_viewing"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:51.443Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 18,
+        "t": 1774103391420,
+        "elapsed": 127442,
+        "type": "beat_seek",
+        "beatIndex": 1
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:53.616Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 19,
+        "t": 1774103393596,
+        "elapsed": 129618,
+        "type": "beat_seek",
+        "beatIndex": 2
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:55.681Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 20,
+        "t": 1774103395645,
+        "elapsed": 131667,
+        "type": "beat_seek",
+        "beatIndex": 3
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:57.350Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 21,
+        "t": 1774103397310,
+        "elapsed": 133332,
+        "type": "beat_seek",
+        "beatIndex": 4
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:29:59.181Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 22,
+        "t": 1774103399155,
+        "elapsed": 135177,
+        "type": "beat_seek",
+        "beatIndex": 5
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:01.797Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 23,
+        "t": 1774103401771,
+        "elapsed": 137793,
+        "type": "beat_seek",
+        "beatIndex": 6
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:03.549Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 24,
+        "t": 1774103403531,
+        "elapsed": 139553,
+        "type": "beat_seek",
+        "beatIndex": 7
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:06.682Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 25,
+        "t": 1774103406658,
+        "elapsed": 142680,
+        "type": "beat_seek",
+        "beatIndex": 8
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:07.609Z",
+      "role": "A",
+      "event": "annotation_finished",
+      "data": {
+        "seq": 26,
+        "t": 1774103407590,
+        "elapsed": 143612,
+        "type": "annotation_finished",
+        "disputeCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:10.457Z",
+      "role": "B",
+      "event": "annotation_finished",
+      "data": {
+        "seq": 6,
+        "t": 1774103410440,
+        "elapsed": 34118,
+        "type": "annotation_finished",
+        "disputeCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:10.501Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 7,
+        "t": 1774103410484,
+        "elapsed": 34162,
+        "type": "phase_change",
+        "from": "solo_viewing",
+        "to": "together_viewing"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:10.532Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 27,
+        "t": 1774103410502,
+        "elapsed": 146524,
+        "type": "phase_change",
+        "from": "solo_viewing",
+        "to": "together_viewing"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:14.731Z",
+      "role": "B",
+      "event": "beat_seek",
+      "data": {
+        "seq": 8,
+        "t": 1774103414703,
+        "elapsed": 38381,
+        "type": "beat_seek",
+        "beatIndex": 6
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:19.581Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 28,
+        "t": 1774103419544,
+        "elapsed": 155566,
+        "type": "beat_seek",
+        "beatIndex": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:20.596Z",
+      "role": "A",
+      "event": "playback_play",
+      "data": {
+        "seq": 29,
+        "t": 1774103420577,
+        "elapsed": 156599,
+        "type": "playback_play",
+        "beatIndex": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:23.048Z",
+      "role": "A",
+      "event": "playback_pause",
+      "data": {
+        "seq": 30,
+        "t": 1774103423031,
+        "elapsed": 159053,
+        "type": "playback_pause",
+        "beatIndex": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:24.803Z",
+      "role": "A",
+      "event": "playback_play",
+      "data": {
+        "seq": 31,
+        "t": 1774103424785,
+        "elapsed": 160807,
+        "type": "playback_play",
+        "beatIndex": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:26.433Z",
+      "role": "A",
+      "event": "playback_pause",
+      "data": {
+        "seq": 32,
+        "t": 1774103426417,
+        "elapsed": 162439,
+        "type": "playback_pause",
+        "beatIndex": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:27.542Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 33,
+        "t": 1774103427525,
+        "elapsed": 163547,
+        "type": "beat_seek",
+        "beatIndex": 1
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:30.129Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 34,
+        "t": 1774103430110,
+        "elapsed": 166132,
+        "type": "beat_seek",
+        "beatIndex": 2
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:31.788Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 35,
+        "t": 1774103431766,
+        "elapsed": 167788,
+        "type": "beat_seek",
+        "beatIndex": 3
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:33.321Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 36,
+        "t": 1774103433296,
+        "elapsed": 169318,
+        "type": "beat_seek",
+        "beatIndex": 4
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:36.053Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 37,
+        "t": 1774103436032,
+        "elapsed": 172054,
+        "type": "beat_seek",
+        "beatIndex": 5
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:37.447Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 38,
+        "t": 1774103437423,
+        "elapsed": 173445,
+        "type": "beat_seek",
+        "beatIndex": 6
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:39.139Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 39,
+        "t": 1774103439121,
+        "elapsed": 175143,
+        "type": "beat_seek",
+        "beatIndex": 7
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:40.173Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 40,
+        "t": 1774103440147,
+        "elapsed": 176169,
+        "type": "beat_seek",
+        "beatIndex": 8
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:30:56.073Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 41,
+        "t": 1774103456039,
+        "elapsed": 192061,
+        "type": "beat_seek",
+        "beatIndex": 9
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:33:07.707Z",
+      "role": "A",
+      "event": "playback_play",
+      "data": {
+        "seq": 42,
+        "t": 1774103587692,
+        "elapsed": 323714,
+        "type": "playback_play",
+        "beatIndex": 9
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:33:10.143Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 43,
+        "t": 1774103590127,
+        "elapsed": 326149,
+        "type": "beat_seek",
+        "beatIndex": 9
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:33:11.451Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 44,
+        "t": 1774103591431,
+        "elapsed": 327453,
+        "type": "phase_change",
+        "from": "together_viewing",
+        "to": "divergence"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:33:11.454Z",
+      "role": "A",
+      "event": "session_upload",
+      "data": {
+        "seq": 45,
+        "t": 1774103591432,
+        "elapsed": 327454,
+        "type": "session_upload",
+        "eventCount": 45
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:35:00.046Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 46,
+        "t": 1774103700029,
+        "elapsed": 436051,
+        "type": "phase_change",
+        "from": "divergence",
+        "to": "solo_viewing"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:35:05.927Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 47,
+        "t": 1774103705907,
+        "elapsed": 441929,
+        "type": "beat_seek",
+        "beatIndex": 1
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:37:23.706Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 48,
+        "t": 1774103843689,
+        "elapsed": 579711,
+        "type": "beat_seek",
+        "beatIndex": 4
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:37:27.294Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 49,
+        "t": 1774103847275,
+        "elapsed": 583297,
+        "type": "beat_seek",
+        "beatIndex": 5
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:37:28.807Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 50,
+        "t": 1774103848790,
+        "elapsed": 584812,
+        "type": "beat_seek",
+        "beatIndex": 6
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:37:30.091Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 51,
+        "t": 1774103850070,
+        "elapsed": 586092,
+        "type": "beat_seek",
+        "beatIndex": 7
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:37:31.086Z",
+      "role": "A",
+      "event": "beat_seek",
+      "data": {
+        "seq": 52,
+        "t": 1774103851051,
+        "elapsed": 587073,
+        "type": "beat_seek",
+        "beatIndex": 8
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:42:15.750Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 1,
+        "t": 1774104135731,
+        "elapsed": 2569,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:42:20.723Z",
+      "role": "B",
+      "event": "study_input_submitted",
+      "data": {
+        "seq": 2,
+        "t": 1774104140707,
+        "elapsed": 7545,
+        "type": "study_input_submitted",
+        "inputLength": 0,
+        "scenario": "p6"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:42:20.724Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 3,
+        "t": 1774104140707,
+        "elapsed": 7545,
+        "type": "phase_change",
+        "from": "study_input",
+        "to": "self_confirm"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    }
+  ]
+}
