@@ -202,11 +202,17 @@ export default function App() {
   useEffect(() => {
     if (!DIRECT_SCENARIO || STUDY_ID) return
     if (!sync.connected || scenarioRoomJoined.current) return
-    // Use scenario ID as room code — A creates (or joins if room exists), B does the same
+    // Use scenario ID as room code — A creates room, B joins it
     scenarioRoomJoined.current = true
     const roomCode = DIRECT_SCENARIO.toUpperCase()
-    sync.createRoom('colocated', roomCode)
-    console.log(`[Scenario] Auto-joining room "${roomCode}" as ${DIRECT_ROLE || 'A'}`)
+    const role = DIRECT_ROLE || 'A'
+    if (role === 'A') {
+      sync.createRoom('colocated', roomCode)
+      console.log(`[Scenario] Created room "${roomCode}" as A`)
+    } else {
+      sync.joinRoom(roomCode)
+      console.log(`[Scenario] Joining room "${roomCode}" as B`)
+    }
   }, [sync.connected]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -278,9 +284,17 @@ export default function App() {
       isRemote.current = false
     }))
 
-    // Partner annotations reveal (at end phase)
+    // Partner annotations reveal — merge partner's edits into local disputes
+    // In together_viewing, each person sees the OTHER's edits of their own thoughts
     unsubs.push(sync.onMessage('annotation:reveal', (msg) => {
-      setPartnerDisputes(msg.partnerDisputes || {})
+      const pd = msg.partnerDisputes || {}
+      const ps = msg.partnerSelfConfirms || {}
+      setPartnerDisputes(pd)
+      // Merge partner's disputes into local disputes so Theater shows them
+      setDisputes(prev => ({ ...prev, ...pd }))
+      // Merge partner's selfConfirms into local selfConfirms
+      setSelfConfirms(prev => ({ ...prev, ...ps }))
+      log('partner_reveal_received', { disputeCount: Object.keys(pd).length, selfConfirmCount: Object.keys(ps).length })
     }))
 
     return () => unsubs.forEach(fn => fn())
@@ -444,7 +458,8 @@ export default function App() {
     setIsPlaying(false)
     log('annotation_finished', { disputeCount: Object.keys(disputes).length })
     if (sync.mode === 'together' && sync.connected) {
-      sync.send('annotation:self_confirms', { selfConfirms })
+      // Send BOTH disputes and selfConfirms to partner
+      sync.send('annotation:reveal', { partnerDisputes: disputes, partnerSelfConfirms: selfConfirms })
       syncSend('sync:phase', { phase: 'together_viewing' })
     }
     setBeatIndex(0)
