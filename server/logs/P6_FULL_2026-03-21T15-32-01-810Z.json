@@ -1,0 +1,200 @@
+{
+  "roomCode": "P6",
+  "mode": "together",
+  "proximity": "colocated",
+  "createdAt": "2026-03-21T14:57:00.201Z",
+  "exportedAt": "2026-03-21T15:32:01.811Z",
+  "eventCount": 13,
+  "logs": [
+    {
+      "timestamp": "2026-03-21T14:57:03.110Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 1,
+        "t": 1774105023087,
+        "elapsed": 3110,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:08.160Z",
+      "role": "A",
+      "event": "study_input_submitted",
+      "data": {
+        "seq": 2,
+        "t": 1774105028143,
+        "elapsed": 8166,
+        "type": "study_input_submitted",
+        "inputLength": 0,
+        "scenario": "p6"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:08.161Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 3,
+        "t": 1774105028143,
+        "elapsed": 8166,
+        "type": "phase_change",
+        "from": "study_input",
+        "to": "self_confirm"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:18.103Z",
+      "role": "A",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 4,
+        "t": 1774105038071,
+        "elapsed": 18094,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:26.903Z",
+      "role": "A",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 5,
+        "t": 1774105046885,
+        "elapsed": 26908,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:27.366Z",
+      "role": "A",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 6,
+        "t": 1774105047349,
+        "elapsed": 27372,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:33.623Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 1,
+        "t": 1774105053604,
+        "elapsed": 1128,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:36.760Z",
+      "role": "B",
+      "event": "study_input_submitted",
+      "data": {
+        "seq": 2,
+        "t": 1774105056738,
+        "elapsed": 4262,
+        "type": "study_input_submitted",
+        "inputLength": 0,
+        "scenario": "p6"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:36.761Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 3,
+        "t": 1774105056738,
+        "elapsed": 4262,
+        "type": "phase_change",
+        "from": "study_input",
+        "to": "self_confirm"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:38.939Z",
+      "role": "B",
+      "event": "beat_seek",
+      "data": {
+        "seq": 4,
+        "t": 1774105058913,
+        "elapsed": 6437,
+        "type": "beat_seek",
+        "beatIndex": 9
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:40.102Z",
+      "role": "B",
+      "event": "self_confirm_finished",
+      "data": {
+        "seq": 5,
+        "t": 1774105060059,
+        "elapsed": 7583,
+        "type": "self_confirm_finished",
+        "selfConfirmCount": 0
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:40.200Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 7,
+        "t": 1774105060139,
+        "elapsed": 40162,
+        "type": "phase_change",
+        "from": "self_confirm",
+        "to": "solo_viewing"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-21T14:57:40.214Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 6,
+        "t": 1774105060190,
+        "elapsed": 7714,
+        "type": "phase_change",
+        "from": "self_confirm",
+        "to": "solo_viewing"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    }
+  ]
+}

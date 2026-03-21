@@ -6,6 +6,10 @@ import { scenario_p3 }                              from './data/scenario_p3'
 import { scenario_p4 }                              from './data/scenario_p4'
 import { scenario_p5 }                              from './data/scenario_p5'
 import { scenario_p6 }                              from './data/scenario_p6'
+import { scenario_p7 }                              from './data/scenario_p7'
+import { scenario_p8 }                              from './data/scenario_p8'
+import { scenario_p9 }                              from './data/scenario_p9'
+import { scenario_p10 }                             from './data/scenario_p10'
 
 // Available pre-built scenarios for study mode
 const STUDY_SCENARIOS = {
@@ -16,6 +20,10 @@ const STUDY_SCENARIOS = {
   p4: scenario_p4,
   p5: scenario_p5,
   p6: scenario_p6,
+  p7: scenario_p7,
+  p8: scenario_p8,
+  p9: scenario_p9,
+  p10: scenario_p10,
 }
 import { SCENE_PRESETS }                           from './data/dramaElements'
 import {
