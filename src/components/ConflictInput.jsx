@@ -864,40 +864,61 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
 
         {/* ── Concerns row: side by side ── */}
         {(skipGeneration || (parsedText || rawText).trim().length > 20) && (
-          <div className="flex gap-4 anim-fadeIn">
-            {/* Left: concern */}
-            <div className="flex-1">
-              <label className="font-mono text-[12px] mb-1 block" style={{ color: '#7ab0e8' }}>
-                你最想让对方理解的是什么？ *
-              </label>
-              <input
-                value={concernA}
-                onChange={e => setConcernA(e.target.value)}
-                maxLength={80}
-                placeholder="例：我不是在无理取闹，我只是需要被回应"
-                className="w-full rounded-lg px-3 py-2 text-[18px] text-white/80 placeholder-white/20 focus:outline-none"
-                style={{
-                  background: 'rgba(122,176,232,0.06)',
-                  border: `1px solid ${concernA ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                  fontFamily: '"PingFang SC","Inter",sans-serif',
-                  transition: 'border-color 0.2s',
-                }}
-              />
+          <div className="flex flex-col gap-3 anim-fadeIn">
+            <div className="flex gap-4">
+              {/* Left: concern */}
+              <div className="flex-1">
+                <label className="font-mono text-[12px] mb-1 block" style={{ color: '#7ab0e8' }}>
+                  最想让对方理解的是什么？ *
+                </label>
+                <input
+                  value={concernA}
+                  onChange={e => setConcernA(e.target.value)}
+                  maxLength={80}
+                  placeholder="例：我不是在无理取闹，我只是需要被回应"
+                  className="w-full rounded-lg px-3 py-2 text-[18px] text-white/80 placeholder-white/20 focus:outline-none"
+                  style={{
+                    background: 'rgba(122,176,232,0.06)',
+                    border: `1px solid ${concernA ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                    fontFamily: '"PingFang SC","Inter",sans-serif',
+                    transition: 'border-color 0.2s',
+                  }}
+                />
+              </div>
+              {/* Right: feeling */}
+              <div className="flex-1">
+                <label className="font-mono text-[12px] mb-1 block" style={{ color: '#7ab0e8' }}>
+                  当时最强烈的感受是什么？ *
+                </label>
+                <input
+                  value={feeling}
+                  onChange={e => setFeeling(e.target.value)}
+                  maxLength={80}
+                  placeholder="例：觉得不被重视"
+                  className="w-full rounded-lg px-3 py-2 text-[18px] text-white/80 placeholder-white/20 focus:outline-none"
+                  style={{
+                    background: 'rgba(122,176,232,0.06)',
+                    border: `1px solid ${feeling ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                    fontFamily: '"PingFang SC","Inter",sans-serif',
+                    transition: 'border-color 0.2s',
+                  }}
+                />
+              </div>
             </div>
-            {/* Right: feeling */}
-            <div className="flex-1">
+            {/* Context field */}
+            <div>
               <label className="font-mono text-[12px] mb-1 block" style={{ color: '#7ab0e8' }}>
-                你当时最强烈的感受是什么？ *
+                一句话背景 *
               </label>
               <input
-                value={feeling}
-                onChange={e => setFeeling(e.target.value)}
-                maxLength={80}
-                placeholder="例：觉得不被重视"
+                value={context}
+                onChange={e => setContext(e.target.value)}
+                maxLength={100}
+                placeholder="例：异地恋半年，最近沟通越来越少"
                 className="w-full rounded-lg px-3 py-2 text-[18px] text-white/80 placeholder-white/20 focus:outline-none"
                 style={{
                   background: 'rgba(122,176,232,0.06)',
-                  border: `1px solid ${feeling ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                  border: `1px solid ${context ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
                   fontFamily: '"PingFang SC","Inter",sans-serif',
                   transition: 'border-color 0.2s',
                 }}

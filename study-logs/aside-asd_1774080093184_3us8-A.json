@@ -1,0 +1,51 @@
+{
+  "sessionId": "asd_1774080093184_3us8",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "A",
+  "startedAt": "2026-03-21T08:01:33.184Z",
+  "exportedAt": "2026-03-21T09:22:33.396Z",
+  "durationMs": 4860212,
+  "eventCount": 2,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "phase_change": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 0,
+    "manualSeeks": 0,
+    "phaseFlow": "study_input",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 0,
+      "disputed": 0,
+      "edited": 0,
+      "cleared": 0,
+      "emotionChanges": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774080093184,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "A"
+    },
+    {
+      "seq": 1,
+      "t": 1774080220542,
+      "elapsed": 127358,
+      "type": "phase_change",
+      "from": "study_intro",
+      "to": "study_input"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "sessionId": "asd_1774087898460_i8e3",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "A",
+  "startedAt": "2026-03-21T10:11:38.460Z",
+  "exportedAt": "2026-03-21T10:17:55.111Z",
+  "durationMs": 376651,
+  "eventCount": 5,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "phase_change": 2,
+      "study_input_submitted": 1,
+      "beat_advance": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 0,
+    "manualSeeks": 0,
+    "phaseFlow": "study_input → self_confirm",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 0,
+      "disputed": 0,
+      "edited": 0,
+      "cleared": 0,
+      "emotionChanges": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774087898460,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "A"
+    },
+    {
+      "seq": 1,
+      "t": 1774087899471,
+      "elapsed": 1011,
+      "type": "phase_change",
+      "from": "study_intro",
+      "to": "study_input"
+    },
+    {
+      "seq": 2,
+      "t": 1774087911813,
+      "elapsed": 13353,
+      "type": "study_input_submitted",
+      "inputLength": 1832,
+      "scenario": "p4"
+    },
+    {
+      "seq": 3,
+      "t": 1774087911813,
+      "elapsed": 13353,
+      "type": "phase_change",
+      "from": "study_input",
+      "to": "self_confirm"
+    },
+    {
+      "seq": 4,
+      "t": 1774087911813,
+      "elapsed": 13353,
+      "type": "beat_advance",
+      "beatIndex": 0,
+      "trigger": "auto"
+    }
+  ]
+}

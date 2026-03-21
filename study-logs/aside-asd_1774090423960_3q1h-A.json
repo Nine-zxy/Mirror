@@ -1,0 +1,138 @@
+{
+  "sessionId": "asd_1774090423960_3q1h",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "A",
+  "startedAt": "2026-03-21T10:53:43.960Z",
+  "exportedAt": "2026-03-21T10:54:04.734Z",
+  "durationMs": 20774,
+  "eventCount": 13,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "phase_change": 4,
+      "study_input_submitted": 1,
+      "beat_advance": 1,
+      "beat_seek": 4,
+      "self_confirm_finished": 1,
+      "annotation_finished": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 0,
+    "manualSeeks": 4,
+    "phaseFlow": "study_input → self_confirm → solo_viewing → together_viewing",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 0,
+      "disputed": 0,
+      "edited": 0,
+      "cleared": 0,
+      "emotionChanges": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774090423960,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "A"
+    },
+    {
+      "seq": 1,
+      "t": 1774090425641,
+      "elapsed": 1681,
+      "type": "phase_change",
+      "from": "study_intro",
+      "to": "study_input"
+    },
+    {
+      "seq": 2,
+      "t": 1774090428203,
+      "elapsed": 4243,
+      "type": "study_input_submitted",
+      "inputLength": 0,
+      "scenario": "p4"
+    },
+    {
+      "seq": 3,
+      "t": 1774090428203,
+      "elapsed": 4243,
+      "type": "phase_change",
+      "from": "study_input",
+      "to": "self_confirm"
+    },
+    {
+      "seq": 4,
+      "t": 1774090428203,
+      "elapsed": 4243,
+      "type": "beat_advance",
+      "beatIndex": 0,
+      "trigger": "auto"
+    },
+    {
+      "seq": 5,
+      "t": 1774090431446,
+      "elapsed": 7486,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 6,
+      "t": 1774090434694,
+      "elapsed": 10734,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 7,
+      "t": 1774090438183,
+      "elapsed": 14223,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 8,
+      "t": 1774090439158,
+      "elapsed": 15198,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 9,
+      "t": 1774090440301,
+      "elapsed": 16341,
+      "type": "phase_change",
+      "from": "self_confirm",
+      "to": "solo_viewing"
+    },
+    {
+      "seq": 10,
+      "t": 1774090440301,
+      "elapsed": 16341,
+      "type": "self_confirm_finished",
+      "selfConfirmCount": 0
+    },
+    {
+      "seq": 11,
+      "t": 1774090442237,
+      "elapsed": 18277,
+      "type": "annotation_finished",
+      "disputeCount": 0
+    },
+    {
+      "seq": 12,
+      "t": 1774090442237,
+      "elapsed": 18277,
+      "type": "phase_change",
+      "from": "solo_viewing",
+      "to": "together_viewing"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "sessionId": "asd_1774089331459_pmd2",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "A",
+  "startedAt": "2026-03-21T10:35:31.459Z",
+  "exportedAt": "2026-03-21T12:07:06.120Z",
+  "durationMs": 5494661,
+  "eventCount": 1,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 0,
+    "manualSeeks": 0,
+    "phaseFlow": "",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 0,
+      "disputed": 0,
+      "edited": 0,
+      "cleared": 0,
+      "emotionChanges": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774089331459,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "A"
+    }
+  ]
+}

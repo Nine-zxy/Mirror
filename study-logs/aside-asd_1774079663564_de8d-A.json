@@ -1,0 +1,131 @@
+{
+  "sessionId": "asd_1774079663564_de8d",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "A",
+  "startedAt": "2026-03-21T07:54:23.564Z",
+  "exportedAt": "2026-03-21T07:57:07.560Z",
+  "durationMs": 163996,
+  "eventCount": 12,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "phase_change": 4,
+      "study_input_submitted": 1,
+      "beat_advance": 1,
+      "beat_seek": 3,
+      "self_confirm_finished": 1,
+      "annotation_finished": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 0,
+    "manualSeeks": 3,
+    "phaseFlow": "study_input → self_confirm → solo_viewing → together_viewing",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 0,
+      "disputed": 0,
+      "edited": 0,
+      "cleared": 0,
+      "emotionChanges": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774079663564,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "A"
+    },
+    {
+      "seq": 1,
+      "t": 1774079665296,
+      "elapsed": 1732,
+      "type": "phase_change",
+      "from": "study_intro",
+      "to": "study_input"
+    },
+    {
+      "seq": 2,
+      "t": 1774079683420,
+      "elapsed": 19856,
+      "type": "study_input_submitted",
+      "inputLength": 1707,
+      "scenario": "p3"
+    },
+    {
+      "seq": 3,
+      "t": 1774079683420,
+      "elapsed": 19856,
+      "type": "phase_change",
+      "from": "study_input",
+      "to": "self_confirm"
+    },
+    {
+      "seq": 4,
+      "t": 1774079683420,
+      "elapsed": 19856,
+      "type": "beat_advance",
+      "beatIndex": 0,
+      "trigger": "auto"
+    },
+    {
+      "seq": 5,
+      "t": 1774079687864,
+      "elapsed": 24300,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 6,
+      "t": 1774079689058,
+      "elapsed": 25494,
+      "type": "phase_change",
+      "from": "self_confirm",
+      "to": "solo_viewing"
+    },
+    {
+      "seq": 7,
+      "t": 1774079689058,
+      "elapsed": 25494,
+      "type": "self_confirm_finished",
+      "selfConfirmCount": 0
+    },
+    {
+      "seq": 8,
+      "t": 1774079690574,
+      "elapsed": 27010,
+      "type": "annotation_finished",
+      "disputeCount": 0
+    },
+    {
+      "seq": 9,
+      "t": 1774079690574,
+      "elapsed": 27010,
+      "type": "phase_change",
+      "from": "solo_viewing",
+      "to": "together_viewing"
+    },
+    {
+      "seq": 10,
+      "t": 1774079692301,
+      "elapsed": 28737,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 11,
+      "t": 1774079693280,
+      "elapsed": 29716,
+      "type": "beat_seek",
+      "beatIndex": 7
+    }
+  ]
+}

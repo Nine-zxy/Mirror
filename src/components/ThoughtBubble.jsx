@@ -53,20 +53,28 @@ const BUBBLE_TYPES = {
   },
 }
 
+// 8 emotions, each with a unique icon from /assets/ui/emotions/ — no duplicates
 const EMOTION_STYLE = {
-  anxious:    { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', icon: '〜', label: '焦虑', imgSrc: '/assets/ui/emotions/stressed.png' },
-  defensive:  { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', icon: '◈', label: '防备', imgSrc: '/assets/ui/emotions/confused.png' },
-  angry:      { bg: 'rgba(210,55,55,0.14)',   border: '#e04040', text: '#f8a0a0', icon: '■', label: '愤怒', imgSrc: '/assets/ui/emotions/angry.png' },
-  hurt:       { bg: 'rgba(90,80,170,0.10)',   border: '#7060c0', text: '#c0b8f0', icon: '▽', label: '受伤', imgSrc: '/assets/ui/emotions/sleepy.png' },
-  withdrawn:  { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', icon: '◁', label: '退缩', imgSrc: '/assets/ui/emotions/sleepy.png' },
-  warm:       { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', icon: '◉', label: '温暖', imgSrc: '/assets/ui/emotions/happy.png' },
-  reflective: { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', icon: '✦', label: '反思', imgSrc: '/assets/ui/emotions/thinking.png' },
-  surprised:  { bg: 'rgba(200,160,55,0.10)',  border: '#d8b040', text: '#f8e8a0', icon: '◎', label: '惊讶', imgSrc: '/assets/ui/emotions/surprised.png' },
-  neutral:    { bg: 'rgba(90,90,90,0.09)',    border: '#7a7a7a', text: '#c0c0c0', icon: '○', label: '平静', imgSrc: '/assets/ui/emotions/thinking.png' },
+  angry:      { bg: 'rgba(210,55,55,0.14)',   border: '#e04040', text: '#f8a0a0', label: '愤怒', imgSrc: '/assets/ui/emotions/angry.png' },
+  confused:   { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', label: '困惑', imgSrc: '/assets/ui/emotions/confused.png' },
+  happy:      { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', label: '开心', imgSrc: '/assets/ui/emotions/happy.png' },
+  love:       { bg: 'rgba(200,80,130,0.10)',  border: '#d05888', text: '#f0a8c8', label: '爱', imgSrc: '/assets/ui/emotions/love.png' },
+  sleepy:     { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', label: '疲惫', imgSrc: '/assets/ui/emotions/sleepy.png' },
+  stressed:   { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', label: '焦虑', imgSrc: '/assets/ui/emotions/stressed.png' },
+  surprised:  { bg: 'rgba(200,160,55,0.10)',  border: '#d8b040', text: '#f8e8a0', label: '惊讶', imgSrc: '/assets/ui/emotions/surprised.png' },
+  thinking:   { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', label: '思考', imgSrc: '/assets/ui/emotions/thinking.png' },
+  // Legacy mappings — map old emotion names to new ones
+  anxious:    { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', label: '焦虑', imgSrc: '/assets/ui/emotions/stressed.png' },
+  defensive:  { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', label: '防备', imgSrc: '/assets/ui/emotions/confused.png' },
+  hurt:       { bg: 'rgba(90,80,170,0.10)',   border: '#7060c0', text: '#c0b8f0', label: '受伤', imgSrc: '/assets/ui/emotions/sleepy.png' },
+  withdrawn:  { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', label: '退缩', imgSrc: '/assets/ui/emotions/sleepy.png' },
+  warm:       { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', label: '温暖', imgSrc: '/assets/ui/emotions/happy.png' },
+  reflective: { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', label: '反思', imgSrc: '/assets/ui/emotions/thinking.png' },
+  neutral:    { bg: 'rgba(90,90,90,0.09)',    border: '#7a7a7a', text: '#c0c0c0', label: '平静', imgSrc: '/assets/ui/emotions/thinking.png' },
 }
 
-// Emotion options for re-tagging (subset most relevant to conflict)
-const EMOTION_RETAG_OPTIONS = ['anxious', 'defensive', 'angry', 'hurt', 'withdrawn', 'warm', 'reflective', 'neutral']
+// Emotion options for re-tagging: exactly 8 unique icons, no duplicates
+const EMOTION_RETAG_OPTIONS = ['angry', 'confused', 'happy', 'love', 'sleepy', 'stressed', 'surprised', 'thinking']
 
 // ── Status badge ────────────────────────────────────────────
 function StatusBadge({ status }) {

@@ -1,0 +1,42 @@
+{
+  "sessionId": "asd_1774094230460_86u2",
+  "scenario": "unread_message",
+  "mode": "together",
+  "role": "A",
+  "startedAt": "2026-03-21T11:57:10.460Z",
+  "exportedAt": "2026-03-21T12:07:00.042Z",
+  "durationMs": 589582,
+  "eventCount": 1,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 0,
+    "manualSeeks": 0,
+    "phaseFlow": "",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 0,
+      "disputed": 0,
+      "edited": 0,
+      "cleared": 0,
+      "emotionChanges": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774094230460,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "together",
+      "role": "A"
+    }
+  ]
+}
