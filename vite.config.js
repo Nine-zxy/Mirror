@@ -17,6 +17,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    build: {
+      target: ['es2015', 'safari12'],  // iPad compatibility
+    },
     server: {
       // Use --host flag when running dev:together for LAN access
       // e.g. vite --host
