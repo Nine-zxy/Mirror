@@ -453,7 +453,15 @@ export default function App() {
   const handleSelfConfirm = useCallback((role, beatId, data) => {
     const key = `${role}-${beatId}`
     setSelfConfirms(prev => ({ ...prev, [key]: data }))
-    log('self_confirm', { key, status: data.status, emotionChanged: data.emotion !== data.originalEmotion })
+    log('self_confirm', {
+      key,
+      status: data.status,
+      originalText: data.original || '',
+      confirmedText: data.text || '',
+      originalEmotion: data.originalEmotion || '',
+      confirmedEmotion: data.emotion || '',
+      emotionChanged: data.emotion !== data.originalEmotion,
+    })
   }, [])
 
   // handleSelfConfirmDone is now handled by handleSelfConfirmToSoloViewing above
@@ -475,14 +483,21 @@ export default function App() {
         }
         return Object.fromEntries(Object.entries(prev).filter(([k]) => k !== key))
       }
-      if (update.status === 'confirmed') logAssumptionConfirm(personaId, beatId)
-      else if (update.status === 'disputed') logAssumptionDispute(personaId, beatId)
+      if (update.status === 'confirmed') logAssumptionConfirm(personaId, beatId, {
+        originalText: update.original, emotion: update.emotion,
+      })
+      else if (update.status === 'disputed') logAssumptionDispute(personaId, beatId, {
+        originalText: update.original, emotion: update.emotion,
+      })
       else if (update.status === 'edited') {
         logAssumptionEdit(personaId, beatId, {
+          originalText: update.original || '',
+          editedText: update.text || '',
           originalLen: update.original?.length ?? 0,
           editedLen: update.text?.length ?? 0,
           emotionChanged: update.emotion !== update.originalEmotion,
           newEmotion: update.emotion,
+          originalEmotion: update.originalEmotion,
         })
       }
       logDispute(personaId, beatId, update.original, update.text)

@@ -219,17 +219,29 @@ export const logBeat      = (i, trigger) => log('beat_advance', { beatIndex: i, 
 export const logSeek      = (i)          => log('beat_seek', { beatIndex: i })
 export const logTag       = (emoji, bi)  => log('tag_mark', { emoji, beatIndex: bi })
 export const logDispute   = (pId, bId, original, edited) =>
-  log('thought_dispute', { personaId: pId, beatId: bId, originalLength: original?.length ?? 0, editedLength: edited?.length ?? 0 })
+  log('thought_dispute', {
+    personaId: pId, beatId: bId,
+    originalText: original || '',
+    editedText: edited || '',
+    originalLength: original?.length ?? 0,
+    editedLength: edited?.length ?? 0,
+  })
 
 // ── v2 assumption editing events (confirm / dispute / edit) ─────
-export const logAssumptionConfirm = (pId, bId) =>
-  log('assumption_confirm', { personaId: pId, beatId: bId })
+export const logAssumptionConfirm = (pId, bId, { originalText, emotion } = {}) =>
+  log('assumption_confirm', { personaId: pId, beatId: bId, originalText: originalText || '', emotion: emotion || '' })
 
-export const logAssumptionDispute = (pId, bId) =>
-  log('assumption_dispute', { personaId: pId, beatId: bId })
+export const logAssumptionDispute = (pId, bId, { originalText, emotion } = {}) =>
+  log('assumption_dispute', { personaId: pId, beatId: bId, originalText: originalText || '', emotion: emotion || '' })
 
-export const logAssumptionEdit = (pId, bId, { originalLen, editedLen, emotionChanged, newEmotion }) =>
-  log('assumption_edit', { personaId: pId, beatId: bId, originalLen, editedLen, emotionChanged, newEmotion })
+export const logAssumptionEdit = (pId, bId, { originalText, editedText, originalLen, editedLen, emotionChanged, newEmotion, originalEmotion }) =>
+  log('assumption_edit', {
+    personaId: pId, beatId: bId,
+    originalText: originalText || '',
+    editedText: editedText || '',
+    originalLen, editedLen,
+    emotionChanged, newEmotion, originalEmotion,
+  })
 
 export const logAssumptionClear = (pId, bId) =>
   log('assumption_clear', { personaId: pId, beatId: bId })
