@@ -1,0 +1,795 @@
+{
+  "sessionId": "asd_1774080478052_u6b4",
+  "scenario": "unread_message",
+  "mode": "solo",
+  "role": "B",
+  "startedAt": "2026-03-21T08:07:58.052Z",
+  "exportedAt": "2026-03-21T08:22:16.854Z",
+  "durationMs": 858802,
+  "eventCount": 90,
+  "summary": {
+    "eventCountByType": {
+      "session_start": 1,
+      "phase_change": 5,
+      "bubble_visibility_toggle": 5,
+      "study_input_submitted": 1,
+      "beat_advance": 19,
+      "assumption_confirm": 14,
+      "thought_dispute": 16,
+      "beat_seek": 22,
+      "assumption_dispute": 1,
+      "assumption_edit": 1,
+      "playback_play": 2,
+      "self_confirm_finished": 1,
+      "annotation_finished": 1,
+      "session_upload": 1
+    },
+    "totalTags": 0,
+    "totalDisputes": 16,
+    "manualSeeks": 22,
+    "phaseFlow": "study_input → self_confirm → solo_viewing → together_viewing → divergence",
+    "archetypeUsed": null,
+    "calibrationAdjusted": 0,
+    "disputedBeats": [
+      "B-beat7",
+      "B-beat7",
+      "B-beat7",
+      "B-beat7",
+      "B-beat7",
+      "B-beat7",
+      "A-beat7",
+      "A-beat6",
+      "A-beat5",
+      "A-beat4",
+      "A-beat3",
+      "A-beat2",
+      "A-beat0",
+      "A-beat1",
+      "A-beat2",
+      "A-beat0"
+    ],
+    "tagsByEmoji": {},
+    "assumptionEditing": {
+      "confirmed": 14,
+      "disputed": 1,
+      "edited": 1,
+      "cleared": 0,
+      "emotionChanges": 1
+    }
+  },
+  "events": [
+    {
+      "seq": 0,
+      "t": 1774080478052,
+      "elapsed": 0,
+      "type": "session_start",
+      "scenarioId": "unread_message",
+      "appVersion": "0.7.0",
+      "mode": "solo",
+      "role": "B"
+    },
+    {
+      "seq": 1,
+      "t": 1774080528888,
+      "elapsed": 50836,
+      "type": "phase_change",
+      "from": "study_intro",
+      "to": "study_input"
+    },
+    {
+      "seq": 2,
+      "t": 1774080758726,
+      "elapsed": 280674,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 3,
+      "t": 1774080846511,
+      "elapsed": 368459,
+      "type": "study_input_submitted",
+      "inputLength": 3357,
+      "scenario": "p3"
+    },
+    {
+      "seq": 4,
+      "t": 1774080846512,
+      "elapsed": 368460,
+      "type": "phase_change",
+      "from": "study_input",
+      "to": "self_confirm"
+    },
+    {
+      "seq": 5,
+      "t": 1774080846512,
+      "elapsed": 368460,
+      "type": "beat_advance",
+      "beatIndex": 0,
+      "trigger": "auto"
+    },
+    {
+      "seq": 6,
+      "t": 1774080851533,
+      "elapsed": 373481,
+      "type": "beat_advance",
+      "beatIndex": 1,
+      "trigger": "auto"
+    },
+    {
+      "seq": 7,
+      "t": 1774080856561,
+      "elapsed": 378509,
+      "type": "beat_advance",
+      "beatIndex": 2,
+      "trigger": "auto"
+    },
+    {
+      "seq": 8,
+      "t": 1774080861601,
+      "elapsed": 383549,
+      "type": "beat_advance",
+      "beatIndex": 3,
+      "trigger": "auto"
+    },
+    {
+      "seq": 9,
+      "t": 1774080866191,
+      "elapsed": 388139,
+      "type": "beat_advance",
+      "beatIndex": 4,
+      "trigger": "auto"
+    },
+    {
+      "seq": 10,
+      "t": 1774080871697,
+      "elapsed": 393645,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 11,
+      "t": 1774080877207,
+      "elapsed": 399155,
+      "type": "beat_advance",
+      "beatIndex": 6,
+      "trigger": "auto"
+    },
+    {
+      "seq": 12,
+      "t": 1774080882724,
+      "elapsed": 404672,
+      "type": "beat_advance",
+      "beatIndex": 7,
+      "trigger": "auto"
+    },
+    {
+      "seq": 13,
+      "t": 1774080921091,
+      "elapsed": 443039,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 14,
+      "t": 1774080921091,
+      "elapsed": 443039,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 15,
+      "t": 1774080943185,
+      "elapsed": 465133,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 16,
+      "t": 1774080943185,
+      "elapsed": 465133,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 17,
+      "t": 1774080958916,
+      "elapsed": 480865,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 18,
+      "t": 1774080958917,
+      "elapsed": 480865,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 19,
+      "t": 1774080962568,
+      "elapsed": 484516,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 20,
+      "t": 1774080962568,
+      "elapsed": 484516,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 21,
+      "t": 1774081016587,
+      "elapsed": 538535,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 22,
+      "t": 1774081017116,
+      "elapsed": 539064,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 23,
+      "t": 1774081017748,
+      "elapsed": 539696,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 24,
+      "t": 1774081022400,
+      "elapsed": 544348,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 25,
+      "t": 1774081022574,
+      "elapsed": 544522,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 26,
+      "t": 1774081024817,
+      "elapsed": 546765,
+      "type": "beat_seek",
+      "beatIndex": 7
+    },
+    {
+      "seq": 27,
+      "t": 1774081030964,
+      "elapsed": 552912,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 28,
+      "t": 1774081030964,
+      "elapsed": 552912,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 29,
+      "t": 1774081032277,
+      "elapsed": 554225,
+      "type": "assumption_confirm",
+      "personaId": "B",
+      "beatId": 7
+    },
+    {
+      "seq": 30,
+      "t": 1774081032277,
+      "elapsed": 554225,
+      "type": "thought_dispute",
+      "personaId": "B",
+      "beatId": 7,
+      "originalLength": 23,
+      "editedLength": 23
+    },
+    {
+      "seq": 31,
+      "t": 1774081050458,
+      "elapsed": 572406,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 32,
+      "t": 1774081058526,
+      "elapsed": 580474,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 7
+    },
+    {
+      "seq": 33,
+      "t": 1774081058526,
+      "elapsed": 580474,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 7,
+      "originalLength": 37,
+      "editedLength": 37
+    },
+    {
+      "seq": 34,
+      "t": 1774081061580,
+      "elapsed": 583528,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 35,
+      "t": 1774081065109,
+      "elapsed": 587057,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 6
+    },
+    {
+      "seq": 36,
+      "t": 1774081065109,
+      "elapsed": 587057,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 6,
+      "originalLength": 26,
+      "editedLength": 26
+    },
+    {
+      "seq": 37,
+      "t": 1774081066265,
+      "elapsed": 588213,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 38,
+      "t": 1774081067178,
+      "elapsed": 589126,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 39,
+      "t": 1774081067766,
+      "elapsed": 589714,
+      "type": "beat_seek",
+      "beatIndex": 6
+    },
+    {
+      "seq": 40,
+      "t": 1774081068515,
+      "elapsed": 590463,
+      "type": "beat_seek",
+      "beatIndex": 5
+    },
+    {
+      "seq": 41,
+      "t": 1774081072166,
+      "elapsed": 594114,
+      "type": "assumption_dispute",
+      "personaId": "A",
+      "beatId": 5
+    },
+    {
+      "seq": 42,
+      "t": 1774081072166,
+      "elapsed": 594114,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 5,
+      "originalLength": 24,
+      "editedLength": 24
+    },
+    {
+      "seq": 43,
+      "t": 1774081074826,
+      "elapsed": 596774,
+      "type": "beat_seek",
+      "beatIndex": 4
+    },
+    {
+      "seq": 44,
+      "t": 1774081077608,
+      "elapsed": 599556,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 4
+    },
+    {
+      "seq": 45,
+      "t": 1774081077608,
+      "elapsed": 599556,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 4,
+      "originalLength": 33,
+      "editedLength": 33
+    },
+    {
+      "seq": 46,
+      "t": 1774081079277,
+      "elapsed": 601225,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 47,
+      "t": 1774081082432,
+      "elapsed": 604380,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 3
+    },
+    {
+      "seq": 48,
+      "t": 1774081082432,
+      "elapsed": 604380,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 3,
+      "originalLength": 24,
+      "editedLength": 24
+    },
+    {
+      "seq": 49,
+      "t": 1774081084777,
+      "elapsed": 606725,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 50,
+      "t": 1774081089358,
+      "elapsed": 611306,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 2
+    },
+    {
+      "seq": 51,
+      "t": 1774081089358,
+      "elapsed": 611306,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLength": 39,
+      "editedLength": 39
+    },
+    {
+      "seq": 52,
+      "t": 1774081092076,
+      "elapsed": 614024,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 53,
+      "t": 1774081095823,
+      "elapsed": 617771,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 0
+    },
+    {
+      "seq": 54,
+      "t": 1774081095823,
+      "elapsed": 617771,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 0,
+      "originalLength": 25,
+      "editedLength": 25
+    },
+    {
+      "seq": 55,
+      "t": 1774081097578,
+      "elapsed": 619526,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 56,
+      "t": 1774081099992,
+      "elapsed": 621940,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 57,
+      "t": 1774081100507,
+      "elapsed": 622455,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 58,
+      "t": 1774081101051,
+      "elapsed": 622999,
+      "type": "beat_seek",
+      "beatIndex": 0
+    },
+    {
+      "seq": 59,
+      "t": 1774081104757,
+      "elapsed": 626705,
+      "type": "beat_seek",
+      "beatIndex": 1
+    },
+    {
+      "seq": 60,
+      "t": 1774081113942,
+      "elapsed": 635890,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 1
+    },
+    {
+      "seq": 61,
+      "t": 1774081113942,
+      "elapsed": 635890,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 1,
+      "originalLength": 31,
+      "editedLength": 31
+    },
+    {
+      "seq": 62,
+      "t": 1774081115711,
+      "elapsed": 637659,
+      "type": "beat_seek",
+      "beatIndex": 2
+    },
+    {
+      "seq": 63,
+      "t": 1774081122707,
+      "elapsed": 644655,
+      "type": "assumption_edit",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLen": 39,
+      "editedLen": 39,
+      "emotionChanged": true,
+      "newEmotion": "anxious"
+    },
+    {
+      "seq": 64,
+      "t": 1774081122707,
+      "elapsed": 644655,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 2,
+      "originalLength": 39,
+      "editedLength": 39
+    },
+    {
+      "seq": 65,
+      "t": 1774081125509,
+      "elapsed": 647457,
+      "type": "beat_seek",
+      "beatIndex": 3
+    },
+    {
+      "seq": 66,
+      "t": 1774081139621,
+      "elapsed": 661569,
+      "type": "playback_play",
+      "beatIndex": 3
+    },
+    {
+      "seq": 67,
+      "t": 1774081144126,
+      "elapsed": 666074,
+      "type": "beat_advance",
+      "beatIndex": 4,
+      "trigger": "auto"
+    },
+    {
+      "seq": 68,
+      "t": 1774081149649,
+      "elapsed": 671597,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 69,
+      "t": 1774081155170,
+      "elapsed": 677118,
+      "type": "beat_advance",
+      "beatIndex": 6,
+      "trigger": "auto"
+    },
+    {
+      "seq": 70,
+      "t": 1774081160677,
+      "elapsed": 682625,
+      "type": "beat_advance",
+      "beatIndex": 7,
+      "trigger": "auto"
+    },
+    {
+      "seq": 71,
+      "t": 1774081206857,
+      "elapsed": 728805,
+      "type": "phase_change",
+      "from": "self_confirm",
+      "to": "solo_viewing"
+    },
+    {
+      "seq": 72,
+      "t": 1774081206857,
+      "elapsed": 728805,
+      "type": "self_confirm_finished",
+      "selfConfirmCount": 0
+    },
+    {
+      "seq": 73,
+      "t": 1774081220918,
+      "elapsed": 742866,
+      "type": "assumption_confirm",
+      "personaId": "A",
+      "beatId": 0
+    },
+    {
+      "seq": 74,
+      "t": 1774081220919,
+      "elapsed": 742867,
+      "type": "thought_dispute",
+      "personaId": "A",
+      "beatId": 0,
+      "originalLength": 25,
+      "editedLength": 25
+    },
+    {
+      "seq": 75,
+      "t": 1774081226995,
+      "elapsed": 748943,
+      "type": "annotation_finished",
+      "disputeCount": 9
+    },
+    {
+      "seq": 76,
+      "t": 1774081226995,
+      "elapsed": 748943,
+      "type": "phase_change",
+      "from": "solo_viewing",
+      "to": "together_viewing"
+    },
+    {
+      "seq": 77,
+      "t": 1774081243958,
+      "elapsed": 765906,
+      "type": "bubble_visibility_toggle",
+      "visible": "none"
+    },
+    {
+      "seq": 78,
+      "t": 1774081252996,
+      "elapsed": 774944,
+      "type": "playback_play",
+      "beatIndex": 0
+    },
+    {
+      "seq": 79,
+      "t": 1774081258001,
+      "elapsed": 779949,
+      "type": "beat_advance",
+      "beatIndex": 1,
+      "trigger": "auto"
+    },
+    {
+      "seq": 80,
+      "t": 1774081262278,
+      "elapsed": 784226,
+      "type": "bubble_visibility_toggle",
+      "visible": "partner"
+    },
+    {
+      "seq": 81,
+      "t": 1774081263015,
+      "elapsed": 784963,
+      "type": "beat_advance",
+      "beatIndex": 2,
+      "trigger": "auto"
+    },
+    {
+      "seq": 82,
+      "t": 1774081268118,
+      "elapsed": 790066,
+      "type": "beat_advance",
+      "beatIndex": 3,
+      "trigger": "auto"
+    },
+    {
+      "seq": 83,
+      "t": 1774081270676,
+      "elapsed": 792624,
+      "type": "bubble_visibility_toggle",
+      "visible": "both"
+    },
+    {
+      "seq": 84,
+      "t": 1774081272714,
+      "elapsed": 794662,
+      "type": "beat_advance",
+      "beatIndex": 4,
+      "trigger": "auto"
+    },
+    {
+      "seq": 85,
+      "t": 1774081278218,
+      "elapsed": 800166,
+      "type": "beat_advance",
+      "beatIndex": 5,
+      "trigger": "auto"
+    },
+    {
+      "seq": 86,
+      "t": 1774081283729,
+      "elapsed": 805677,
+      "type": "beat_advance",
+      "beatIndex": 6,
+      "trigger": "auto"
+    },
+    {
+      "seq": 87,
+      "t": 1774081289238,
+      "elapsed": 811186,
+      "type": "beat_advance",
+      "beatIndex": 7,
+      "trigger": "auto"
+    },
+    {
+      "seq": 88,
+      "t": 1774081295458,
+      "elapsed": 817406,
+      "type": "phase_change",
+      "from": "together_viewing",
+      "to": "divergence"
+    },
+    {
+      "seq": 89,
+      "t": 1774081295460,
+      "elapsed": 817408,
+      "type": "session_upload",
+      "eventCount": 89
+    },
+    {
+      "seq": 90,
+      "t": 1774081336854,
+      "elapsed": 858802,
+      "type": "session_export",
+      "eventCount": 90
+    }
+  ]
+}
