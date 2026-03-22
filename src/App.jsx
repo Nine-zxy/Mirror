@@ -74,6 +74,54 @@ import SyncStatusBadge   from './components/SyncStatusBadge'
 //  together_viewing only in Together mode
 // ─────────────────────────────────────────────────────────────
 
+// ── WaitingOverlay — shown while waiting for partner, with skip button ──
+function WaitingOverlay({ targetPhase, onSkip }) {
+  const [elapsed, setElapsed] = useState(0)
+  useEffect(() => {
+    const iv = setInterval(() => setElapsed(e => e + 1), 1000)
+    return () => clearInterval(iv)
+  }, [])
+  const showSkip = elapsed >= 15 // Show skip button after 15 seconds
+
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center"
+      style={{ background: 'rgba(6,8,16,0.85)' }}>
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex gap-2">
+          {[0, 1, 2].map(i => (
+            <div key={i} style={{
+              width: '8px', height: '8px', borderRadius: '50%', background: '#7ab0e8',
+              animation: `blink 1.2s ${i * 0.3}s ease-in-out infinite`,
+            }} />
+          ))}
+        </div>
+        <p className="font-mono text-[13px] tracking-wider" style={{ color: '#7ab0e8' }}>
+          {targetPhase === 'solo_viewing' ? '等待对方完成确认...' : '等待对方完成标注...'}
+        </p>
+        <p className="font-mono text-[9px] text-white/25">
+          对方完成后将一起进入下一阶段
+        </p>
+        {showSkip && (
+          <button
+            onClick={onSkip}
+            className="mt-4 font-mono text-[11px] px-5 py-2 rounded-lg border transition-all hover:scale-105 anim-fadeIn"
+            style={{
+              color: 'rgba(255,255,255,0.5)',
+              borderColor: 'rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.05)',
+            }}
+          >
+            跳过等待，直接进入 →
+          </button>
+        )}
+        <p className="font-mono text-[8px] text-white/15 mt-1">
+          {elapsed}s
+        </p>
+      </div>
+    </div>
+  )
+}
+
 // Default scene elements per scene key (CSS fallback furniture/props)
 const SCENE_ELEMENTS_MAP = {
   bedroom_night:      ['window', 'curtains', 'bed', 'lamp', 'phone_screen', 'rug', 'bookshelf', 'wallart'],
@@ -916,27 +964,23 @@ export default function App() {
             onMark={handleMark}
           />
 
-          {/* Waiting for partner overlay (phase gate) */}
+          {/* Waiting for partner overlay (phase gate) — with skip button after 15s */}
           {waitingForPhase && (
-            <div className="absolute inset-0 z-50 flex items-center justify-center"
-              style={{ background: 'rgba(6,8,16,0.85)' }}>
-              <div className="flex flex-col items-center gap-4">
-                <div className="flex gap-2">
-                  {[0, 1, 2].map(i => (
-                    <div key={i} style={{
-                      width: '8px', height: '8px', borderRadius: '50%', background: '#7ab0e8',
-                      animation: `blink 1.2s ${i * 0.3}s ease-in-out infinite`,
-                    }} />
-                  ))}
-                </div>
-                <p className="font-mono text-[13px] tracking-wider" style={{ color: '#7ab0e8' }}>
-                  {waitingForPhase === 'solo_viewing' ? '等待对方完成确认...' : '等待对方完成标注...'}
-                </p>
-                <p className="font-mono text-[9px] text-white/25">
-                  对方完成后将一起进入下一阶段
-                </p>
-              </div>
-            </div>
+            <WaitingOverlay
+              targetPhase={waitingForPhase}
+              onSkip={() => {
+                log('phase_gate_skipped', { targetPhase: waitingForPhase })
+                setWaitingForPhase(null)
+                setPartnerPhaseReady(null)
+                if (waitingForPhase === 'solo_viewing') {
+                  setBeatIndex(0); setPhase('solo_viewing'); setBubbleVisibility('partner'); setIsPlaying(false)
+                  logPhase('self_confirm', 'solo_viewing')
+                } else if (waitingForPhase === 'together_viewing') {
+                  setBeatIndex(0); setPhase('together_viewing'); setBubbleVisibility('both'); setIsPlaying(false)
+                  logPhase('solo_viewing', 'together_viewing')
+                }
+              }}
+            />
           )}
 
           {phase === 'reflection' && (

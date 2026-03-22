@@ -1,0 +1,54 @@
+{
+  "roomCode": "P6",
+  "mode": "together",
+  "proximity": "colocated",
+  "createdAt": "2026-03-22T03:13:35.932Z",
+  "exportedAt": "2026-03-22T03:13:46.826Z",
+  "eventCount": 3,
+  "logs": [
+    {
+      "timestamp": "2026-03-22T03:13:39.336Z",
+      "role": "B",
+      "event": "session_upload",
+      "data": {
+        "seq": 14,
+        "t": 1774149218405,
+        "elapsed": 419934,
+        "type": "session_upload",
+        "eventCount": 14
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-22T03:13:39.481Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 1,
+        "t": 1774149218564,
+        "elapsed": 6031,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    },
+    {
+      "timestamp": "2026-03-22T03:13:43.623Z",
+      "role": "B",
+      "event": "phase_change",
+      "data": {
+        "seq": 15,
+        "t": 1774149222666,
+        "elapsed": 424195,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{"timestamp":"2026-03-22T03:06:10.862Z","role":"A","event":"phase_change","data":{"seq":1,"t":1774148770009,"elapsed":10245,"type":"phase_change","from":"study_intro","to":"study_input"},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T03:06:58.992Z","role":"B","event":"session_upload","data":{"seq":10,"t":1774148818442,"elapsed":466796,"type":"session_upload","eventCount":10},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T03:07:09.318Z","role":"B","event":"session_upload","data":{"seq":1,"t":1774148828414,"elapsed":29943,"type":"session_upload","eventCount":1},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T03:07:12.916Z","role":"B","event":"session_upload","data":{"seq":11,"t":1774148832364,"elapsed":480718,"type":"session_upload","eventCount":11},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T03:07:14.818Z","role":"B","event":"session_upload","data":{"seq":7,"t":1774148834265,"elapsed":487419,"type":"session_upload","eventCount":7},"phase":null,"scenarioId":"P6"}

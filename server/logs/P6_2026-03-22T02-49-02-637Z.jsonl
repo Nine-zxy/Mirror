@@ -64,3 +64,7 @@
 {"timestamp":"2026-03-22T02:52:58.998Z","role":"A","event":"session_upload","data":{"seq":27,"t":1774147978445,"elapsed":240659,"type":"session_upload","eventCount":27},"phase":null,"scenarioId":"P6"}
 {"timestamp":"2026-03-22T02:53:59.053Z","role":"A","event":"session_upload","data":{"seq":28,"t":1774148038451,"elapsed":300665,"type":"session_upload","eventCount":28},"phase":null,"scenarioId":"P6"}
 {"timestamp":"2026-03-22T02:53:59.054Z","role":"B","event":"session_upload","data":{"seq":40,"t":1774148038446,"elapsed":278178,"type":"session_upload","eventCount":40},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T02:54:58.999Z","role":"A","event":"session_upload","data":{"seq":29,"t":1774148098447,"elapsed":360661,"type":"session_upload","eventCount":29},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T02:54:59.017Z","role":"B","event":"session_upload","data":{"seq":41,"t":1774148098451,"elapsed":338183,"type":"session_upload","eventCount":41},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T02:55:59.008Z","role":"A","event":"session_upload","data":{"seq":30,"t":1774148158455,"elapsed":420669,"type":"session_upload","eventCount":30},"phase":null,"scenarioId":"P6"}
+{"timestamp":"2026-03-22T02:55:59.009Z","role":"B","event":"session_upload","data":{"seq":42,"t":1774148158454,"elapsed":398186,"type":"session_upload","eventCount":42},"phase":null,"scenarioId":"P6"}

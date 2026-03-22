@@ -1,0 +1,25 @@
+{
+  "roomCode": "P6",
+  "mode": "together",
+  "proximity": "colocated",
+  "createdAt": "2026-03-22T03:06:03.098Z",
+  "exportedAt": "2026-03-22T03:06:24.954Z",
+  "eventCount": 1,
+  "logs": [
+    {
+      "timestamp": "2026-03-22T03:06:10.862Z",
+      "role": "A",
+      "event": "phase_change",
+      "data": {
+        "seq": 1,
+        "t": 1774148770009,
+        "elapsed": 10245,
+        "type": "phase_change",
+        "from": "study_intro",
+        "to": "study_input"
+      },
+      "phase": null,
+      "scenarioId": "P6"
+    }
+  ]
+}
