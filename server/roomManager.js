@@ -298,7 +298,22 @@ export class RoomManager {
       return
     }
 
-    // ── Annotation reveal request ─────────────────────────
+    // ── Annotation reveal: client sends their edits to be forwarded to partner ──
+    if (msg.type === MSG.ANNOTATION_REVEAL) {
+      // Store the disputes on the room for later access
+      if (role === 'A') room.disputesA = msg.partnerDisputes || {}
+      else              room.disputesB = msg.partnerDisputes || {}
+      // Forward directly to partner so they receive the edits
+      this.broadcastToOther(room, ws, {
+        type: MSG.ANNOTATION_REVEAL,
+        partnerDisputes: msg.partnerDisputes || {},
+        partnerSelfConfirms: msg.partnerSelfConfirms || {},
+      })
+      console.log(`[Room] ${room.code}: ${role} sent annotation:reveal to partner (${Object.keys(msg.partnerDisputes || {}).length} disputes)`)
+      return
+    }
+
+    // ── Annotation reveal request (legacy) ─────────────────
     if (msg.type === MSG.ANNOTATION_REQUEST_REVEAL) {
       const partnerStore = role === 'A' ? 'disputesB' : 'disputesA'
       this.send(ws, {
