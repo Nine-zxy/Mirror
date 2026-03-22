@@ -211,6 +211,12 @@ function uploadLogBeacon() {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', uploadLogBeacon)
+  // Auto-upload every 30 seconds to prevent data loss
+  setInterval(() => {
+    if (state.events.length > 0) {
+      uploadLog().catch(() => {})
+    }
+  }, 30000)
 }
 
 // ── Convenience wrappers ──────────────────────────────────────

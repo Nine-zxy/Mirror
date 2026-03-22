@@ -617,7 +617,12 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
 
     // ── Skip generation mode: collect input data but don't call API ──
     if (skipGeneration) {
-      onScenarioReady(null, chatLog)
+      const inputData = JSON.stringify({
+        concern: concernA.trim(),
+        feeling: feeling.trim(),
+        context: context.trim(),
+      })
+      onScenarioReady(null, inputData)
       return
     }
 

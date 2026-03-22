@@ -816,8 +816,15 @@ export default function App() {
   if (phase === 'study_input')
     return <ConflictInput
       onScenarioReady={(_, rawInput) => {
-        // Log the input but use preloaded scenario
-        log('study_input_submitted', { inputLength: rawInput?.length || 0, scenario: DIRECT_SCENARIO })
+        // Log the full input content (concern, feeling, context)
+        let parsedInput = {}
+        try { parsedInput = JSON.parse(rawInput || '{}') } catch(e) {}
+        log('study_input_submitted', {
+          scenario: DIRECT_SCENARIO,
+          concern: parsedInput.concern || '',
+          feeling: parsedInput.feeling || '',
+          context: parsedInput.context || '',
+        })
         // Use the preloaded scenario directly
         const scenario = directScenarioData || initScenario
         setLiveScenario(scenario)
