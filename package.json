@@ -15,7 +15,8 @@
     "preview": "concurrently -k \"vite preview --host 127.0.0.1\" \"npm run server\"",
     "test": "node --test",
     "check:release": "node scripts/check-release.mjs",
-    "check": "npm run test && npm run build && npm run check:release"
+    "check": "npm run test && npm run build && npm run check:release",
+    "build:pages": "vite build --mode pages"
   },
   "dependencies": {
     "lucide-react": "0.344.0",

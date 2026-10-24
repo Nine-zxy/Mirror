@@ -466,11 +466,11 @@ export const SCENE_PRESETS = {
 // CSS hue-rotate technique: Partner A = blue tint, Partner B = red/warm tint
 export const APPEARANCE_OPTIONS = {
   hairStyles: [
-    { id: 'short',  label: '短发', spritePreview: '/assets/ui/hair_short.svg' },
-    { id: 'medium', label: '中发', spritePreview: '/assets/ui/hair_medium.svg' },
-    { id: 'long',   label: '长发', spritePreview: '/assets/ui/hair_long.svg' },
-    { id: 'tied',   label: '扎发', spritePreview: '/assets/ui/hair_tied.svg' },
-    { id: 'curly',  label: '卷发', spritePreview: '/assets/ui/hair_curly.svg' },
+    { id: 'short',  label: '短发', spritePreview: import.meta.env.BASE_URL + 'assets/ui/hair_short.svg' },
+    { id: 'medium', label: '中发', spritePreview: import.meta.env.BASE_URL + 'assets/ui/hair_medium.svg' },
+    { id: 'long',   label: '长发', spritePreview: import.meta.env.BASE_URL + 'assets/ui/hair_long.svg' },
+    { id: 'tied',   label: '扎发', spritePreview: import.meta.env.BASE_URL + 'assets/ui/hair_tied.svg' },
+    { id: 'curly',  label: '卷发', spritePreview: import.meta.env.BASE_URL + 'assets/ui/hair_curly.svg' },
   ],
   outfitStyles: [
     { id: 'casual', label: '休闲' },

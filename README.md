@@ -1,5 +1,9 @@
 # ASIDE
 
+## Live website
+
+[Open the ASIDE introduction and interactive visualization](https://nine-zxy.github.io/Mirror/?lang=en). The site supports Chinese/English and an offline solo walkthrough. Paired sessions and live AI generation require running the server locally.
+
 **From Conflict Participants to Co-Observers Through Dyadic Spectator Reflection**
 
 [中文说明](README.zh-CN.md) · [Paper-to-code map](docs/PAPER_TO_CODE.md) · [Reproduction guide](docs/REPRODUCTION.md) · [Release status](docs/RELEASE_STATUS.md)

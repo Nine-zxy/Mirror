@@ -35,3 +35,9 @@ Turning the flags off does not delete previously collected data. Do not expose a
 `npm run check` runs the Node test suite, production build, and release-file scan. The scan detects common secret formats and excluded file categories; it is not a proof that arbitrary new content is anonymized. Review newly added examples manually.
 
 The local development/preview proxy serves API and WebSocket requests. Static hosting of `dist/` alone supports only the offline single-device walkthrough; paired sessions and generation require a backend/proxy deployment. Public hosting, authentication, rate limits, and study data analysis are outside this candidate's verified scope.
+
+## GitHub Pages
+
+The public introduction is https://nine-zxy.github.io/Mirror/. The `pages.yml` workflow builds and deploys `dist/` on each push to `main`. `npm run build:pages` uses the `/Mirror/` base path, disables AI generation and behavioral logging, and exposes only the introduction and offline solo example. Paired links and custom-input entry are omitted on this static site; manually supplied researcher/paired URL parameters are ignored. Run the application locally for paired synchronization and live generation.
+
+No provider API keys are required or supplied to the Pages workflow. GitHub's built-in deployment credentials are scoped to the Actions deployment and are not bundled into the site.

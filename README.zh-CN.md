@@ -1,5 +1,9 @@
 # ASIDE · 共镜
 
+## 在线访问
+
+[打开 ASIDE 项目介绍与交互可视化](https://nine-zxy.github.io/Mirror/?lang=zh)。支持中英切换和无需密钥的单人流程演示。双人同步与真实 AI 生成请下载代码在本地运行。
+
 **从冲突参与者到共同观察者：双人旁观反思（Dyadic Spectator Reflection）**
 
 [English](README.md) · [论文与代码对应](docs/PAPER_TO_CODE.md) · [复现步骤](docs/REPRODUCTION.md) · [发布状态](docs/RELEASE_STATUS.md)
