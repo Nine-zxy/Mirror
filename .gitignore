@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env*
+!.env.example
+server/logs/
+study-logs/
+*.log
+*.zip
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+coverage/
+playwright-report/
+test-results/

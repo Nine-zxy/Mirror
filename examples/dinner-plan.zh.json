@@ -1,0 +1,434 @@
+{
+  "id": "fictional_dinner_plan",
+  "title": "晚餐的约定",
+  "subtitle": "虚构演示 · 不含研究数据",
+  "scene": "livingroom_evening",
+  "sceneElements": [
+    "window",
+    "sofa",
+    "table",
+    "lamp",
+    "plant"
+  ],
+  "personas": {
+    "A": {
+      "id": "A",
+      "name": "小林",
+      "label": "PARTNER A",
+      "color": "#7ab0e8",
+      "darkColor": "#4a80c8",
+      "glowColor": "#7ab0e888",
+      "thoughtBg": "#7ab0e822",
+      "thoughtBorder": "#7ab0e8",
+      "hairColor": "#49342c",
+      "outfitColor": "#7ab0e8",
+      "outfitDark": "#4a80c8",
+      "hairStyle": "medium",
+      "outfitStyle": "casual",
+      "accessory": "none"
+    },
+    "B": {
+      "id": "B",
+      "name": "小安",
+      "label": "PARTNER B",
+      "color": "#e87a7a",
+      "darkColor": "#b84a4a",
+      "glowColor": "#e87a7a88",
+      "thoughtBg": "#e87a7a22",
+      "thoughtBorder": "#e87a7a",
+      "hairColor": "#49342c",
+      "outfitColor": "#e87a7a",
+      "outfitDark": "#b84a4a",
+      "hairStyle": "short",
+      "outfitStyle": "casual",
+      "accessory": "none"
+    }
+  },
+  "beats": [
+    {
+      "id": 0,
+      "duration": 3000,
+      "intensity": 0.1,
+      "narrator": "晚上，客厅。",
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "thoughts": {
+        "A": null,
+        "B": null
+      },
+      "dialogue": null
+    },
+    {
+      "id": 1,
+      "duration": 4500,
+      "intensity": 0.25,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "我以为我们说好七点一起做饭。"
+      },
+      "thoughts": {
+        "A": {
+          "text": "我一直在等，也希望计划能被记住。",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "我以为时间还可以商量，没有意识到对方在等。",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "duration": 4500,
+      "intensity": 0.35,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "会议拖长了，我刚结束。"
+      },
+      "thoughts": {
+        "A": {
+          "text": "我知道工作会有变化，但没有消息让我很失落。",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "我很累，想先说明发生了什么。",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "duration": 4500,
+      "intensity": 0.55,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "你可以提前告诉我一声。"
+      },
+      "thoughts": {
+        "A": {
+          "text": "我需要的不是道歉，而是不用一直猜。",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "这听起来像指责，我有点急于辩解。",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "duration": 4500,
+      "intensity": 0.65,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "当时大家都在讲话，我没顾上。"
+      },
+      "thoughts": {
+        "A": {
+          "text": "我不确定对方是否理解我为什么在意。",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "我是在解释，但也许听起来像借口。",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "duration": 4500,
+      "intensity": 0.8,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "那我以后都不要等了吗？"
+      },
+      "thoughts": {
+        "A": {
+          "text": "我说得有点重，因为我担心以后还是这样。",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "我不想让一次迟到变成对我们关系的判断。",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "duration": 4500,
+      "intensity": 0.5,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "我不是不想和你吃饭。"
+      },
+      "thoughts": {
+        "A": {
+          "text": "听到这句话，我稍微放松了一点。",
+          "emotion": "warm",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "我想让对方知道，我仍然重视这个约定。",
+          "emotion": "reflective",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "duration": 4500,
+      "intensity": 0.3,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "下次如果赶不上，给我发一句就好。"
+      },
+      "thoughts": {
+        "A": {
+          "text": "我想把需要说得具体一些。",
+          "emotion": "warm",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "这个要求比我刚才想象的更容易做到。",
+          "emotion": "reflective",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "duration": 4500,
+      "intensity": 0.15,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "好。我们现在一起准备吧。"
+      },
+      "thoughts": {
+        "A": {
+          "text": "我愿意继续一起做饭，也希望这次真的被听见。",
+          "emotion": "warm",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "我想用行动重新参与，而不只是结束争论。",
+          "emotion": "reflective",
+          "bubbleType": "cloud"
+        }
+      }
+    }
+  ]
+}

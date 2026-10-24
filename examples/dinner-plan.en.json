@@ -1,0 +1,434 @@
+{
+  "id": "fictional_dinner_plan",
+  "title": "The Dinner Plan",
+  "subtitle": "Fictional demonstration · No study data",
+  "scene": "livingroom_evening",
+  "sceneElements": [
+    "window",
+    "sofa",
+    "table",
+    "lamp",
+    "plant"
+  ],
+  "personas": {
+    "A": {
+      "id": "A",
+      "name": "Alex",
+      "label": "PARTNER A",
+      "color": "#7ab0e8",
+      "darkColor": "#4a80c8",
+      "glowColor": "#7ab0e888",
+      "thoughtBg": "#7ab0e822",
+      "thoughtBorder": "#7ab0e8",
+      "hairColor": "#49342c",
+      "outfitColor": "#7ab0e8",
+      "outfitDark": "#4a80c8",
+      "hairStyle": "medium",
+      "outfitStyle": "casual",
+      "accessory": "none"
+    },
+    "B": {
+      "id": "B",
+      "name": "Sam",
+      "label": "PARTNER B",
+      "color": "#e87a7a",
+      "darkColor": "#b84a4a",
+      "glowColor": "#e87a7a88",
+      "thoughtBg": "#e87a7a22",
+      "thoughtBorder": "#e87a7a",
+      "hairColor": "#49342c",
+      "outfitColor": "#e87a7a",
+      "outfitDark": "#b84a4a",
+      "hairStyle": "short",
+      "outfitStyle": "casual",
+      "accessory": "none"
+    }
+  },
+  "beats": [
+    {
+      "id": 0,
+      "duration": 3000,
+      "intensity": 0.1,
+      "narrator": "Evening, in the living room.",
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "thoughts": {
+        "A": null,
+        "B": null
+      },
+      "dialogue": null
+    },
+    {
+      "id": 1,
+      "duration": 4500,
+      "intensity": 0.25,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "I thought we agreed to cook together at seven."
+      },
+      "thoughts": {
+        "A": {
+          "text": "I have been waiting and wanted our plan to matter.",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "I thought the time was flexible and did not realize they were waiting.",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "duration": 4500,
+      "intensity": 0.35,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "The meeting ran late. I just finished."
+      },
+      "thoughts": {
+        "A": {
+          "text": "I know work changes, but hearing nothing felt disappointing.",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "I am tired and want to explain what happened first.",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "duration": 4500,
+      "intensity": 0.55,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "You could have sent me a message."
+      },
+      "thoughts": {
+        "A": {
+          "text": "I want not to be left guessing, more than an apology.",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "That sounds like criticism, and I feel an urge to defend myself.",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "duration": 4500,
+      "intensity": 0.65,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "Everyone was talking and I forgot to check my phone."
+      },
+      "thoughts": {
+        "A": {
+          "text": "I am unsure whether they understand why this matters to me.",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "I am explaining, but perhaps it sounds like an excuse.",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "duration": 4500,
+      "intensity": 0.8,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "tension",
+        "divider": true
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "Should I just stop waiting next time?"
+      },
+      "thoughts": {
+        "A": {
+          "text": "That came out strongly because I worry this will happen again.",
+          "emotion": "anxious",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "I do not want one delay to become a judgment about our relationship.",
+          "emotion": "defensive",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "duration": 4500,
+      "intensity": 0.5,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "It is not that I do not want to eat with you."
+      },
+      "thoughts": {
+        "A": {
+          "text": "Hearing that helps me relax a little.",
+          "emotion": "warm",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "I want them to know our plan still matters to me.",
+          "emotion": "reflective",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "duration": 4500,
+      "intensity": 0.3,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "dialogue": {
+        "speaker": "A",
+        "text": "Next time, just send a short message if you will be late."
+      },
+      "thoughts": {
+        "A": {
+          "text": "I want to make my request more specific.",
+          "emotion": "warm",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "That request feels more manageable than I first thought.",
+          "emotion": "reflective",
+          "bubbleType": "cloud"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "duration": 4500,
+      "intensity": 0.15,
+      "narrator": null,
+      "spatial": {
+        "A": {
+          "x": 30,
+          "facing": "right",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        },
+        "B": {
+          "x": 70,
+          "facing": "left",
+          "pose": "neutral",
+          "lean": "none",
+          "scale": 1,
+          "visible": true
+        }
+      },
+      "proxemic": {
+        "state": "neutral",
+        "divider": false
+      },
+      "dialogue": {
+        "speaker": "B",
+        "text": "Okay. Shall we get started now?"
+      },
+      "thoughts": {
+        "A": {
+          "text": "I want to cook together and hope my concern was heard.",
+          "emotion": "warm",
+          "bubbleType": "cloud"
+        },
+        "B": {
+          "text": "I want to take part again, not just end the argument.",
+          "emotion": "reflective",
+          "bubbleType": "cloud"
+        }
+      }
+    }
+  ]
+}
