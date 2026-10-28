@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        pixel: ['"Press Start 2P"', 'monospace'],
-        mono:  ['"JetBrains Mono"', 'monospace'],
+        pixel: ['"Press Start 2P"', 'var(--font-code)'],
+        mono: ['var(--font-code)'],
       },
       colors: {
         'mirror-blue': '#7ab0e8',

@@ -83,7 +83,7 @@ export default function Subtitle({ dialogue, personas }) {
       <div className="h-full flex flex-col items-center justify-center px-12 py-4 relative z-[1]">
         <p className="text-[20px] leading-[1.75] tracking-wide text-center" style={{
           color: 'rgba(255,255,255,0.93)',
-          fontFamily: '"PingFang SC","Inter","Microsoft YaHei",sans-serif',
+          fontFamily: 'var(--font-ui)',
           textShadow: '0 1px 8px rgba(0,0,0,0.5)',
         }}>
           {displayText}

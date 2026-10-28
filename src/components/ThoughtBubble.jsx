@@ -181,7 +181,7 @@ function EditPanel({ original, current, originalEmotion, currentEmotion, onSave,
       <div className="px-2.5 py-1.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         <p className="font-mono text-[7px] text-white/25 tracking-wider">What do you think they were thinking?</p>
         <p className="text-[10px] text-white/20 line-through mt-0.5"
-          style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+          style={{ fontFamily: 'var(--font-ui)' }}>
           {original}
         </p>
       </div>
@@ -196,7 +196,7 @@ function EditPanel({ original, current, originalEmotion, currentEmotion, onSave,
           rows={2}
           className="w-full rounded px-2.5 py-2 text-[13px] text-white/90 placeholder-white/25 resize-none focus:outline-none"
           style={{
-            fontFamily: '"PingFang SC","Inter",sans-serif',
+            fontFamily: 'var(--font-ui)',
             background: 'rgba(10,10,20,0.85)',
             border: '1.5px solid rgba(122,176,232,0.4)',
             lineHeight: '1.7',
@@ -400,14 +400,14 @@ export default function ThoughtBubble({
       {(status === 'disputed' || status === 'edited') && dispute?.text !== thought.text && (
         <div className="mb-1">
           <span className="text-[9px] text-white/18 line-through"
-            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            style={{ fontFamily: 'var(--font-ui)' }}>
             {thought.text}
           </span>
         </div>
       )}
 
       {/* Main text */}
-      <span style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+      <span style={{ fontFamily: 'var(--font-ui)' }}>
         {shownText}
         {!hasInteraction && displayText.length < (thought.text?.length || 0) && (
           <span className="animate-blink opacity-60">_</span>

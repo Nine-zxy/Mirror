@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Self-hosted Chinese typography; SIL OFL license in public/fonts/. */
+@font-face {
+  font-family: 'Noto Sans SC';
+  src: url('/fonts/noto-sans-sc.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  --font-ui: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  --font-code: 'JetBrains Mono', Consolas, 'Noto Sans SC', 'Microsoft YaHei', monospace;
+}
+
 /* ── Reset ────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body, #root { height: 100%; overflow: hidden; }
@@ -9,7 +22,9 @@ html, body, #root { height: 100%; overflow: hidden; }
 body {
   background: #060810;
   color: rgba(200,210,230,0.7);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 

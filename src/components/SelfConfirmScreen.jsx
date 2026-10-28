@@ -116,7 +116,7 @@ function BeatCard({ beat, myRole, persona, selfConfirm, onConfirm }) {
                 className="text-[12px] leading-relaxed whitespace-pre-line"
                 style={{
                   color: status === 'edited' ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.60)',
-                  fontFamily: '"PingFang SC","Inter",sans-serif',
+                  fontFamily: 'var(--font-ui)',
                   textDecoration: status === 'edited' ? 'line-through' : 'none',
                 }}
               >
@@ -125,7 +125,7 @@ function BeatCard({ beat, myRole, persona, selfConfirm, onConfirm }) {
             ) : (
               <p
                 className="text-[10px] leading-relaxed whitespace-pre-line text-white/20 line-through"
-                style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
+                style={{ fontFamily: 'var(--font-ui)' }}
               >
                 {thought.text}
               </p>
@@ -155,7 +155,7 @@ function BeatCard({ beat, myRole, persona, selfConfirm, onConfirm }) {
           }}>
             <p className="font-mono text-[7px] tracking-wider mb-1" style={{ color: '#90e8a8' }}>Your edit</p>
             <p className="text-[12px] leading-relaxed whitespace-pre-line"
-              style={{ color: 'rgba(144,232,168,0.8)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+              style={{ color: 'rgba(144,232,168,0.8)', fontFamily: 'var(--font-ui)' }}>
               {selfConfirm.text}
             </p>
             {selfConfirm.emotion !== thought.emotion && (
@@ -183,7 +183,7 @@ function BeatCard({ beat, myRole, persona, selfConfirm, onConfirm }) {
                 placeholder="Write what you were really thinking..."
                 rows={2}
                 className="w-full bg-white/6 rounded px-2 py-1.5 text-[11px] text-white/80 placeholder-white/18 resize-none focus:outline-none border border-white/10 focus:border-white/25"
-                style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
+                style={{ fontFamily: 'var(--font-ui)' }}
               />
               <div>
                 <p className="font-mono text-[7px] text-white/22 tracking-wider mb-1">Emotion tag</p>
@@ -288,7 +288,7 @@ export default function SelfConfirmScreen({
             SELF-CONFIRM
           </p>
           <p className="text-[13px] text-white/55 leading-relaxed mt-1"
-            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            style={{ fontFamily: 'var(--font-ui)' }}>
             Below are AI's inferences about your inner thoughts. Confirm or edit each one.
           </p>
         </div>

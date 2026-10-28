@@ -183,7 +183,7 @@ export default function DivergenceSummary({
                   }}>
                     <p className="font-mono text-[7px] text-white/25 mb-1 tracking-wider">原始推断</p>
                     <p className="text-[12px] text-white/35 leading-relaxed line-through"
-                      style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+                      style={{ fontFamily: 'var(--font-ui)' }}>
                       {dispute.original}
                     </p>
                     {dispute.originalEmotion && (
@@ -198,7 +198,7 @@ export default function DivergenceSummary({
                   }}>
                     <p className="font-mono text-[7px] tracking-wider mb-1" style={{ color: '#90e8a8' }}>你的修正</p>
                     <p className="text-[12px] leading-relaxed"
-                      style={{ color: 'rgba(144,232,168,0.8)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+                      style={{ color: 'rgba(144,232,168,0.8)', fontFamily: 'var(--font-ui)' }}>
                       {dispute.text}
                     </p>
                     {dispute.emotion && dispute.emotion !== dispute.originalEmotion && (
@@ -223,7 +223,7 @@ export default function DivergenceSummary({
                 <CardHeader persona={persona} beat={beat} status="disputed" />
                 <div className="p-4">
                   <p className="text-[12px] text-white/35 leading-relaxed line-through"
-                    style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+                    style={{ fontFamily: 'var(--font-ui)' }}>
                     {dispute.original}
                   </p>
                   <p className="font-mono text-[8px] mt-2" style={{ color: '#e87a7a88' }}>
@@ -247,7 +247,7 @@ export default function DivergenceSummary({
                 <CardHeader persona={persona} beat={beat} status="confirmed" />
                 <div className="p-4">
                   <p className="text-[12px] leading-relaxed"
-                    style={{ color: 'rgba(96,200,128,0.65)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+                    style={{ color: 'rgba(96,200,128,0.65)', fontFamily: 'var(--font-ui)' }}>
                     {dispute.text}
                   </p>
                 </div>
@@ -261,7 +261,7 @@ export default function DivergenceSummary({
           <div className="glass rounded-xl px-5 py-4">
             <p className="font-mono text-[8px] text-white/25 mb-2 tracking-widest">你的反思</p>
             <p className="text-[13px] text-white/55 leading-relaxed"
-              style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+              style={{ fontFamily: 'var(--font-ui)' }}>
               {annotation}
             </p>
           </div>
@@ -289,7 +289,7 @@ export default function DivergenceSummary({
         }}>
           <p className="text-[14px] leading-relaxed" style={{
             color: 'rgba(122,176,232,0.7)',
-            fontFamily: '"PingFang SC","Inter",sans-serif',
+            fontFamily: 'var(--font-ui)',
           }}>
             {hasDual
               ? <>你们有 {divergences.length} 处认知差异。<br />
@@ -410,7 +410,7 @@ function AnnotationMini({ dispute }) {
       )}
       {dispute.status === 'edited' && dispute.original && (
         <p className="text-[10px] text-white/25 line-through mb-1 leading-snug"
-          style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+          style={{ fontFamily: 'var(--font-ui)' }}>
           {dispute.original}
         </p>
       )}
@@ -419,7 +419,7 @@ function AnnotationMini({ dispute }) {
           color: dispute.status === 'disputed' ? 'rgba(232,122,122,0.6)' :
                  dispute.status === 'edited'   ? 'rgba(144,232,168,0.75)' :
                  'rgba(96,200,128,0.6)',
-          fontFamily: '"PingFang SC","Inter",sans-serif',
+          fontFamily: 'var(--font-ui)',
           textDecoration: dispute.status === 'disputed' ? 'line-through' : 'none',
         }}>
         {dispute.text || dispute.original}

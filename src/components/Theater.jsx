@@ -1199,7 +1199,7 @@ function BottomEditPanel({ personaId, beatId, thought, dispute, onSave, onCancel
 
       {/* Original text (crossed out, small) */}
       <p className="text-[10px] text-white/20 line-through mb-1.5 truncate"
-        style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+        style={{ fontFamily: 'var(--font-ui)' }}>
         {thought?.text}
       </p>
 
@@ -1212,7 +1212,7 @@ function BottomEditPanel({ personaId, beatId, thought, dispute, onSave, onCancel
         rows={3}
         className="w-full rounded px-3 py-2 text-[14px] text-white/90 placeholder-white/25 resize-none focus:outline-none mb-2"
         style={{
-          fontFamily: '"PingFang SC","Inter",sans-serif',
+          fontFamily: 'var(--font-ui)',
           background: 'rgba(10,10,20,0.85)',
           border: `1.5px solid ${borderColor}50`,
           lineHeight: '1.7',
@@ -1364,7 +1364,7 @@ export default function Theater({
                 <span style={{
                   fontSize: '17px',
                   color: 'rgba(255,255,255,0.85)',
-                  fontFamily: '"Inter","PingFang SC","Microsoft YaHei",sans-serif',
+                  fontFamily: 'var(--font-ui)',
                   letterSpacing: '0.03em',
                   lineHeight: '1.6',
                   textShadow: '0 1px 8px rgba(0,0,0,0.6)',

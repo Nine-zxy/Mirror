@@ -141,7 +141,7 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
             </span>
           </div>
           <p className="text-[18px] text-white/40 mt-1 leading-relaxed"
-            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            style={{ fontFamily: 'var(--font-ui)' }}>
             "{beat.dialogue.text}"
           </p>
         </div>
@@ -160,7 +160,7 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
               {selfLabel}
             </p>
             <p className="text-[19px] leading-relaxed"
-              style={{ color: `${selfColor}dd`, fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+              style={{ color: `${selfColor}dd`, fontFamily: 'var(--font-ui)' }}>
               {selfText}
             </p>
             <EmotionTag emotion={selfEmotion} color={selfColor} />
@@ -182,7 +182,7 @@ function DivergenceCard({ data, personas, myRole, viewPerspective, index }) {
               {partnerLabel}
             </p>
             <p className="text-[19px] leading-relaxed"
-              style={{ color: `${editorColor}dd`, fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+              style={{ color: `${editorColor}dd`, fontFamily: 'var(--font-ui)' }}>
               {partnerText}
             </p>
             <EmotionTag emotion={partnerEmotion} color={editorColor} />
@@ -243,7 +243,7 @@ export default function DivergenceCards({
           </span>
           <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #7ab0e8, transparent)' }} />
           <p className="text-[21px] text-white/50 leading-relaxed mt-1"
-            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            style={{ fontFamily: 'var(--font-ui)' }}>
             {viewPerspective === 'mine'
               ? `How ${personas[partnerId]?.name || 'your partner'} sees you vs. who you really are`
               : `How you see ${personas[partnerId]?.name || 'your partner'} vs. who ${personas[partnerId]?.name || 'your partner'} really is`}
@@ -297,7 +297,7 @@ export default function DivergenceCards({
           </div>
         ) : (
           <div className="text-center py-8">
-            <p className="text-[21px] text-white/30" style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            <p className="text-[21px] text-white/30" style={{ fontFamily: 'var(--font-ui)' }}>
               {viewPerspective === 'mine'
                 ? `${personas[partnerId]?.name || 'Your partner'}'s understanding aligns well with your actual feelings.`
                 : `Your understanding aligns well with ${personas[partnerId]?.name || 'your partner'}'s actual feelings.`}
@@ -312,7 +312,7 @@ export default function DivergenceCards({
         }}>
           <p className="text-[21px] leading-relaxed" style={{
             color: 'rgba(122,176,232,0.7)',
-            fontFamily: '"PingFang SC","Inter",sans-serif',
+            fontFamily: 'var(--font-ui)',
           }}>
             {allDivergences.length > 0
               ? <>{allDivergences.length} perception gap{allDivergences.length > 1 ? 's' : ''} found.<br />
@@ -334,20 +334,20 @@ export default function DivergenceCards({
           <div className="w-full max-w-lg px-4">
             <p className="text-[18px] leading-relaxed mb-3" style={{
               color: 'rgba(122,176,232,0.55)',
-              fontFamily: '"Noto Serif SC", "Source Han Serif CN", "PingFang SC", serif',
+              fontFamily: 'var(--font-ui)',
             }}>
               Before you discuss further, consider:
             </p>
             <div className="flex flex-col gap-2.5 pl-1">
               <p className="text-[18px] leading-relaxed" style={{
                 color: 'rgba(122,176,232,0.45)',
-                fontFamily: '"Noto Serif SC", "Source Han Serif CN", "PingFang SC", serif',
+                fontFamily: 'var(--font-ui)',
               }}>
                 1. &ldquo;Was there a moment that gave you a new understanding of your partner?&rdquo;
               </p>
               <p className="text-[18px] leading-relaxed" style={{
                 color: 'rgba(122,176,232,0.45)',
-                fontFamily: '"Noto Serif SC", "Source Han Serif CN", "PingFang SC", serif',
+                fontFamily: 'var(--font-ui)',
               }}>
                 2. &ldquo;How does seeing yourself through your partner's eyes differ from your own experience?&rdquo;
               </p>

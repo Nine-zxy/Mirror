@@ -757,7 +757,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
               </span>
             )}
           </div>
-          <p className="text-[22px]" style={{ color: 'rgba(255,255,255,0.50)', fontFamily: '"Inter","PingFang SC",sans-serif' }}>
+          <p className="text-[22px]" style={{ color: 'rgba(255,255,255,0.50)', fontFamily: 'var(--font-ui)' }}>
             {skipGeneration
               ? 'Before viewing, describe your perspective on this conflict.'
               : isTogether
@@ -802,7 +802,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
           }}>
             <p className="text-[16px] leading-relaxed" style={{
               color: 'rgba(122,176,232,0.75)',
-              fontFamily: '"Inter","PingFang SC",sans-serif',
+              fontFamily: 'var(--font-ui)',
             }}>
               Your partner is independently completing the same description right now. Your responses — without seeing each other's — will separately drive AI's inference of each other's inner state.
             </p>
@@ -863,7 +863,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 background:  'rgba(255,255,255,0.04)',
                 border:      `1px solid ${rawText.length > 20 ? 'rgba(122,176,232,0.22)' : 'rgba(255,255,255,0.08)'}`,
                 color:       'rgba(255,255,255,0.78)',
-                fontFamily:  '"PingFang SC","JetBrains Mono","Inter",monospace',
+                fontFamily: 'var(--font-ui)',
                 fontSize:    '19px',
                 lineHeight:  '1.65',
                 caretColor:  '#7ab0e8',
@@ -914,7 +914,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 style={{
                   background: 'rgba(122,176,232,0.06)',
                   border: `1px solid ${concernA ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                  fontFamily: '"Inter","PingFang SC",sans-serif',
+                  fontFamily: 'var(--font-ui)',
                   transition: 'border-color 0.2s',
                 }}
               />
@@ -933,7 +933,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 style={{
                   background: 'rgba(122,176,232,0.06)',
                   border: `1px solid ${feeling ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                  fontFamily: '"Inter","PingFang SC",sans-serif',
+                  fontFamily: 'var(--font-ui)',
                   transition: 'border-color 0.2s',
                 }}
               />
@@ -952,7 +952,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
                 style={{
                   background: 'rgba(122,176,232,0.06)',
                   border: `1px solid ${context ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                  fontFamily: '"Inter","PingFang SC",sans-serif',
+                  fontFamily: 'var(--font-ui)',
                   transition: 'border-color 0.2s',
                 }}
               />
@@ -976,7 +976,7 @@ export default function ConflictInput({ onScenarioReady, syncMode, skipGeneratio
             style={{
               background: 'rgba(255,255,255,0.03)',
               border: `1px solid ${context.trim() ? 'rgba(122,176,232,0.3)' : 'rgba(255,255,255,0.07)'}`,
-              fontFamily: '"PingFang SC","Inter",sans-serif',
+              fontFamily: 'var(--font-ui)',
               transition: 'border-color 0.2s',
             }}
           />

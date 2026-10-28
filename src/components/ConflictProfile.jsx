@@ -290,7 +290,7 @@ export default function ConflictProfile({ personas, onConfirm }) {
           </p>
           <p className="text-sm mt-1" style={{
             color: 'rgba(255,255,255,0.38)',
-            fontFamily: '"PingFang SC","Inter",sans-serif',
+            fontFamily: 'var(--font-ui)',
           }}>
             描述<em>这次冲突</em>中你们各自的互动方式 — 系统将据此重建对话轨迹。
           </p>

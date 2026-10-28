@@ -175,7 +175,7 @@ function PersonaPanel({ personaId, config, onChange }) {
           onChange={e => onChange({ ...config, name: e.target.value })}
           maxLength={6}
           className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white/80 focus:outline-none focus:border-white/25 transition-colors font-mono text-center"
-          style={{ fontFamily: '"JetBrains Mono","PingFang SC",monospace' }}
+          style={{ fontFamily: 'var(--font-ui)' }}
         />
       </div>
 
@@ -290,7 +290,7 @@ export default function PersonaSetup({ initialPersonas, onConfirm }) {
             配置角色 / CONFIGURE PERSONAS
           </p>
           <p className="text-sm text-white/38 mt-1"
-            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            style={{ fontFamily: 'var(--font-ui)' }}>
             选择能代表你们的外观，这将影响模拟场景的呈现方式。
           </p>
         </div>
@@ -333,7 +333,7 @@ export default function PersonaSetup({ initialPersonas, onConfirm }) {
                 <p className="text-[11px] leading-snug"
                   style={{
                     color: sceneType === s.id ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.18)',
-                    fontFamily: '"PingFang SC","Inter",sans-serif',
+                    fontFamily: 'var(--font-ui)',
                   }}>
                   {s.desc}
                 </p>

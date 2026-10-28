@@ -63,7 +63,7 @@ function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
       {/* Narrator */}
       {beat.narrator && (
         <p className="text-[12px] text-white/28 leading-snug italic mb-1"
-          style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+          style={{ fontFamily: 'var(--font-ui)' }}>
           {beat.narrator}
         </p>
       )}
@@ -76,7 +76,7 @@ function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
             {personas[speaker]?.name}
           </span>
           <p className="text-[12px] text-white/60 leading-snug"
-            style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+            style={{ fontFamily: 'var(--font-ui)' }}>
             {beat.dialogue.text}
           </p>
         </div>
@@ -104,13 +104,13 @@ function BeatRow({ beat, index, isCurrent, personas, tags, disputes, onSeek }) {
               {/* Show original struck-through if edited/disputed */}
               {(isEdited || isDisputed) && (
                 <p className="text-[8px] leading-snug line-through mb-0.5"
-                  style={{ color: 'rgba(255,255,255,0.2)', fontFamily: '"PingFang SC","Inter",sans-serif' }}>
+                  style={{ color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-ui)' }}>
                   {dispute.original}
                 </p>
               )}
               <p className="text-[12px] leading-snug" style={{
                 color: badge ? badge.color + 'cc' : `${color}99`,
-                fontFamily: '"PingFang SC","Inter",sans-serif',
+                fontFamily: 'var(--font-ui)',
               }}>
                 {isEdited ? text : (isDisputed ? '' : text)}
               </p>

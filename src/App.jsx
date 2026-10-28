@@ -954,7 +954,7 @@ export default function App() {
           <div className="text-center anim-fadeIn" style={{ animationDelay: '0.35s', animationDuration: '1.2s' }}>
             <p className="text-[15px] leading-[2.0]" style={{
               color: '#e8dcc8',
-              fontFamily: '"Noto Serif SC","Source Han Serif CN","PingFang SC",serif',
+              fontFamily: 'var(--font-ui)',
               fontWeight: 400,
               letterSpacing: '0.08em',
             }}>
@@ -1062,7 +1062,7 @@ export default function App() {
           {/* Show info */}
           <div className="flex flex-col items-center gap-3 mt-4">
             <p className="text-[22px] tracking-wider text-white/80" style={{
-              fontFamily: '"Noto Serif SC","Source Han Serif CN","PingFang SC",serif',
+              fontFamily: 'var(--font-ui)',
             }}>
               {liveScenario.title || 'Conflict Review'}
             </p>
@@ -1096,7 +1096,7 @@ export default function App() {
 
           {/* Completed label */}
           <p className="text-[13px] text-center leading-relaxed text-white/35 mt-2" style={{
-            fontFamily: '"Noto Serif SC","Source Han Serif CN","PingFang SC",serif',
+            fontFamily: 'var(--font-ui)',
           }}>
             Session complete.
           </p>

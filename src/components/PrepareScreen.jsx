@@ -1051,7 +1051,7 @@ export default function PrepareScreen() {
                   style={{
                     background: 'rgba(255,255,255,0.03)',
                     border: '1px solid rgba(255,255,255,0.07)',
-                    fontFamily: '"PingFang SC","Inter",sans-serif',
+                    fontFamily: 'var(--font-ui)',
                   }}
                 />
               </div>
@@ -1079,7 +1079,7 @@ export default function PrepareScreen() {
                   background: 'rgba(255,255,255,0.04)',
                   border: `1px solid ${rawText.length > 20 ? 'rgba(122,176,232,0.22)' : 'rgba(255,255,255,0.08)'}`,
                   color: 'rgba(255,255,255,0.78)',
-                  fontFamily: '"PingFang SC","JetBrains Mono","Inter",monospace',
+                  fontFamily: 'var(--font-ui)',
                   fontSize: '13px', lineHeight: '1.65', caretColor: '#7ab0e8',
                   minHeight: '140px',
                 }}
@@ -1102,12 +1102,12 @@ export default function PrepareScreen() {
                     maxLength={80} placeholder="A 最想让对方理解的是什么？"
                     className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
                     style={{ background: 'rgba(122,176,232,0.06)', border: '1px solid rgba(122,176,232,0.15)',
-                      fontFamily: '"PingFang SC","Inter",sans-serif' }} />
+                      fontFamily: 'var(--font-ui)' }} />
                   <input value={feeling} onChange={e => setFeeling(e.target.value)}
                     maxLength={80} placeholder="A 当时最强烈的感受"
                     className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
                     style={{ background: 'rgba(122,176,232,0.06)', border: '1px solid rgba(122,176,232,0.15)',
-                      fontFamily: '"PingFang SC","Inter",sans-serif' }} />
+                      fontFamily: 'var(--font-ui)' }} />
                 </div>
                 <div className="w-px self-stretch" style={{ background: 'rgba(255,255,255,0.05)' }} />
                 <div className="flex-1 flex flex-col gap-3">
@@ -1118,12 +1118,12 @@ export default function PrepareScreen() {
                     maxLength={80} placeholder="B 最想让对方理解的是什么？"
                     className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
                     style={{ background: 'rgba(232,122,122,0.06)', border: '1px solid rgba(232,122,122,0.15)',
-                      fontFamily: '"PingFang SC","Inter",sans-serif' }} />
+                      fontFamily: 'var(--font-ui)' }} />
                   <input value={feelingB} onChange={e => setFeelingB(e.target.value)}
                     maxLength={80} placeholder="B 当时最强烈的感受"
                     className="w-full rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder-white/20 focus:outline-none"
                     style={{ background: 'rgba(232,122,122,0.06)', border: '1px solid rgba(232,122,122,0.15)',
-                      fontFamily: '"PingFang SC","Inter",sans-serif' }} />
+                      fontFamily: 'var(--font-ui)' }} />
                 </div>
               </div>
             )}
@@ -1133,7 +1133,7 @@ export default function PrepareScreen() {
               maxLength={100} placeholder="一句话背景（例：异地恋半年，最近沟通越来越少）"
               className="w-full rounded-lg px-3 py-2 text-[12px] text-white/70 placeholder-white/18 focus:outline-none"
               style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                fontFamily: '"PingFang SC","Inter",sans-serif' }} />
+                fontFamily: 'var(--font-ui)' }} />
 
             {/* Relationship type */}
             <div className="flex flex-col gap-2" style={{

@@ -30,7 +30,7 @@ function ThoughtCard({ thought, persona }) {
         className="text-[13px] leading-relaxed whitespace-pre-line"
         style={{
           color: 'rgba(255,255,255,0.65)',
-          fontFamily: '"PingFang SC","Inter",sans-serif',
+          fontFamily: 'var(--font-ui)',
         }}
       >
         {thought.text}
@@ -66,7 +66,7 @@ export default function ReflectionOverlay({
             </div>
             <p
               className="text-white/65 text-[14px] leading-snug"
-              style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
+              style={{ fontFamily: 'var(--font-ui)' }}
             >
               {step === 'write'
                 ? (beat?.reflectionPrompt || '此刻模拟暂停。在写下反思之前，你看到了什么？')
@@ -86,7 +86,7 @@ export default function ReflectionOverlay({
                 placeholder="写下此刻你注意到的、感受到的…"
                 rows={3}
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white/80 placeholder-white/20 resize-none focus:outline-none focus:border-white/25 transition-colors"
-                style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
+                style={{ fontFamily: 'var(--font-ui)' }}
                 autoFocus
               />
               <div className="flex justify-end">
@@ -115,7 +115,7 @@ export default function ReflectionOverlay({
                   <p className="font-mono text-[8px] text-white/25 mb-1 tracking-widest">你的反思</p>
                   <p
                     className="text-[13px] text-white/55 leading-snug"
-                    style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
+                    style={{ fontFamily: 'var(--font-ui)' }}
                   >
                     {annotation}
                   </p>
@@ -134,7 +134,7 @@ export default function ReflectionOverlay({
                   </div>
                   <p
                     className="text-[11px] text-white/30 mt-2 leading-snug"
-                    style={{ fontFamily: '"PingFang SC","Inter",sans-serif' }}
+                    style={{ fontFamily: 'var(--font-ui)' }}
                   >
                     同一个冲突时刻，两个人经历了完全不同的内心世界。
                   </p>
