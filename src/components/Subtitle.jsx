@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 // ─────────────────────────────────────────────────────────────
 //  Subtitle — RPG-style bottom dialogue box
@@ -21,19 +21,13 @@ import { useEffect, useState, useRef } from 'react'
 export default function Subtitle({ dialogue, personas }) {
   const [displayText, setDisplayText] = useState('')
   const [isComplete, setIsComplete]   = useState(false)
-  const prevTextRef = useRef('')
 
   useEffect(() => {
     if (!dialogue?.text) {
       setDisplayText('')
       setIsComplete(false)
-      prevTextRef.current = ''
       return
     }
-
-    // Same text — skip
-    if (dialogue.text === prevTextRef.current) return
-    prevTextRef.current = dialogue.text
 
     // Typewriter effect — reveal text character by character
     setDisplayText('')
@@ -56,6 +50,7 @@ export default function Subtitle({ dialogue, personas }) {
 
   const persona = personas[dialogue.speaker]
   const speakerColor = persona?.color || '#7ab0e8'
+  const dialogueBoxImg = import.meta.env.BASE_URL + (dialogue.speaker === 'A' ? 'assets/ui/dialogue/blue box.png' : 'assets/ui/dialogue/red box.png')
 
   return (
     <div className="relative flex-shrink-0 flex items-center justify-center" style={{
@@ -64,9 +59,7 @@ export default function Subtitle({ dialogue, personas }) {
     }}>
       {/* Pixel dialogue box as background frame — 9-slice style stretch */}
       <div className="absolute inset-x-4 inset-y-1 pointer-events-none" style={{
-        background: '#0b1220',
-        border: `2px solid ${speakerColor}`,
-        borderRadius: '6px',
+        backgroundImage: `url("${dialogueBoxImg}")`,
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat',
         imageRendering: 'pixelated',

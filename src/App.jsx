@@ -181,7 +181,7 @@ const SCENE_ELEMENTS_MAP = {
 const URL_PARAMS = new URLSearchParams(window.location.search)
 if (__ASIDE_STATIC_SITE__) {
   for (const key of [...URL_PARAMS.keys()]) {
-    if (!['lang', 'demo'].includes(key) || (key === 'demo' && URL_PARAMS.get(key) !== 'solo')) URL_PARAMS.delete(key)
+    if (!['lang', 'demo', 'beat'].includes(key) || (key === 'demo' && URL_PARAMS.get(key) !== 'solo')) URL_PARAMS.delete(key)
   }
 }
 const DEMO_MODE = URL_PARAMS.get('demo')
@@ -208,7 +208,7 @@ export default function App() {
   const initScenario = directScenarioData || BASE_SCENARIO
 
   const [phase, setPhase]               = useState(initialPhase)
-  const [beatIndex, setBeatIndex]       = useState(0)
+  const [beatIndex, setBeatIndex]       = useState(DEMO_MODE === 'solo' && URL_PARAMS.get('beat') === '1' ? 1 : 0)
   const [isPlaying, setIsPlaying]       = useState(false)
   // Bubble visibility: 'none' | 'self' | 'partner' | 'both'
   // self_confirm: 'self' (see only own thoughts)
@@ -1180,7 +1180,7 @@ export default function App() {
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all relative"
             style={hBtn(bubbleVisibility !== 'none')}
             title={`Bubbles: ${bubbleVisibility === 'none' ? 'Off' : bubbleVisibility === 'partner' ? 'Partner only' : 'All'} (T)`}>
-            <img src={import.meta.env.BASE_URL + 'assets/ui/icons/thought.svg'} alt="" className="inline w-3.5 h-3.5" style={{imageRendering:'pixelated'}} /> {bubbleVisibility === 'none' ? 'Off' : bubbleVisibility === 'partner' ? 'Partner' : 'All'}
+            <img src={import.meta.env.BASE_URL + 'assets/ui/icons/thought.png'} alt="" className="inline w-3.5 h-3.5" style={{imageRendering:'pixelated'}} /> {bubbleVisibility === 'none' ? 'Off' : bubbleVisibility === 'partner' ? 'Partner' : 'All'}
           </button>
           <button onClick={() => setShowScript(p => !p)}
             className="font-mono text-[9px] px-2 py-0.5 rounded border transition-all"

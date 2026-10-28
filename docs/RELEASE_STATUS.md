@@ -9,13 +9,13 @@ This folder is an isolated publication candidate. Original research files and th
 - Bilingual README, bilingual entry page, and authored bilingual demonstration.
 - Core reveal/privacy regression tests and a release hygiene check.
 - Explicit paper-to-code mapping and reconstruction limitations.
-- Original participant scenario modules, raw data, logs, credentials, and unverified raster art excluded.
+- Original participant scenario modules, raw data, logs, and credentials excluded.
 
 ## Publication metadata
 
 - Code is released under the MIT License; see LICENSE.
 - Supply final paper authors, publication metadata, DOI, so `CITATION.cff` can be generated from verified metadata.
-- Confirm ownership/redistribution rights for inherited source; provide provenance for any original artwork that should be restored.
+- Study visual assets were restored at the project owner request on 2026-10-28; source paths and exact hashes are recorded in docs/STUDY_ASSETS.json.
 
 ## Interface stage
 

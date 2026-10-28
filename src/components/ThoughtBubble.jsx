@@ -55,22 +55,22 @@ const BUBBLE_TYPES = {
 
 // 8 emotions, each with a unique icon from /assets/ui/emotions/ — no duplicates
 export const EMOTION_STYLE = {
-  angry:      { bg: 'rgba(210,55,55,0.14)',   border: '#e04040', text: '#f8a0a0', label: 'Angry', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/angry.svg' },
-  confused:   { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', label: 'Confused', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/confused.svg' },
-  happy:      { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', label: 'Happy', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/happy.svg' },
-  love:       { bg: 'rgba(200,80,130,0.10)',  border: '#d05888', text: '#f0a8c8', label: 'Love', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/love.svg' },
-  sleepy:     { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', label: 'Sleepy', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/sleepy.svg' },
-  stressed:   { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', label: 'Stressed', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/stressed.svg' },
-  surprised:  { bg: 'rgba(200,160,55,0.10)',  border: '#d8b040', text: '#f8e8a0', label: 'Surprised', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/surprised.svg' },
-  thinking:   { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', label: 'Thinking', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/thinking.svg' },
+  angry:      { bg: 'rgba(210,55,55,0.14)',   border: '#e04040', text: '#f8a0a0', label: 'Angry', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/angry.png' },
+  confused:   { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', label: 'Confused', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/confused.png' },
+  happy:      { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', label: 'Happy', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/happy.png' },
+  love:       { bg: 'rgba(200,80,130,0.10)',  border: '#d05888', text: '#f0a8c8', label: 'Love', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/love.png' },
+  sleepy:     { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', label: 'Sleepy', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/sleepy.png' },
+  stressed:   { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', label: 'Stressed', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/stressed.png' },
+  surprised:  { bg: 'rgba(200,160,55,0.10)',  border: '#d8b040', text: '#f8e8a0', label: 'Surprised', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/surprised.png' },
+  thinking:   { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', label: 'Thinking', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/thinking.png' },
   // Legacy mappings — map old emotion names to new ones
-  anxious:    { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', label: 'Anxious', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/stressed.svg' },
-  defensive:  { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', label: 'Defensive', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/confused.svg' },
-  hurt:       { bg: 'rgba(90,80,170,0.10)',   border: '#7060c0', text: '#c0b8f0', label: 'Hurt', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/sleepy.svg' },
-  withdrawn:  { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', label: 'Withdrawn', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/sleepy.svg' },
-  warm:       { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', label: 'Warm', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/happy.svg' },
-  reflective: { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', label: 'Reflective', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/thinking.svg' },
-  neutral:    { bg: 'rgba(90,90,90,0.09)',    border: '#7a7a7a', text: '#c0c0c0', label: 'Calm', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/thinking.svg' },
+  anxious:    { bg: 'rgba(70,110,200,0.10)',  border: '#6882d8', text: '#b8cff8', label: 'Anxious', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/stressed.png' },
+  defensive:  { bg: 'rgba(200,140,50,0.10)',  border: '#d8a040', text: '#f8d898', label: 'Defensive', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/confused.png' },
+  hurt:       { bg: 'rgba(90,80,170,0.10)',   border: '#7060c0', text: '#c0b8f0', label: 'Hurt', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/sleepy.png' },
+  withdrawn:  { bg: 'rgba(70,80,100,0.09)',   border: '#6a7090', text: '#98a8c0', label: 'Withdrawn', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/sleepy.png' },
+  warm:       { bg: 'rgba(70,190,110,0.09)',  border: '#58d880', text: '#98f0b0', label: 'Warm', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/happy.png' },
+  reflective: { bg: 'rgba(130,110,200,0.10)', border: '#a890d8', text: '#d8c8f8', label: 'Reflective', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/thinking.png' },
+  neutral:    { bg: 'rgba(90,90,90,0.09)',    border: '#7a7a7a', text: '#c0c0c0', label: 'Calm', imgSrc: import.meta.env.BASE_URL + 'assets/ui/emotions/thinking.png' },
 }
 
 // Emotion options for re-tagging: exactly 8 unique icons, no duplicates
@@ -390,7 +390,7 @@ export default function ThoughtBubble({
                 border: `1px solid ${hasInteraction ? borderColor + '60' : 'rgba(255,255,255,0.08)'}`,
               }}
             >
-              {hasInteraction ? <><img src={import.meta.env.BASE_URL + 'assets/ui/icons/edit.svg'} alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> Edit</> : 'Like them?'}
+              {hasInteraction ? <><img src={import.meta.env.BASE_URL + 'assets/ui/icons/edit.png'} alt="" style={{width:'12px',height:'12px',display:'inline',imageRendering:'pixelated'}} /> Edit</> : 'Like them?'}
             </button>
           )}
         </div>

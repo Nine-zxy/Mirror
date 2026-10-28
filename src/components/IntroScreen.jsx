@@ -1,16 +1,10 @@
 import { useEffect, useState } from 'react'
 import { ArrowUpRight, ArrowRight, Check, Copy, GitBranch, Code2, Layers, Play, ShieldCheck, X } from 'lucide-react'
 import { language, t } from '../i18n'
-import PixelChar from './PixelChar'
 import './ProjectPage.css'
 
-const personas = {
-  A: { id: 'A', hairColor: '#69442d', outfitColor: '#6483a2', outfitDark: '#3d5674', hairStyle: 'medium', outfitStyle: 'casual', accessory: 'none' },
-  B: { id: 'B', hairColor: '#393b36', outfitColor: '#c87a60', outfitDark: '#8c4d3b', hairStyle: 'short', outfitStyle: 'casual', accessory: 'none' },
-}
 
 export default function IntroScreen({ onBegin }) {
-  const [step, setStep] = useState(0)
   const [room] = useState(() => Math.random().toString(36).slice(2, 8).toUpperCase())
   const [copied, setCopied] = useState(false)
   const [notice, setNotice] = useState(false)
@@ -32,11 +26,6 @@ export default function IntroScreen({ onBegin }) {
     document.addEventListener('keydown', trap)
     return () => { document.removeEventListener('keydown', trap); previous?.focus() }
   }, [doc])
-  const phases = [
-    { name: t('确认自己的感受', 'Confirm your own feelings'), en: 'SELF-CONFIRM', desc: t('先看自己的内心独白。接受、修改，或者用自己的话重写，让自我描述保留在自己手中。', 'Start with your own inner-state hypothesis. Accept, edit, or rewrite it in your own words.'), a: t('我一直在等。我希望我们的约定被记住。', 'I have been waiting. I want our plan to matter.'), b: null },
-    { name: t('编辑对对方的理解', 'Interpret your partner'), en: 'CROSS-EDITING', desc: t('独立编辑你对对方的理解。此时，对方还看不到你的修改；两个人都拥有思考的空间。', 'Independently edit your interpretation of your partner. Your edits stay private until both people finish.'), a: null, b: t('也许对方并不是不在意，只是不知道我在等。', 'Perhaps they did not realize I was waiting.') },
-    { name: t('一起看见两种视角', 'See both perspectives'), en: 'TOGETHER VIEWING', desc: t('双方完成后，共同观看与比较。把“我如何描述自己”和“你如何理解我”放在一起。', 'After both finish, reveal the edits together. Compare self-description with the other person’s interpretation.'), a: t('我希望我们的约定被记住。', 'I wanted our plan to matter.'), b: t('我以为时间还可以商量。', 'I thought the time was flexible.') },
-  ]
   const modules = [
     ['src/components/', t('场景与交互', 'Scene & interaction'), t('人物、内心气泡、编辑界面与差异卡片。', 'Characters, thought bubbles, editing, and divergence cards.'), Layers],
     ['src/utils/', t('对话重建', 'Reconstruction'), t('提示词、对话解析与结构化场景生成。', 'Prompts, dialogue parsing, and structured scene generation.'), Code2],
@@ -64,26 +53,20 @@ export default function IntroScreen({ onBegin }) {
           <div className="hero-actions"><a className="project-button primary" href={`?demo=solo&lang=${language}`}><Play size={15}/>{t('体验交互演示', 'Explore the demo')}<ArrowUpRight size={17}/></a><button className="text-button" onClick={() => setDoc('paper')}>{t('了解研究', 'About the research')}<ArrowRight size={16}/></button></div>
           <div className="hero-caption"><span>DSR</span> DYADIC SPECTATOR REFLECTION</div>
         </div>
-        <div className="hero-art" aria-label={t('双人反思场景示意', 'Illustration of dyadic reflection')}>
-          <div className="art-topline"><span className="live-dot"/>{t('同一段对话 · 两种视角', 'ONE CONVERSATION · TWO PERSPECTIVES')}<span className="art-num">01—03</span></div>
-          <div className="art-window"><div/><div/></div><div className="art-orbit"/>
-          <div className="hero-thought thought-a">{t('“我只是希望，', '“I just wanted')}<br/>{t('你能听见我。”', 'to feel heard.”')}<span>A</span></div>
-          <div className="hero-thought thought-b">{t('“原来，你是', '“I did not know')}<br/>{t('这样想的。”', 'you felt that way.”')}<span>B</span></div>
-          <div className="art-person person-a"><PixelChar persona={personas.A} emotion="reflective" scale={1.6} facing="right"/></div><div className="art-person person-b"><PixelChar persona={personas.B} emotion="warm" scale={1.6} facing="left"/></div>
-          <div className="art-floor"/><div className="art-label">{t('从各自的内心，走向共同的画面', 'SEPARATE INNER WORLDS. A SHARED SCENE.')}</div>
-        </div>
+        <a className="study-hero-preview" href={`?demo=solo&beat=1&lang=${language}`} aria-label={t('打开实际交互演示', 'Open the study interface')}>
+          <div className="study-preview-top"><span className="live-dot"/> ASIDE / STUDY INTERFACE <ArrowUpRight size={16}/></div>
+          <img src={`${import.meta.env.BASE_URL}study-interface.png`} alt={t('ASIDE 原人物、场景、内心气泡和编辑时间轴', 'ASIDE study characters, scene, thought bubbles, and editing timeline')} />
+          <span className="study-preview-bottom">{t('实际系统界面 · 点击进入完整演示', 'ACTUAL INTERFACE · OPEN THE FULL DEMO')}<Play size={14}/></span>
+        </a>
       </section>
       <div className="principle-strip"><span>{t('对话 → 场景 → 反思', 'DIALOGUE → SCENE → REFLECTION')}</span><p>{t('AI 提出假设，人保留解释自己的权利。', 'AI proposes a hypothesis. People keep the right to describe themselves.')}</p><ShieldCheck size={21}/></div>
       <section className="experience-section" id="experience">
-        <div className="section-heading"><div><div className="eyebrow">01 / THE INTERACTION</div><h2>{t('把视角的变化，变得可见。', 'Make a change of perspective visible.')}</h2></div><p>{t('点击三个阶段，看看同一场对话如何被重新理解。', 'Click through three phases to explore how a conversation is revisited.')}</p></div>
-        <div className="experience-grid"><div className="phase-list" role="tablist" aria-label={t('反思阶段', 'Reflection phases')}>
-          {phases.map((phase, i) => <button key={phase.en} id={`phase-${i}`} role="tab" aria-selected={step === i} aria-controls="phase-panel" onClick={() => setStep(i)} className={`phase-tab ${step === i ? 'active' : ''}`} onKeyDown={event => { if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); const next = (i + (event.key === 'ArrowDown' ? 1 : 2)) % 3; setStep(next); document.getElementById(`phase-${next}`)?.focus() } }}><span className="phase-number">0{i+1}</span><span><small>{phase.en}</small><strong>{phase.name}</strong>{step === i && <p>{phase.desc}</p>}</span><ArrowUpRight size={18}/></button>)}
-        </div><div className="phase-visual" id="phase-panel" role="tabpanel" aria-labelledby={`phase-${step}`}>
-          <div className="visual-heading"><span>{t('晚餐的约定', 'The Dinner Plan')}</span><small>{t('虚构案例 · 可交互示意', 'FICTIONAL EXAMPLE · INTERACTIVE EXPLAINER')}</small></div>
-          <div className="dialogue-line">{t('“我以为我们说好七点一起做饭。”', '“I thought we agreed to cook together at seven.”')}</div>
-          <div className="perspective-pair">{['A','B'].map(role => <div className={`perspective ${role === 'A' ? 'blue' : 'clay'}`} key={role}><span className="role-label">{role === 'A' ? t('小林', 'Alex') : t('小安', 'Sam')} / {role}</span><div className={`perspective-thought ${!phases[step][role.toLowerCase()] ? 'hidden-thought' : ''}`}>{phases[step][role.toLowerCase()] || t('此阶段保留独立思考空间', 'Space for independent reflection')}</div><PixelChar persona={personas[role]} emotion={step === 2 ? 'warm' : 'reflective'} scale={1.05} facing={role === 'A' ? 'right' : 'left'}/></div>)}</div>
-          <div className="phase-footer"><span className="live-dot"/>{step === 2 ? t('双方完成 → 同步揭示', 'BOTH FINISH → REVEAL TOGETHER') : t('独立编辑 · 修改暂不向对方展示', 'INDEPENDENT EDITING · CHANGES STAY PRIVATE')}<span>0{step+1} / 03</span></div>
-        </div></div>
+        <div className="section-heading"><div><div className="eyebrow">01 / THE STUDY INTERFACE</div><h2>{t('直接在场景中，重新理解这段对话。', 'Revisit the conversation in the actual scene.')}</h2></div><p>{t('沿用研究系统的人物、场景和操作界面。下面可以直接确认、修改和回看。', 'The study characters, scenes, and controls. Confirm, edit, and revisit directly below.')}</p></div>
+        <div className="study-flow"><span>01 {t('确认自己', 'Self-Confirm')}</span><ArrowRight size={15}/><span>02 {t('编辑对方', 'Cross-Editing')}</span><ArrowRight size={15}/><span>03 {t('共同观看', 'Together Viewing')}</span><ArrowRight size={15}/><span>04 {t('比较差异', 'Compare Perspectives')}</span></div>
+        <div className="study-embed-shell"><div className="study-embed-toolbar"><span>{t('可直接操作的完整演示', 'FULL INTERACTIVE WALKTHROUGH')}</span><a href={`?demo=solo&beat=1&lang=${language}`} target="_blank" rel="noreferrer">{t('在独立窗口打开', 'Open full screen')}<ArrowUpRight size={14}/></a></div>
+          <iframe className="study-embed" src={`?demo=solo&beat=1&lang=${language}`} title={t('ASIDE 完整交互演示', 'ASIDE study interface walkthrough')} loading="lazy" />
+        </div>
+        <p className="study-note">{t('先点击内心气泡中的 “Like them?”，接受、修改或重写；用下方时间轴回看对话。完成确认后进入对对方的编辑，再查看共同观看和差异卡片。示例对话为虚构内容，未公开参与者记录。', 'Click “Like them?” in a thought bubble to accept, edit, or rewrite it. Navigate the timeline, finish self-confirmation, then interpret the other person and compare perspectives. Dialogue is fictional; participant records remain private.')}</p>
       </section>
       <section className="code-section" id="code"><div className="section-heading"><div><div className="eyebrow">02 / UNDER THE HOOD</div><h2>{t('从研究，到可以探索的代码。', 'From research to inspectable code.')}</h2></div><p>{t('一个共享的核心流程，连接场景、重建与双人同步。', 'One shared workflow connects rendering, reconstruction, and synchronization.')}</p></div>
         <div className="module-grid">{modules.map(([path,title,description,Icon],i)=><article className="module-card" key={path}><div><Icon size={23}/><span>0{i+1}</span></div><h3>{title}</h3><p>{description}</p><code>{path}</code></article>)}</div>

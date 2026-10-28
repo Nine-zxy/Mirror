@@ -1,0 +1,300 @@
+{
+  "description": "Original visual assets reused from the study prototype at the project owner request. No participant records are included.",
+  "files": [
+    {
+      "path": "assets/ui/dialogue/blue box.png",
+      "sha256": "0ce1b43f8374cc25f86a4a1b03c4e485f8aaf941b654dbc4ab5e50774b57fd63",
+      "source": "study prototype public/assets/ui/dialogue/blue box.png"
+    },
+    {
+      "path": "assets/ui/dialogue/red box.png",
+      "sha256": "079d975c3ed7e7d2b0f2cc6fc9bbeb1b1cf54e45ee9f0b9d5139a7869f98447d",
+      "source": "study prototype public/assets/ui/dialogue/red box.png"
+    },
+    {
+      "path": "assets/ui/emotions/angry.png",
+      "sha256": "db134f451a9eec7db49ff25c7bbd8cf5f94a8ffebc9229024b2c2f6a47221244",
+      "source": "study prototype public/assets/ui/emotions/angry.png"
+    },
+    {
+      "path": "assets/ui/emotions/confused.png",
+      "sha256": "cfcf720185b8456449edcdd2cebec43deba115ac338536e1418467e886bdd21d",
+      "source": "study prototype public/assets/ui/emotions/confused.png"
+    },
+    {
+      "path": "assets/ui/emotions/happy.png",
+      "sha256": "c86d967180f5e696f116986262be049206de8ddc83ad942310406778315ac355",
+      "source": "study prototype public/assets/ui/emotions/happy.png"
+    },
+    {
+      "path": "assets/ui/emotions/love.png",
+      "sha256": "10238f9131b89b0e61fb667e6b02c257d73ad5489bf0b2fa35ff416d74cfac9a",
+      "source": "study prototype public/assets/ui/emotions/love.png"
+    },
+    {
+      "path": "assets/ui/emotions/sleepy.png",
+      "sha256": "ebe6a363d220963f6799c0465e58095df6af9d1b8293e45e7c28b93128f10f25",
+      "source": "study prototype public/assets/ui/emotions/sleepy.png"
+    },
+    {
+      "path": "assets/ui/emotions/stressed.png",
+      "sha256": "cf01c0923f0e8b7ea5deebe7690203c8d32d1b1a2c23f9ce5d5d28027e1ed6c8",
+      "source": "study prototype public/assets/ui/emotions/stressed.png"
+    },
+    {
+      "path": "assets/ui/emotions/surprised.png",
+      "sha256": "0272999fc3dd765dd8928a53c7c657653b91dd1dddf6ecedcf93bc98d0bdbdd4",
+      "source": "study prototype public/assets/ui/emotions/surprised.png"
+    },
+    {
+      "path": "assets/ui/emotions/thinking.png",
+      "sha256": "ea84f9d17ff0c4821abeac9337abab2c9ea9be33d7f29d79d340f2fbca90fd42",
+      "source": "study prototype public/assets/ui/emotions/thinking.png"
+    },
+    {
+      "path": "assets/ui/icons/edit.png",
+      "sha256": "7f29751494cf33cc06ffcf8248a30765885316ec2b16acbaf8248eb6f5b7e9ca",
+      "source": "study prototype public/assets/ui/icons/edit.png"
+    },
+    {
+      "path": "assets/ui/icons/human.png",
+      "sha256": "a667b74d917885ebd8c44df1c3110c484b0d8acc4ba7d440e072c8568195fb80",
+      "source": "study prototype public/assets/ui/icons/human.png"
+    },
+    {
+      "path": "assets/ui/icons/no.png",
+      "sha256": "d29e1d00a684782f7486621833c1161fd6625c3e2797877e85a8d1ce3837c283",
+      "source": "study prototype public/assets/ui/icons/no.png"
+    },
+    {
+      "path": "assets/ui/icons/pause.png",
+      "sha256": "3a558449d1a0cddf651f8f4df6685e6bf389439b6b19456dcdf6c9e10565969f",
+      "source": "study prototype public/assets/ui/icons/pause.png"
+    },
+    {
+      "path": "assets/ui/icons/play.png",
+      "sha256": "a1b339e316fcd1494fc797f5398c0c7da67606ed8f6ae00bc08de903cda6882f",
+      "source": "study prototype public/assets/ui/icons/play.png"
+    },
+    {
+      "path": "assets/ui/icons/thought.png",
+      "sha256": "bf6eecbc95b0b5858b9bba1bc2f988003578b48fa23c7ee2a0d6864788876500",
+      "source": "study prototype public/assets/ui/icons/thought.png"
+    },
+    {
+      "path": "assets/ui/icons/yes.png",
+      "sha256": "d40413689c4fec08bb6cc71b963aa14cd9c31eb236b50e8790dbc6663339e4e3",
+      "source": "study prototype public/assets/ui/icons/yes.png"
+    },
+    {
+      "path": "backgrounds/balcony_evening.png",
+      "sha256": "e65423b0010e73997afe8045db3577506844368dfc811c3e3ac406af45abd396",
+      "source": "study prototype public/backgrounds/balcony_evening.png"
+    },
+    {
+      "path": "backgrounds/balcony_night.png",
+      "sha256": "262e163fd86793a429503f7cad7af100398f5c5338c41c755d91b4280ae342be",
+      "source": "study prototype public/backgrounds/balcony_night.png"
+    },
+    {
+      "path": "backgrounds/bedroom_evening.png",
+      "sha256": "ccc75f93a2c541c523dcb9dfd2cd960788567f2c54288ec2e8d2eed0b87915ea",
+      "source": "study prototype public/backgrounds/bedroom_evening.png"
+    },
+    {
+      "path": "backgrounds/bedroom_morning.png",
+      "sha256": "2851440a1fa8672d06606f1ba062cdf097f165cda62b097d9757d83b775e5db6",
+      "source": "study prototype public/backgrounds/bedroom_morning.png"
+    },
+    {
+      "path": "backgrounds/bedroom_night.png",
+      "sha256": "b2141efee496de73d987c2692255794f3e283e3fd2107394e0263caa51354e24",
+      "source": "study prototype public/backgrounds/bedroom_night.png"
+    },
+    {
+      "path": "backgrounds/cafe_day.png",
+      "sha256": "1ed261c75055748580127fe9740e7dee8f1319c587002f7d9936c17a322ff50f",
+      "source": "study prototype public/backgrounds/cafe_day.png"
+    },
+    {
+      "path": "backgrounds/cafe_evening.png",
+      "sha256": "f1525fb6de41caffab5f2769883527de57605df8e6262363e9016c50271da0bb",
+      "source": "study prototype public/backgrounds/cafe_evening.png"
+    },
+    {
+      "path": "backgrounds/car_day.png",
+      "sha256": "a22ef4bffff84b57f777a1b612bba203f99b2cc999a05d8bb4451d724f0a5290",
+      "source": "study prototype public/backgrounds/car_day.png"
+    },
+    {
+      "path": "backgrounds/car_night.png",
+      "sha256": "1fd9650bcc7f2f229349125f4d9d225a9d4753110b800b184a765c9c97f6bd76",
+      "source": "study prototype public/backgrounds/car_night.png"
+    },
+    {
+      "path": "backgrounds/kitchen_evening.png",
+      "sha256": "997a6c9a7b6505a98366ca18b55c712f544ef46750f9e37718278374a474ffc9",
+      "source": "study prototype public/backgrounds/kitchen_evening.png"
+    },
+    {
+      "path": "backgrounds/kitchen_morning.png",
+      "sha256": "e0342328950dec1cc7bfb5b39d610d05fc466575eb0d3d49779f716561970276",
+      "source": "study prototype public/backgrounds/kitchen_morning.png"
+    },
+    {
+      "path": "backgrounds/livingroom_day.png",
+      "sha256": "a12359df5679899688de4fbb5dc7ebe3894418aa9caaa8e046512aa2ee2a6696",
+      "source": "study prototype public/backgrounds/livingroom_day.png"
+    },
+    {
+      "path": "backgrounds/livingroom_evening.png",
+      "sha256": "396c5604abf04b77e7e8e29c06f1dabdc108ecd0d1185ced2e90452f850b2423",
+      "source": "study prototype public/backgrounds/livingroom_evening.png"
+    },
+    {
+      "path": "backgrounds/livingroom_night.png",
+      "sha256": "993207e88bfb7a58a1d0e753328cdfdf37e1ded299ccc6d93ef76b2915d805e3",
+      "source": "study prototype public/backgrounds/livingroom_night.png"
+    },
+    {
+      "path": "backgrounds/office_day.png",
+      "sha256": "42e91c6adfd453a9eedb6f019042dcd8cc5fb82fd27897a46d638154f77a1222",
+      "source": "study prototype public/backgrounds/office_day.png"
+    },
+    {
+      "path": "backgrounds/office_latenight.png",
+      "sha256": "b5b8ee51937440f2a2721bd493902a271f90f4f170fc7d3730c6c23600b52119",
+      "source": "study prototype public/backgrounds/office_latenight.png"
+    },
+    {
+      "path": "backgrounds/office_night.png",
+      "sha256": "121bc80f33908c501179898f9ea8f045e21de493575010443cf5d7b4f43ec131",
+      "source": "study prototype public/backgrounds/office_night.png"
+    },
+    {
+      "path": "backgrounds/park_day.png",
+      "sha256": "6d057dd72be311b6bd6070e14304c35cf3f8530eba04f22824f1023c1557e4a3",
+      "source": "study prototype public/backgrounds/park_day.png"
+    },
+    {
+      "path": "backgrounds/park_evening.png",
+      "sha256": "5d047ba4aacb95767a003bde2aae5ba960d73d7effb0b68fce01a4e13aa33963",
+      "source": "study prototype public/backgrounds/park_evening.png"
+    },
+    {
+      "path": "backgrounds/park_night.png",
+      "sha256": "43775edcf3049a973a9aac131741cba9cf3593a9fd2450af16b3562080012d6c",
+      "source": "study prototype public/backgrounds/park_night.png"
+    },
+    {
+      "path": "backgrounds/restaurant_evening.png",
+      "sha256": "9b177db60c51b5461447067c6d8e077a8553ac2d81ce33336d2448ecfe3b3207",
+      "source": "study prototype public/backgrounds/restaurant_evening.png"
+    },
+    {
+      "path": "backgrounds/restaurant_night.jpg",
+      "sha256": "068000ce72396618007bde1da150dc330cb01c0ad131992f10e27f75c51f64df",
+      "source": "study prototype public/backgrounds/restaurant_night.jpg"
+    },
+    {
+      "path": "backgrounds/restaurant_night.png",
+      "sha256": "ebb23b236067943730620ee704a0bbf14c641063abc4d6dbf18d99ad366cd4b4",
+      "source": "study prototype public/backgrounds/restaurant_night.png"
+    },
+    {
+      "path": "backgrounds/study_afternoon.png",
+      "sha256": "5b2eb4a84f5f6d4bdf1fae91844363f92ab5160147a30bc0aeefb747d381e268",
+      "source": "study prototype public/backgrounds/study_afternoon.png"
+    },
+    {
+      "path": "backgrounds/study_night.png",
+      "sha256": "edc1c7d9ff69778b1f37b9c67961021a177b067de9f054e295dd9de6fedfabfc",
+      "source": "study prototype public/backgrounds/study_night.png"
+    },
+    {
+      "path": "backgrounds/subway_evening.png",
+      "sha256": "5335f61dc091a4393bbc2343f062e209e20d7eb722396bb52a1f295c488e7b1c",
+      "source": "study prototype public/backgrounds/subway_evening.png"
+    },
+    {
+      "path": "sprites/female/angry.png",
+      "sha256": "8e23e7fce82540e241c4452d7121b5e35ecf4d457478a219b99cdd4cea3ec798",
+      "source": "study prototype public/sprites/female/angry.png"
+    },
+    {
+      "path": "sprites/female/anxious.png",
+      "sha256": "8b0daa294dc38ab09fedb593de4fbce7ce6e1c5f26a111e52daefc9d3de841f1",
+      "source": "study prototype public/sprites/female/anxious.png"
+    },
+    {
+      "path": "sprites/female/defensive.png",
+      "sha256": "eefcbe3df0c68383332b28996e0ab5e6f18ddeacd043094573b150ea4ea4a839",
+      "source": "study prototype public/sprites/female/defensive.png"
+    },
+    {
+      "path": "sprites/female/hurt.png",
+      "sha256": "c25833b6166533d46189a7ee75633efbea9ba2d3f2118944535a5f95b74febc6",
+      "source": "study prototype public/sprites/female/hurt.png"
+    },
+    {
+      "path": "sprites/female/neutral.png",
+      "sha256": "9e7fef44ef26c0593fc9147e8d617e4ebf6714abed41ab08c6f8359d6ef71bea",
+      "source": "study prototype public/sprites/female/neutral.png"
+    },
+    {
+      "path": "sprites/female/surprised.png",
+      "sha256": "ff660d65c1a501867b4805a45a1c3498ca17fcdcc4d58f8d380ff1b4368269a8",
+      "source": "study prototype public/sprites/female/surprised.png"
+    },
+    {
+      "path": "sprites/female/warm.png",
+      "sha256": "fb4057d2e10dc1a71f262206a28fdd15cdfe57b03f2ab39a7975b4a59a6787c6",
+      "source": "study prototype public/sprites/female/warm.png"
+    },
+    {
+      "path": "sprites/female/withdrawn.png",
+      "sha256": "75b3a2f885f0260b54d7b72f86617baed3b551fde73dddb585fae781b8b8e1ab",
+      "source": "study prototype public/sprites/female/withdrawn.png"
+    },
+    {
+      "path": "sprites/male/angry.png",
+      "sha256": "e506df1e1242f0bb73739d60502a3921cbc23d29a087fac63139cf4968dd296f",
+      "source": "study prototype public/sprites/male/angry.png"
+    },
+    {
+      "path": "sprites/male/anxious.png",
+      "sha256": "ee23b3064d8b8b49966a62b7fa10be15d4c6c7655761021fb9b9ed58f9073c1c",
+      "source": "study prototype public/sprites/male/anxious.png"
+    },
+    {
+      "path": "sprites/male/defensive.png",
+      "sha256": "bad1a17f0cef528b316e7797e25a3d5d3c3e33ea6741c4091f1a3aa589dc94a7",
+      "source": "study prototype public/sprites/male/defensive.png"
+    },
+    {
+      "path": "sprites/male/hurt.png",
+      "sha256": "5999290f2a47222669d47b88ee39e680623a3359ef66b1e8347f0b79efa1ee66",
+      "source": "study prototype public/sprites/male/hurt.png"
+    },
+    {
+      "path": "sprites/male/neutral.png",
+      "sha256": "1cb10861f08841accfaa1e1782ffa4158159925e71e73953b3cdb39383deae91",
+      "source": "study prototype public/sprites/male/neutral.png"
+    },
+    {
+      "path": "sprites/male/surprised.png",
+      "sha256": "b3fc4199e7cdea945af4a1878c94c1669152fb0b2f649d2616ba796170fc5fb5",
+      "source": "study prototype public/sprites/male/surprised.png"
+    },
+    {
+      "path": "sprites/male/warm.png",
+      "sha256": "e18b5e92941b00259710b69236bf609872069fcfe63d2a27f5ce53562198b92c",
+      "source": "study prototype public/sprites/male/warm.png"
+    },
+    {
+      "path": "sprites/male/withdrawn.png",
+      "sha256": "83e0c52baa14e0881e72217476cea461bce33bf4bdca406d7da371b0985f18df",
+      "source": "study prototype public/sprites/male/withdrawn.png"
+    }
+  ]
+}

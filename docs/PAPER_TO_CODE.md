@@ -21,7 +21,7 @@ Paper title read from the local camera-ready manuscript: **ASIDE: From Conflict 
 4. The reconnect path sends the annotation snapshot before readiness, preventing a gate from opening with an outdated snapshot.
 5. The inherited waiting screen offered a timed bypass. That bypass is disabled in the public paired workflow.
 6. Logging, uploads, and browser log backups are off by default. Keys are server-side and are not exposed through `VITE_*` variables.
-7. Raster art is omitted pending provenance confirmation. Existing CSS/SVG rendering is enabled instead. Code-authored generic icons replace inherited raster UI icons; the appearance is not the study's exact appearance.
+7. The initial candidate used CSS/SVG fallbacks. On 2026-10-28 the project owner requested restoration of the study visuals; original background images, character expression sprites, pixel dialogue frames, and UI icons are now restored. The homepage embeds the actual application; its dialogue remains fictional.
 8. Bilingual entry and bilingual synthetic content are additions for dissemination. They do not establish the validity of an English-language study.
 
 9. Development and WebSocket dependencies were updated to resolve the public-registry audit findings. These versions are not claimed to match the historical study environment.

@@ -12,7 +12,7 @@ export function createDemoScenario(language = 'zh') {
     ['B', '好。我们现在一起准备吧。', 'Okay. Shall we get started now?', '我愿意继续一起做饭，也希望这次真的被听见。', 'I want to cook together and hope my concern was heard.', '我想用行动重新参与，而不只是结束争论。', 'I want to take part again, not just end the argument.'],
   ]
   const persona = (id, name, color, darkColor, hairStyle) => ({
-    id, name, label: `PARTNER ${id}`, color, darkColor, glowColor: `${color}88`,
+    id, name, spriteType: id === 'A' ? 'female' : 'male', label: `PARTNER ${id}`, color, darkColor, glowColor: `${color}88`,
     thoughtBg: `${color}22`, thoughtBorder: color, hairColor: '#49342c',
     outfitColor: color, outfitDark: darkColor, hairStyle, outfitStyle: 'casual', accessory: 'none',
   })

@@ -790,13 +790,39 @@ function RoomWalls({ rc, scene }) {
 function SceneBackground({ scene = 'bedroom_night', intensity = 0.5, sceneElements = [] }) {
   const preset = SCENE_PRESETS[scene] || SCENE_PRESETS.bedroom_night
   const rc     = preset.roomColors || {}
+  const [loadedScene, setLoadedScene] = useState(null)
+  const [pngError, setPngError] = useState(false)
   const vignetteStrength = 0.3 + Math.min(1, intensity) * 0.3
 
+  const usePng = loadedScene === scene && !pngError
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Code-rendered room (no external raster assets). */}
-      {(
+      {/* Hidden img probe — determines PNG availability */}
+      <img
+        key={scene}
+        src={import.meta.env.BASE_URL + preset.bg.replace(/^\//, '')}
+        onLoad={() => { setLoadedScene(scene); setPngError(false) }}
+        onError={() => setPngError(true)}
+        style={{ display: 'none' }}
+        alt=""
+      />
+
+      {/* ── PNG layer ── */}
+      {usePng && (
+        <div
+          className="absolute inset-0 transition-opacity duration-700"
+          style={{
+            backgroundImage: `url(${import.meta.env.BASE_URL + preset.bg.replace(/^\//, '')})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center bottom',
+            imageRendering: 'pixelated',
+          }}
+        />
+      )}
+
+      {/* ── CSS fallback: proper front-view room ── */}
+      {!usePng && (
         <>
           {/* Room architecture: ceiling / wall / floor */}
           <RoomWalls rc={rc} scene={scene} />
@@ -972,10 +998,70 @@ function FloatingEmotionTag({ currentEmotion, candidates, onMark, phase }) {
   )
 }
 
-// Public artifact uses the built-in code-rendered character.
+// ── Sprite preloader — caches all emotion PNGs on first mount ─
+const _preloadedSprites = new Set()
+function preloadSprites(spriteType) {
+  if (_preloadedSprites.has(spriteType)) return
+  _preloadedSprites.add(spriteType)
+  const emotions = Object.values(EMOTION_TO_SPRITE)
+  const unique = [...new Set(emotions)]
+  unique.forEach(emo => {
+    const img = new Image()
+    img.src = `${import.meta.env.BASE_URL}sprites/${spriteType}/${emo}.png`
+  })
+}
+
+// ── Character Sprite (PNG sprite with crossfade + PixelChar SVG fallback) ─
+// Load order:
+//   1. /sprites/{spriteType}/{emotionKey}.png  (Stardew-style sprites)
+//   2. /assets/sprites/{persona.id}/{emotionKey}.png  (legacy per-persona)
+//   3. PixelChar SVG (always available fallback)
 function CharacterSprite({ persona, spPose, facing, scale = 1.0, glow = true }) {
-  return <PixelChar persona={persona} emotion={spPose || 'neutral'} facing={facing || 'right'}
-    lean="none" scale={scale * 0.86 * 1.5} glow={glow} features={persona.features || []} />
+  const [useSvg, setUseSvg] = useState(false)
+
+  const emotionKey = EMOTION_TO_SPRITE[spPose] || 'neutral'
+  const spriteType = persona.spriteType || (persona.id === 'A' ? 'female' : 'male')
+
+  // Preload all sprites for this type on first render
+  useEffect(() => { preloadSprites(spriteType) }, [spriteType])
+
+  const src = `${import.meta.env.BASE_URL}sprites/${spriteType}/${emotionKey}.png`
+
+  const charScale = scale * 0.86 * 1.5
+
+  const baseStyle = {
+    height: `${190 * charScale}px`,
+    imageRendering: 'pixelated',
+    transform: facing === 'left' ? 'scaleX(-1)' : 'none',
+    filter: glow ? `drop-shadow(0 0 12px ${persona.glowColor})` : 'none',
+    display: 'block',
+  }
+
+  // SVG fallback if PNG fails
+  if (useSvg) {
+    return (
+      <PixelChar
+        persona={persona}
+        emotion={spPose || 'neutral'}
+        facing={facing || 'right'}
+        lean="none"
+        scale={charScale}
+        glow={glow}
+        features={persona.features || []}
+      />
+    )
+  }
+
+  // Single <img> — no key change, no unmount/remount, no flash.
+  // Browser swaps the src in-place; since sprites are preloaded, it's instant.
+  return (
+    <img
+      src={src}
+      style={baseStyle}
+      alt=""
+      onError={() => setUseSvg(true)}
+    />
+  )
 }
 
 // ── Character layer ───────────────────────────────────────────

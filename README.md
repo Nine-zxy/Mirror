@@ -63,7 +63,7 @@ The bilingual home page and example share one codebase. Some inherited research 
 
 Original participant scenarios, study logs, transcripts, local environment files, paper drafts, videos, and original Git history are excluded. Logs, automatic log uploads, and browser log backups are disabled by default. To explicitly collect study logs on a trusted installation, enable both logging flags in `.env.local`; see the reproduction guide before doing so.
 
-The release uses existing code-rendered CSS/SVG scenes and characters plus simple code-authored icons. Raster artwork with unverified redistribution provenance is not bundled. Thus, visual appearance differs from the paper screenshots.
+The release uses the study prototype’s original scene backgrounds, character expression sprites, dialogue frames, and UI icons. The introduction embeds the actual application workflow using fictional dialogue. Exact source-file hashes are recorded in docs/STUDY_ASSETS.json. CSS/SVG rendering remains a fallback for missing images.
 
 This is a local/trusted-network research application, not an authenticated public service. Room codes are pairing aids, not access credentials. Do not expose its preparation APIs, optional log APIs, or AI proxy as an unrestricted public service.
 
