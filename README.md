@@ -71,4 +71,4 @@ This is a local/trusted-network research application, not an authenticated publi
 
 [MIT License](LICENSE). Source repository: [Nine-zxy/Mirror](https://github.com/Nine-zxy/Mirror).
 
-Final paper author metadata and DOI will be added when verified. The released source starts from a clean history; private research records and credentials are excluded. Original raster artwork is not included.
+Final paper author metadata and DOI will be added when verified. The released source starts from a clean history; private research records and credentials are excluded. Original study visual assets are included as recorded in docs/STUDY_ASSETS.json; participant records remain excluded.
